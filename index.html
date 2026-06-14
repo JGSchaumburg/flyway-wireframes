@@ -508,7 +508,7 @@
         <div class="anno" style="display:block;background:#fffbe6;border:1px dashed #e0c200;color:#6b5800;margin-top:12px">
           <b>This is the "refine at desk" half.</b> The mess Ryan flagged lives here, on purpose: rough zone-tagged capture in-station keeps the field fast; precise pathway/node correlation happens here where it's easier. The studio needs to display field photos and offer this correlation step — a new backend dependency.</div>
         <div class="pgrid">
-          <div class="pcard"><div class="img">sign: To Trains | 69th St TC</div>
+          <div class="pcard next"><div class="img">sign: To Trains | 69th St TC</div>
             <div class="ft"><div class="uncorr">● Needs correlation</div>
               <select><option>Correlate to pathway…</option><option>Fare gate (unpaid → paid)</option><option>Mezzanine landing → Fare gate</option></select></div></div>
           <div class="pcard"><div class="img">fare line wide shot</div>
@@ -682,7 +682,18 @@
         setTimeout(loadServer,1500);
       }catch(err){ status.textContent='Saved here, but could not reach the comment server.'; status.style.color='var(--error)'; }
     } else {
-      status.textContent='Saved on this page. Shared list + email switch on once the comment backend is connected.'; status.style.color='var(--muted)';
+      status.textContent='Sending…'; status.style.color='#6b6b72';
+      var fd=new FormData();
+      fd.append('access_key',WEB3FORMS_KEY);
+      fd.append('subject','[Flyway Wireframes] '+ptitle+' — '+element);
+      fd.append('from_name',name||'Anonymous reviewer');
+      fd.append('email',email||'flyway-review@jarv.us');
+      fd.append('message','Page: '+ptitle+' ('+pid+')\nElement: '+element+'\nReviewer: '+(name||'Anonymous')+(email?' <'+email+'>':'')+'\nTime: '+c.ts+'\n\n'+text+'\n\n---\nFrom: '+location.href);
+      fd.append('botcheck','');
+      fetch('https://api.web3forms.com/submit',{method:'POST',body:fd}).then(function(r){return r.json();}).then(function(j){
+        status.textContent=j.success?'Comment sent to Julia ✓ (and saved on this screen)':'Saved on this screen. Email briefly throttled — it still saved.';
+        status.style.color=j.success?'var(--complete)':'var(--warning)';
+      }).catch(function(){status.textContent='Saved on this screen; email failed (offline?).';status.style.color='var(--error)';});
     }
     return false;}
   function updateInfo(id){ var d=INFO[id]; if(!d) return;
