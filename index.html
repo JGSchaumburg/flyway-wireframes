@@ -540,9 +540,8 @@
       <div class="ip-sect">Comments on this screen</div>
       <div id="ip-comments"></div>
       <form id="ip-cform" onsubmit="return addComment(event)">
-        <input id="cf-name" class="cf-in" placeholder="Your name" autocomplete="name" />
-        <input id="cf-email" class="cf-in" type="email" placeholder="Email (optional)" autocomplete="email" />
-        <select id="cf-el" class="cf-in" aria-label="Element"></select>
+        <input id="cf-name" class="cf-in" placeholder="Your name (saved, type once)" autocomplete="name" />
+        <select id="cf-el" class="cf-in" aria-label="What this is about"></select>
         <textarea id="cf-text" class="cf-in" rows="2" placeholder="Your comment on this screen…" required></textarea>
         <button class="btn primary" type="submit" id="cf-send">Add comment</button>
         <div id="cf-status" class="cf-status"></div>
@@ -661,7 +660,7 @@
   function currentScreen(){if(document.body.classList.contains('deskmode'))return 'desk';var a=document.querySelector('.screen.active');return a?a.id:'journeys';}
   function addComment(e){e.preventDefault();
     var name=document.getElementById('cf-name').value.trim();
-    var email=document.getElementById('cf-email').value.trim();
+    var email='';
     var element=document.getElementById('cf-el').value;
     var text=document.getElementById('cf-text').value.trim();
     var status=document.getElementById('cf-status');
