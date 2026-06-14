@@ -163,6 +163,15 @@
   .ip-prov{font-size:12px;color:var(--muted);margin:2px 0 8px;font-weight:600;}
   .ip-quote{border-left:3px solid var(--surfaceDim);padding:3px 0 3px 11px;margin:9px 0;font-size:12.5px;line-height:1.45;color:#444;font-style:italic;}
   .ip-quote .ip-attr{display:block;font-style:normal;font-size:11px;color:var(--muted);margin-top:3px;font-weight:600;}
+  /* comments */
+  #ip-comments{margin:4px 0 6px;}
+  .cmt{border-left:3px solid var(--accent);padding:5px 0 5px 10px;margin:8px 0;font-size:12.5px;line-height:1.42;}
+  .cmt .cmt-el{display:inline-block;font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--accent);background:#e6f7f1;border-radius:5px;padding:1px 6px;margin-right:5px;}
+  .cmt .cmt-meta{display:block;font-size:11px;color:var(--muted);margin-top:3px;font-weight:600;}
+  .cmt-empty{font-size:12px;color:var(--muted);font-style:italic;}
+  .cf-in{width:100%;border:1px solid var(--surfaceDim);border-radius:8px;padding:8px 10px;margin:5px 0;font-family:inherit;font-size:13px;background:#fff;}
+  #ip-cform .btn{padding:11px;font-size:14px;margin-top:4px;}
+  .cf-status{font-size:11.5px;margin-top:5px;min-height:14px;}
 </style>
 </head>
 <body>
@@ -528,6 +537,16 @@
       <div class="ip-sect">What this is</div><p id="ip-what"></p>
       <div class="ip-sect">Why</div><p id="ip-why"></p>
       <div class="ip-sect">Where it came from</div><div id="ip-from"></div>
+      <div class="ip-sect">Comments on this screen</div>
+      <div id="ip-comments"></div>
+      <form id="ip-cform" onsubmit="return addComment(event)">
+        <input id="cf-name" class="cf-in" placeholder="Your name" autocomplete="name" />
+        <input id="cf-email" class="cf-in" type="email" placeholder="Email (optional)" autocomplete="email" />
+        <select id="cf-el" class="cf-in" aria-label="Element"></select>
+        <textarea id="cf-text" class="cf-in" rows="2" placeholder="Your comment on this screen…" required></textarea>
+        <button class="btn primary" type="submit" id="cf-send">Add comment</button>
+        <div id="cf-status" class="cf-status"></div>
+      </form>
     </aside>
   </div><!-- /stage -->
 
@@ -603,12 +622,66 @@
        <div class="ip-quote">things we are doing on the companion app currently do not have a way to display in the desktop app, that needs to be changed.<span class="ip-attr">Christopher Yamas, Jun 12 sync</span></div>
        <div class="ip-quote">it would be a little messier on the pathways studio side, but could make collecting signage much easier.<span class="ip-attr">Ryan Mahoney, Jun 12</span></div>`}
   };
+  var WEB3FORMS_KEY='671ea956-adc1-4370-a9fd-74c961c62c6d';
+  var ELEMENTS={
+   'task-list':['Mode toggle (List/Map/Journey)','Pathway row','Search','Completed section'],
+   'journeys':['Journey card','Progress bar','New A to B journey'],
+   'journey-plan':['Start node','End node','Build journey'],
+   'journey-overview':['Route segment list','Progress / percent complete','Map toggle','Continue button'],
+   'journey-map':['Diagram route','Legend'],
+   'pathway-form':['Signage field','Capture sign photo','Stopwatch','Measurements (locked distance)','Mark done'],
+   'photo-capture':['Viewfinder / shutter','Tag to zone/node/pathway','Capture mode','Zone picker'],
+   'photo-zone':['Zone gallery','Zones diagram','See at desk'],
+   'signage-edit':['Locked view','Multi-line edit','Common elements'],
+   'stopwatch':['Timer','Runs list','Average','Use value'],
+   'desk':['Zone list','Photo cards','Correlate dropdown']
+  };
+  function esc(s){return (s||'').replace(/[&<>"]/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m];});}
+  function lc(){try{return JSON.parse(localStorage.getItem('flyway_comments')||'[]');}catch(e){return [];}}
+  function sc(a){localStorage.setItem('flyway_comments',JSON.stringify(a));}
+  function fillElements(pid){var sel=document.getElementById('cf-el');if(!sel)return;
+    var opts=['This screen (general)'].concat(ELEMENTS[pid]||[]);
+    sel.innerHTML=opts.map(function(o){return '<option>'+esc(o)+'</option>';}).join('');}
+  function renderComments(pid){var box=document.getElementById('ip-comments');if(!box)return;
+    var all=lc().filter(function(c){return c.page===pid;});
+    if(!all.length){box.innerHTML='<div class="cmt-empty">No comments on this screen yet. Add one below; it also emails Julia.</div>';return;}
+    box.innerHTML=all.map(function(c){
+      var tag=(c.element&&c.element!=='This screen (general)')?'<span class="cmt-el">'+esc(c.element)+'</span>':'';
+      return '<div class="cmt">'+tag+esc(c.text)+'<span class="cmt-meta">'+esc(c.name||'Anonymous')+' · '+new Date(c.ts).toLocaleString()+'</span></div>';
+    }).join('');}
+  function currentScreen(){if(document.body.classList.contains('deskmode'))return 'desk';var a=document.querySelector('.screen.active');return a?a.id:'journeys';}
+  function addComment(e){e.preventDefault();
+    var name=document.getElementById('cf-name').value.trim();
+    var email=document.getElementById('cf-email').value.trim();
+    var element=document.getElementById('cf-el').value;
+    var text=document.getElementById('cf-text').value.trim();
+    var status=document.getElementById('cf-status');
+    if(!text){return false;}
+    if(name)localStorage.setItem('flyway_name',name);
+    var pid=currentScreen(); var pdata=INFO[pid]||{}; var ptitle=pdata.title||pid;
+    var c={page:pid,pageTitle:ptitle,element:element,name:name,email:email,text:text,ts:new Date().toISOString()};
+    var a=lc(); a.push(c); sc(a); renderComments(pid);
+    document.getElementById('cf-text').value='';
+    status.textContent='Sending…'; status.style.color='#6b6b72';
+    var fd=new FormData();
+    fd.append('access_key',WEB3FORMS_KEY);
+    fd.append('subject','[Flyway Wireframes] '+ptitle+' — '+element);
+    fd.append('from_name',name||'Anonymous reviewer');
+    fd.append('email',email||'flyway-review@jarv.us');
+    fd.append('message','Page: '+ptitle+' ('+pid+')\nElement: '+element+'\nReviewer: '+(name||'Anonymous')+(email?' <'+email+'>':'')+'\nTime: '+c.ts+'\n\n'+text+'\n\n---\nFrom: '+location.href);
+    fd.append('botcheck','');
+    fetch('https://api.web3forms.com/submit',{method:'POST',body:fd}).then(function(r){return r.json();}).then(function(j){
+      status.textContent=j.success?'Sent to Julia ✓ (and saved here)':'Saved here; email failed: '+(j.message||'');
+      status.style.color=j.success?'var(--complete)':'var(--error)';
+    }).catch(function(){status.textContent='Saved here; email failed (offline?)';status.style.color='var(--error)';});
+    return false;}
   function updateInfo(id){ var d=INFO[id]; if(!d) return;
     document.getElementById('ip-screen').textContent=d.scr;
     document.getElementById('ip-title').textContent=d.title;
     document.getElementById('ip-what').textContent=d.what;
     document.getElementById('ip-why').textContent=d.why;
     document.getElementById('ip-from').innerHTML=d.from;
+    fillElements(id); renderComments(id);
   }
   function show(id){
     document.body.classList.remove('deskmode');
@@ -627,6 +700,7 @@
     document.body.classList.toggle('show-anno');
     document.getElementById('annoBtn').classList.toggle('on');
   }
+  (function(){var n=localStorage.getItem('flyway_name');if(n)document.getElementById('cf-name').value=n;})();
   updateInfo('journeys');
 </script>
 </body>
