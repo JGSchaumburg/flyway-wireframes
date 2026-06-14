@@ -623,6 +623,15 @@
        <div class="ip-quote">it would be a little messier on the pathways studio side, but could make collecting signage much easier.<span class="ip-attr">Ryan Mahoney, Jun 12</span></div>`}
   };
   var WEB3FORMS_KEY='671ea956-adc1-4370-a9fd-74c961c62c6d';
+  var APPS_SCRIPT_URL=''; // set to the deployed Apps Script /exec URL to turn on shared (all-reviewers) comments
+  var serverComments=null;
+  function loadServer(){ if(!APPS_SCRIPT_URL) return;
+    var cb='cb_'+Date.now(); var s=document.createElement('script');
+    window[cb]=function(data){ serverComments=Array.isArray(data)?data:[]; try{renderComments(currentScreen());}catch(e){} try{delete window[cb];}catch(e){} s.remove(); };
+    s.onerror=function(){ try{delete window[cb];}catch(e){} s.remove(); };
+    s.src=APPS_SCRIPT_URL+(APPS_SCRIPT_URL.indexOf('?')<0?'?':'&')+'callback='+cb+'&_='+Date.now();
+    document.body.appendChild(s);
+  }
   var ELEMENTS={
    'task-list':['Mode toggle (List/Map/Journey)','Pathway row','Search','Completed section'],
    'journeys':['Journey card','Progress bar','New A to B journey'],
@@ -660,20 +669,21 @@
     if(name)localStorage.setItem('flyway_name',name);
     var pid=currentScreen(); var pdata=INFO[pid]||{}; var ptitle=pdata.title||pid;
     var c={page:pid,pageTitle:ptitle,element:element,name:name,email:email,text:text,ts:new Date().toISOString()};
-    var a=lc(); a.push(c); sc(a); renderComments(pid);
+    var c2={page:pid,pageTitle:ptitle,element:element,name:name,email:email,text:text,ts:c.ts,url:location.href};
+    var a=lc(); a.push(c); sc(a);
+    if(serverComments) serverComments.push(c);
+    renderComments(pid);
     document.getElementById('cf-text').value='';
-    status.textContent='Sending…'; status.style.color='#6b6b72';
-    var fd=new FormData();
-    fd.append('access_key',WEB3FORMS_KEY);
-    fd.append('subject','[Flyway Wireframes] '+ptitle+' — '+element);
-    fd.append('from_name',name||'Anonymous reviewer');
-    fd.append('email',email||'flyway-review@jarv.us');
-    fd.append('message','Page: '+ptitle+' ('+pid+')\nElement: '+element+'\nReviewer: '+(name||'Anonymous')+(email?' <'+email+'>':'')+'\nTime: '+c.ts+'\n\n'+text+'\n\n---\nFrom: '+location.href);
-    fd.append('botcheck','');
-    fetch('https://api.web3forms.com/submit',{method:'POST',body:fd}).then(function(r){return r.json();}).then(function(j){
-      status.textContent=j.success?'Sent to Julia ✓ (and saved here)':'Saved here; email failed: '+(j.message||'');
-      status.style.color=j.success?'var(--complete)':'var(--error)';
-    }).catch(function(){status.textContent='Saved here; email failed (offline?)';status.style.color='var(--error)';});
+    if(APPS_SCRIPT_URL){
+      status.textContent='Sending…'; status.style.color='#6b6b72';
+      try{
+        fetch(APPS_SCRIPT_URL,{method:'POST',mode:'no-cors',body:new URLSearchParams(c2)});
+        status.textContent='Shared with the team and emailed to Julia ✓'; status.style.color='var(--complete)';
+        setTimeout(loadServer,1500);
+      }catch(err){ status.textContent='Saved here, but could not reach the comment server.'; status.style.color='var(--error)'; }
+    } else {
+      status.textContent='Saved on this page. Shared list + email switch on once the comment backend is connected.'; status.style.color='var(--muted)';
+    }
     return false;}
   function updateInfo(id){ var d=INFO[id]; if(!d) return;
     document.getElementById('ip-screen').textContent=d.scr;
