@@ -174,7 +174,7 @@
   .cf-status{font-size:11.5px;margin-top:5px;min-height:14px;}
 </style>
 </head>
-<body>
+<body class="show-anno">
   <h1 class="title">Flyway · Companion App — concept wireframes</h1>
   <p class="sub">Clickable concept for the two net-new flows from the usability sync: the <b>guided-journey</b> routing view and <b>zone-based photo capture</b>. Styled to match the current build (Inter, primary&nbsp;#0E06AA, Material&nbsp;3). Tap through; yellow notes flag open questions for Monday.</p>
   <div class="toolbar">
@@ -183,7 +183,7 @@
     <button onclick="show('photo-capture')">📷 Photo capture (new)</button>
     <button onclick="showDesk()">🖥 Studio: desk view (new)</button>
     <button id="nextBtn" class="on" onclick="toggleNext()">Walkthrough guide: on</button>
-    <button id="annoBtn" onclick="toggleAnno()">Show discussion notes</button>
+    <button id="annoBtn" class="on" onclick="toggleAnno()">Discussion notes: on</button>
   </div>
 
   <div class="stage">
@@ -708,7 +708,8 @@
   }
   function toggleAnno(){
     document.body.classList.toggle('show-anno');
-    document.getElementById('annoBtn').classList.toggle('on');
+    var b=document.getElementById('annoBtn'), on=document.body.classList.contains('show-anno');
+    b.classList.toggle('on',on); b.textContent='Discussion notes: '+(on?'on':'off');
   }
   (function(){var n=localStorage.getItem('flyway_name');if(n)document.getElementById('cf-name').value=n;})();
   updateInfo('journeys');
