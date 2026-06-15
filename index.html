@@ -621,7 +621,6 @@
        <div class="ip-quote">things we are doing on the companion app currently do not have a way to display in the desktop app, that needs to be changed.<span class="ip-attr">Christopher Yamas, Jun 12 sync</span></div>
        <div class="ip-quote">it would be a little messier on the pathways studio side, but could make collecting signage much easier.<span class="ip-attr">Ryan Mahoney, Jun 12</span></div>`}
   };
-  var WEB3FORMS_KEY='671ea956-adc1-4370-a9fd-74c961c62c6d';
   var APPS_SCRIPT_URL=''; // set to the deployed Apps Script /exec URL to turn on shared (all-reviewers) comments
   var serverComments=null;
   function loadServer(){ if(!APPS_SCRIPT_URL) return;
@@ -681,18 +680,7 @@
         setTimeout(loadServer,1500);
       }catch(err){ status.textContent='Saved here, but could not reach the comment server.'; status.style.color='var(--error)'; }
     } else {
-      status.textContent='Sending…'; status.style.color='#6b6b72';
-      var fd=new FormData();
-      fd.append('access_key',WEB3FORMS_KEY);
-      fd.append('subject','[Flyway Wireframes] '+ptitle+' — '+element);
-      fd.append('from_name',name||'Anonymous reviewer');
-      fd.append('email',email||'flyway-review@jarv.us');
-      fd.append('message','Page: '+ptitle+' ('+pid+')\nElement: '+element+'\nReviewer: '+(name||'Anonymous')+(email?' <'+email+'>':'')+'\nTime: '+c.ts+'\n\n'+text+'\n\n---\nFrom: '+location.href);
-      fd.append('botcheck','');
-      fetch('https://api.web3forms.com/submit',{method:'POST',body:fd}).then(function(r){return r.json();}).then(function(j){
-        status.textContent=j.success?'Comment sent to Julia ✓ (and saved on this screen)':'Saved on this screen. Email briefly throttled — it still saved.';
-        status.style.color=j.success?'var(--complete)':'var(--warning)';
-      }).catch(function(){status.textContent='Saved on this screen; email failed (offline?).';status.style.color='var(--error)';});
+      status.textContent='Saved on this screen ✓ — shared list + email turn on once the team backend is connected.'; status.style.color='var(--muted)';
     }
     return false;}
   function updateInfo(id){ var d=INFO[id]; if(!d) return;
