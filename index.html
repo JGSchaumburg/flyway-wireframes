@@ -700,8 +700,9 @@
     document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
     var el=document.getElementById(id); if(el){el.classList.add('active'); el.querySelector('.scroll').scrollTop=0;}
     updateInfo(id);
+    try{history.replaceState(null,'','#'+id);}catch(e){}
   }
-  function showDesk(){ document.body.classList.add('deskmode'); updateInfo('desk'); }
+  function showDesk(){ document.body.classList.add('deskmode'); updateInfo('desk'); try{history.replaceState(null,'','#desk');}catch(e){} }
   function showApp(){ document.body.classList.remove('deskmode'); show('photo-zone'); }
   function toggleNext(){
     document.body.classList.toggle('hide-next');
@@ -714,7 +715,14 @@
     b.classList.toggle('on',on); b.textContent='Discussion notes: '+(on?'on':'off');
   }
   (function(){var n=localStorage.getItem('flyway_name');if(n)document.getElementById('cf-name').value=n;})();
-  updateInfo('journeys');
+  function applyHash(){
+    var h=(location.hash||'').replace('#','');
+    if(h==='desk'){ showDesk(); return; }
+    if(h && document.getElementById(h)){ show(h); return; }
+    updateInfo('journeys');
+  }
+  window.addEventListener('hashchange', applyHash);
+  applyHash();
 </script>
 </body>
 </html>
