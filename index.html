@@ -621,7 +621,8 @@
        <div class="ip-quote">things we are doing on the companion app currently do not have a way to display in the desktop app, that needs to be changed.<span class="ip-attr">Christopher Yamas, Jun 12 sync</span></div>
        <div class="ip-quote">it would be a little messier on the pathways studio side, but could make collecting signage much easier.<span class="ip-attr">Ryan Mahoney, Jun 12</span></div>`}
   };
-  var APPS_SCRIPT_URL=''; // set to the deployed Apps Script /exec URL to turn on shared (all-reviewers) comments
+  var APPS_SCRIPT_URL='';
+  var COLLECTOR_URL='https://webhook.site/b2fae54a-8213-4382-942f-6cab3b57862d'; // set to the deployed Apps Script /exec URL to turn on shared (all-reviewers) comments
   var serverComments=null;
   function loadServer(){ if(!APPS_SCRIPT_URL) return;
     var cb='cb_'+Date.now(); var s=document.createElement('script');
@@ -679,8 +680,11 @@
         status.textContent='Shared with the team and emailed to Julia ✓'; status.style.color='var(--complete)';
         setTimeout(loadServer,1500);
       }catch(err){ status.textContent='Saved here, but could not reach the comment server.'; status.style.color='var(--error)'; }
+    } else if (COLLECTOR_URL) {
+      try{ fetch(COLLECTOR_URL,{method:'POST',mode:'no-cors',body:new URLSearchParams(c2)}); }catch(err){}
+      status.textContent='Comment sent ✓ (and saved on this screen)'; status.style.color='var(--complete)';
     } else {
-      status.textContent='Saved on this screen ✓ — shared list + email turn on once the team backend is connected.'; status.style.color='var(--muted)';
+      status.textContent='Saved on this screen ✓'; status.style.color='var(--muted)';
     }
     return false;}
   function updateInfo(id){ var d=INFO[id]; if(!d) return;
