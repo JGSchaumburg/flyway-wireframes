@@ -176,11 +176,23 @@
   .vertabs{display:flex;gap:8px;justify-content:center;margin:4px 0 12px;flex-wrap:wrap;}
   .vertabs button{padding:9px 18px;border-radius:999px;border:1px solid var(--surfaceDim);background:#fff;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;color:var(--muted);}
   .vertabs button.on{background:var(--primary);color:#fff;border-color:var(--primary);box-shadow:0 2px 8px rgba(14,6,170,.25);}
+  /* priority labels */
+  .prio{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;padding:5px 11px;border-radius:999px;margin:0 0 10px;}
+  .prio.ship{background:#e6f7f1;color:#00795c;}
+  .prio.discovery{background:#fff3cd;color:#6b5800;}
+  .prio.deferred{background:#eceef6;color:#5b6480;}
+  .prio.dropped{background:#fde8ee;color:#b00020;}
+  /* v2 grouped nav (ship / discovery / defer) */
+  #nav-v2 .toolbar{margin-bottom:8px;}
+  .navlabel{font-size:10px;font-weight:800;letter-spacing:.7px;text-transform:uppercase;padding:5px 11px;border-radius:6px;align-self:center;}
+  .navlabel.ship{background:#e6f7f1;color:#00795c;}
+  .navlabel.discovery{background:#fff3cd;color:#6b5800;}
+  .navlabel.defer{background:#eceef6;color:#5b6480;}
 </style>
 </head>
 <body class="show-anno">
   <h1 class="title">Flyway · Companion App — concept wireframes</h1>
-  <p class="sub">Two dated cuts of the companion-app concept. <b>Version 1 (Jun 12 sync)</b> led with the guided-journey routing view and zone-based photo capture. <b>Version 2 (Jun 15 sync)</b> reflects the team's reprioritization: with ~2 weeks left, ship fast signage capture (photo, voice-to-text, AI cleanup) and a pin-on-diagram for photos/notes, and defer guided journeys to task order 2. Switch with the version tabs; yellow notes carry the reasoning.</p>
+  <p class="sub">Two dated cuts of the companion-app concept. <b>Version 1 (Jun 12 sync)</b> led with the guided-journey routing view and zone-based photo capture. <b>Version 2 (Jun 15 sync)</b> reflects the team's reprioritization, split into three buckets: <b>Ship now</b> (photo + note capture, pin-on-diagram), <b>Discovery</b> (voice-to-text and AI signage cleanup, to prove out before building), and <b>Defer</b> (guided journeys, a later task order). Switch with the version tabs; yellow notes carry the reasoning.</p>
   <div class="vertabs">
     <button id="vtab1" class="on" onclick="goVer(1)">Version 1 · Jun 12 sync</button>
     <button id="vtab2" onclick="goVer(2)">Version 2 · Jun 15 sync</button>
@@ -191,12 +203,17 @@
     <button onclick="show('photo-capture')">📷 Photo capture (zones)</button>
     <button onclick="showDesk()">🖥 Studio: desk view</button>
   </div>
-  <div class="toolbar" id="nav-v2" style="display:none">
-    <button onclick="show('v2-pathway-form')">📝 Pathway form (v2)</button>
-    <button onclick="show('v2-signage')">🎤 Signage: voice + AI</button>
-    <button onclick="show('v2-photo')">📷 Photo + pin</button>
-    <button onclick="show('v2-note')">🗒 Note / comment</button>
-    <button onclick="show('v2-journeys')">⏸ Journeys (deferred)</button>
+  <div id="nav-v2" style="display:none">
+    <div class="toolbar"><span class="navlabel ship">Ship now</span>
+      <button onclick="show('v2-photo')">📷 Photo capture</button>
+      <button onclick="show('v2-pin')">📍 Pin + note</button>
+      <button onclick="show('v2-note')">🗒 Note / comment</button>
+      <button onclick="show('v2-pathway-form')">📝 Pathway form</button>
+      <button onclick="show('v2-stopwatch')">⏱ Stopwatch</button></div>
+    <div class="toolbar"><span class="navlabel discovery">Discovery</span>
+      <button onclick="show('v2-signage')">🎤 Voice + AI signage</button></div>
+    <div class="toolbar"><span class="navlabel defer">Defer</span>
+      <button onclick="show('v2-journeys')">⏸ Guided journeys</button></div>
   </div>
   <div class="toolbar">
     <button id="nextBtn" class="on" onclick="toggleNext()">Walkthrough guide: on</button>
@@ -513,8 +530,9 @@
       <div class="appbar"><div class="back" onclick="show('v2-journeys')">‹</div>
         <div class="t">Fare gate<small>15th St / City Hall</small></div><div class="chip">Saved ✓</div></div>
       <div class="scroll">
+        <div class="prio ship">Ship now</div>
         <div class="title2" style="margin:2px 0 8px">Unpaid area → Paid area</div>
-        <div class="anno"><b>Jun 15 reprioritization:</b> with ~2 weeks left, the build focus is fast <b>signage capture</b> — photo, voice-to-text, and AI cleanup. Guided journeys are deferred to task order 2.</div>
+        <div class="anno"><b>Jun 15 reprioritization:</b> with ~2 weeks left, the build focus is fast <b>signage capture</b>. Photo + note capture ship now; voice-to-text and AI cleanup are discovery. Guided journeys are deferred to a later task order.</div>
 
         <div class="sect">Signage — unpaid → paid</div>
         <div class="field"><label>SIGNPOSTED AS</label>
@@ -542,6 +560,8 @@
       <div class="appbar"><div class="back" onclick="show('v2-pathway-form')">‹</div>
         <div class="t">Signage by voice<small>unpaid → paid</small></div></div>
       <div class="scroll">
+        <div class="prio discovery">Discovery · prove out before building</div>
+        <div class="anno"><b>Discovery, not a commit-to-ship yet:</b> we test image-to-text and audio models and pick an API before building. The locked / multi-line signage field itself is decided and ships; voice + AI ride on top once proven.</div>
         <div class="anno"><b>New in v2:</b> a mic on the signage field. Say it, it transcribes in real time, edit on the spot or let the desk clean it up. "Bar separator" becomes <b>|</b>.</div>
         <div class="stateLabel">Listening…</div>
         <div class="editField"><div class="ta">to trains bar separator 69th street transit center bar separator sharon hill<span style="color:var(--secondary)">▏</span></div></div>
@@ -560,6 +580,7 @@
       <span class="scrnname">v2-photo</span>
       <div class="appbar"><div class="back" onclick="show('v2-pathway-form')">‹</div><div class="t">Capture<small>15th St / City Hall</small></div></div>
       <div class="scroll">
+        <div class="prio ship">Ship now</div>
         <div class="viewfinder">
           <div class="sign">TO TRAINS →<br>69th St TC · Sharon Hill</div>
           <div class="shutter" onclick="show('v2-pin')"></div>
@@ -569,7 +590,7 @@
         <div class="seg">
           <button>Pathway</button><button>Node</button><button class="on" onclick="show('v2-pin')">Pin on diagram</button>
         </div>
-        <div class="anno"><b>Changed from v1:</b> "zones" don't exist as data. Instead drop a <b>pin on the level diagram</b> — GPS is unreliable indoors, but the diagram already has a coordinate grid, so a pin lands precisely.</div>
+        <div class="anno"><b>Changed from v1:</b> "zones" don't exist as data. Instead drop a <b>pin on the level diagram</b>. GPS is unreliable indoors, but the diagram already has a coordinate grid, so a pin lands precisely.</div>
         <button class="btn primary next" onclick="show('v2-pin')">Place on diagram</button>
       </div>
     </section>
@@ -577,23 +598,20 @@
     <!-- ===== V2 PIN DROP on the diagram ===== -->
     <section class="screen" id="v2-pin">
       <span class="scrnname">v2-pin</span>
-      <div class="appbar"><div class="back" onclick="show('v2-photo')">‹</div><div class="t">Drop a pin<small>Mezzanine level</small></div></div>
+      <div class="appbar"><div class="back" onclick="show('v2-photo')">‹</div><div class="t">Drop a pin<small>Mezzanine · NRG Station</small></div></div>
       <div class="scroll">
-        <div class="note">GPS won't place you reliably underground. Tap where you are on the diagram; the pin uses the same grid as every node and pathway.</div>
-        <div class="diagram" style="height:230px">
-          <svg viewBox="0 0 360 230">
-            <rect x="20" y="20" width="320" height="170" rx="10" fill="#0E06AA" opacity=".06" stroke="#0E06AA" stroke-opacity=".25"/>
-            <line x1="20" y1="105" x2="340" y2="105" stroke="#0E06AA" stroke-opacity=".2"/>
-            <circle cx="90" cy="70" r="5" fill="#0E06AA" opacity=".5"/>
-            <circle cx="250" cy="70" r="5" fill="#0E06AA" opacity=".5"/>
-            <circle cx="170" cy="165" r="5" fill="#0E06AA" opacity=".5"/>
-            <text x="120" y="40" fill="#5b6480" font-size="11">North Mezzanine</text>
-            <circle cx="150" cy="120" r="11" fill="#E70750"/>
-            <text x="150" y="148" fill="#E70750" font-size="11" font-weight="700" text-anchor="middle">📍 You are here</text>
-          </svg>
-        </div>
+        <div class="prio ship">Ship now</div>
+        <div class="note">Real station graph (the app's NRG Station diagram). GPS won't place you reliably underground, so tap where you are; the pin uses the same coordinate grid as every node and pathway.</div>
+        <div class="diagram" style="height:236px"><svg viewBox="0 0 360 250"><line x1="38.0" y1="123.0" x2="133.0" y2="123.0" stroke="#0E06AA" stroke-opacity=".28" stroke-width="2"/><line x1="133.0" y1="123.0" x2="190.0" y2="123.0" stroke="#0E06AA" stroke-opacity=".28" stroke-width="2"/><line x1="190.0" y1="123.0" x2="266.0" y2="123.0" stroke="#0E06AA" stroke-opacity=".28" stroke-width="2"/><line x1="76.0" y1="34.0" x2="190.0" y2="123.0" stroke="#0E06AA" stroke-opacity=".28" stroke-width="2"/><line x1="76.0" y1="212.0" x2="190.0" y2="123.0" stroke="#0E06AA" stroke-opacity=".28" stroke-width="2"/><line x1="266.0" y1="123.0" x2="304.0" y2="123.0" stroke="#0E06AA" stroke-opacity=".28" stroke-width="2"/><line x1="76.0" y1="34.0" x2="228.0" y2="34.0" stroke="#0E06AA" stroke-opacity=".28" stroke-width="2"/><line x1="38.0" y1="123.0" x2="76.0" y2="34.0" stroke="#0E06AA" stroke-opacity=".28" stroke-width="2"/><line x1="38.0" y1="123.0" x2="76.0" y2="212.0" stroke="#0E06AA" stroke-opacity=".28" stroke-width="2"/><line x1="190.0" y1="123.0" x2="228.0" y2="34.0" stroke="#0E06AA" stroke-opacity=".28" stroke-width="2"/><rect x="32.0" y="117.0" width="12" height="12" rx="2" fill="#00A67F"/><text x="38.0" y="140.0" fill="#5b6480" font-size="9.5" text-anchor="middle">Street Entry</text><circle cx="133.0" cy="123.0" r="5.5" fill="#0E06AA" opacity=".75"/><text x="133.0" y="111.0" fill="#5b6480" font-size="9.5" text-anchor="middle">Ticket Hall</text><circle cx="190.0" cy="123.0" r="5.5" fill="#0E06AA" opacity=".75"/><text x="190.0" y="140.0" fill="#5b6480" font-size="9.5" text-anchor="middle">Mezz Center</text><circle cx="266.0" cy="123.0" r="5.5" fill="#0E06AA" opacity=".75"/><text x="266.0" y="111.0" fill="#5b6480" font-size="9.5" text-anchor="middle">Concourse</text><circle cx="304.0" cy="123.0" r="5.5" fill="#0E06AA" opacity=".75"/><text x="304.0" y="140.0" fill="#5b6480" font-size="9.5" text-anchor="middle">Elevator</text><circle cx="76.0" cy="34.0" r="5.5" fill="#0E06AA" opacity=".75"/><text x="76.0" y="22.0" fill="#5b6480" font-size="9.5" text-anchor="middle">Mezz North</text><circle cx="76.0" cy="212.0" r="5.5" fill="#0E06AA" opacity=".75"/><text x="76.0" y="229.0" fill="#5b6480" font-size="9.5" text-anchor="middle">Mezz South</text><circle cx="228.0" cy="34.0" r="5.5" fill="#0E06AA" opacity=".75"/><text x="228.0" y="22.0" fill="#5b6480" font-size="9.5" text-anchor="middle">Stair Landing</text><circle cx="159.6" cy="102.2" r="10" fill="#E70750"/><circle cx="159.6" cy="102.2" r="3.5" fill="#fff"/><text x="159.6" y="87.2" fill="#E70750" font-size="10.5" font-weight="700" text-anchor="middle">📍 You are here</text></svg></div>
+        <div class="hint" style="margin:2px 2px 6px">Pin dropped on the corridor between Ticket Hall and Mezz Center, a spot that is not itself a node or pathway.</div>
+
         <div class="sect">On this pin</div>
-        <div class="seg"><button class="on">📷 Photo</button><button onclick="show('v2-note')">🗒 Note</button></div>
+        <div class="seg"><button class="on">📷 Photo</button><button class="on">🗒 Note</button></div>
+        <div class="grid3" style="grid-template-columns:1fr 1fr">
+          <div class="thumb">sign photo:<br>To Platform ↑</div>
+          <div class="thumb">＋ add photo</div>
+        </div>
+        <div class="cmt" style="border-left-color:var(--accent);margin-top:10px">Wayfinding sign here points to Platform but the stair is actually behind the column to the left. Flag for fix.<span class="cmt-meta">Christopher · 🎤 dictated · just now</span></div>
         <div class="hint" style="margin:2px">A pin can hold a photo, a note, or both. An empty pin disappears.</div>
         <div class="anno"><b>Replaces the v1 "zone" concept entirely.</b> A pin is simpler, exists today on the diagram grid, and hands the desk an exact location to correlate.</div>
         <button class="btn primary next" onclick="show('v2-pathway-form')">Save pin</button>
@@ -605,8 +623,9 @@
       <span class="scrnname">v2-note</span>
       <div class="appbar"><div class="back" onclick="show('v2-pin')">‹</div><div class="t">Add a note<small>Fare gate (unpaid → paid)</small></div></div>
       <div class="scroll">
+        <div class="prio ship">Ship now</div>
         <div class="anno"><b>Structured as a comment, not a free-text blob:</b> timestamp + author, like a Miro comment, on a node or pathway (not the bare floor plan). Avoids the "notes nobody reads" problem.</div>
-        <div class="cmt" style="border-left-color:var(--accent)">This pathway is not where we thought — actual gate is ~3m east. Flag to fix at desk.<span class="cmt-meta">Christopher · just now</span></div>
+        <div class="cmt" style="border-left-color:var(--accent)">This pathway is not where we thought. Actual gate is ~3m east, flag to fix at desk.<span class="cmt-meta">Christopher · just now</span></div>
         <div class="stateLabel">New comment</div>
         <div class="editField"><div class="ta">Type, or 🎤 dictate…<span style="color:var(--secondary)">▏</span></div></div>
         <div class="seg"><button class="on">🎤 Voice</button><button>📷 Attach photo</button></div>
@@ -621,6 +640,7 @@
       <div class="appbar"><div class="back" onclick="show('v2-pathway-form')">‹</div>
         <div class="t">Traversal time<small>Elevator EL1 · door-open to door-open</small></div></div>
       <div class="scroll">
+        <div class="prio ship">Ship now · unchanged since Jun 12</div>
         <div class="anno"><b>Unchanged from Jun 12 (a decided quick win):</b> time it in-app, record runs, drop bad ones, use the average.</div>
         <div class="timer">0:00</div>
         <button class="btn primary">▶ Start</button>
@@ -635,9 +655,10 @@
     <!-- ===== V2 GUIDED JOURNEYS — DEFERRED ===== -->
     <section class="screen" id="v2-journeys">
       <span class="scrnname">v2-journeys</span>
-      <div class="appbar"><div class="t">Guided journeys</div><div class="chip" style="background:#fff3cd;color:#6b5800">Task order 2</div></div>
+      <div class="appbar"><div class="t">Guided journeys</div><div class="chip" style="background:#eceef6;color:#5b6480">Deferred</div></div>
       <div class="scroll">
-        <div class="anno" style="background:#fffbe6;border:1px dashed #e0c200;color:#6b5800"><b>Deferred to task order 2.</b> It's the bigger build — a whole new user flow that needs several test rounds, and there isn't room in the ~2 weeks left. It's also the feature SEPTA most wants, so it anchors the next task's scope.</div>
+        <div class="prio defer">Defer · later task order</div>
+        <div class="anno" style="background:#fffbe6;border:1px dashed #e0c200;color:#6b5800"><b>Deferred to a later task order.</b> It's the bigger build: a whole new user flow that needs several test rounds, and there isn't room in the ~2 weeks left. It's also the feature SEPTA most wants, so it's a strong candidate to anchor future scope.</div>
         <div class="sect">What it still is</div>
         <div class="note">Pick a start and a key junction; get one linear, ordered list of segments with the tasks along the way, mark done as you go, then spot-check the rest. Likely planned desktop-first and served to the app.</div>
         <div class="sect">Two refinements from Jun 15</div>
@@ -817,8 +838,8 @@
      what:'The in-app traversal stopwatch, unchanged from the Jun 12 decisions. A decided quick win that carries straight into v2.',
      why:'Times a traversal in-app instead of pulling out a separate stopwatch.',
      from:`<div class="ip-prov">Carried from Jun 12.</div>`},
-   'v2-journeys':{scr:'Version 2 · Jun 15',title:'Guided journeys — deferred to task order 2',
-     what:'The guided-journey routing view, parked for now. It is the bigger build and the feature SEPTA most wants, so it anchors the next task.',
+   'v2-journeys':{scr:'Version 2 · Jun 15',title:'Guided journeys (deferred)',
+     what:'The guided-journey routing view, parked for now. It is the bigger build and the feature SEPTA most wants, so it is a strong candidate to anchor a future task order.',
      why:'A whole new user flow that needs several test rounds; not enough time in the ~2 weeks left. Two refinements landed: journeys break at decision nodes (not entrance-to-platform), and no OTP is needed.',
      from:`<div class="ip-prov">Jun 15 sync.</div>
        <div class="ip-quote">the journey-based thing is more complex... in two weeks there's not enough time to do that.<span class="ip-attr">Kristin Taylor, Jun 15</span></div>
