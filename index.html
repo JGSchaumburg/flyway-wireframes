@@ -193,11 +193,23 @@
   .navlabel.context{background:#eceef6;color:#5b6480;}
   .prio.context{background:#eceef6;color:#5b6480;}
   .prio.maybe{background:#fff3cd;color:#6b5800;border:1px dashed #c9a400;}
+  /* interactive pin-placement map */
+  .pinmap{position:relative;width:100%;aspect-ratio:360/250;background:#e9edf4;border-radius:12px;overflow:hidden;touch-action:none;cursor:grab;user-select:none;}
+  .pinmap:active{cursor:grabbing;}
+  .pinmap svg{width:100%;height:100%;display:block;}
+  .reticle{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);pointer-events:none;display:grid;place-items:center;}
+  .reticle .ring{width:30px;height:30px;border:2.5px solid #E70750;border-radius:50%;box-shadow:0 0 0 2px rgba(255,255,255,.85);}
+  .reticle .dot{position:absolute;width:5px;height:5px;border-radius:50%;background:#E70750;box-shadow:0 0 0 1.5px #fff;}
+  .zoomctl{position:absolute;right:8px;bottom:8px;display:flex;flex-direction:column;gap:6px;}
+  .zoomctl button{width:30px;height:30px;border-radius:8px;border:1px solid var(--surfaceDim);background:#fff;font-size:16px;font-weight:700;color:var(--primary);cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.15);line-height:1;}
+  .nearchip{position:absolute;left:8px;top:8px;background:rgba(255,255,255,.92);border:1px solid var(--surfaceDim);border-radius:999px;padding:4px 10px;font-size:10.5px;font-weight:600;color:#2a2a30;max-width:70%;}
+  .maplegend{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin:5px 2px;font-size:10px;color:#5b6480;}
+  .maplegend i{display:inline-block;width:16px;height:4px;border-radius:2px;vertical-align:middle;margin-right:4px;}
 </style>
 </head>
 <body class="show-anno">
   <h1 class="title">Flyway · Companion App — concept wireframes</h1>
-  <p class="sub">Two dated cuts of the companion-app concept. <b>Version 1 (Jun 12 sync)</b> led with the guided-journey routing view and zone-based photo capture. <b>Version 2 (Jun 15 sync)</b> reflects the team's reprioritization, in buckets: <b>Ship now</b> (photo + note capture; pin placement is a maybe), <b>Discovery</b> (voice-to-text and AI signage cleanup, to prove out first), and <b>Defer</b> (guided journeys, a later task order). The pathway form is shown for <b>context</b> only: its layout was a Jun 12 decision, not part of this reprioritization. Switch with the version tabs; yellow notes carry the reasoning.</p>
+  <p class="sub">Two dated cuts of the companion-app concept. <b>Version 1 (Jun 12 sync)</b> led with the guided-journey routing view and zone-based photo capture. <b>Version 2 (Jun 15 sync)</b> reflects the team's reprioritization, in buckets: <b>Ship now</b> (photo + note capture; pin placement is a maybe), <b>Discovery</b> (voice-to-text and AI signage cleanup, to prove out first), and <b>Defer</b> (guided journeys, a later task order). Discovery also covers how signage capture sits in the existing pathway form (the form's layout itself was a Jun 12 decision). Switch with the version tabs; yellow notes carry the reasoning.</p>
   <div class="vertabs">
     <button id="vtab1" class="on" onclick="goVer(1)">Version 1 · Jun 12 sync</button>
     <button id="vtab2" onclick="goVer(2)">Version 2 · Jun 15 sync</button>
@@ -214,11 +226,10 @@
       <button onclick="show('v2-note')">🗒 Note / comment</button>
       <button onclick="show('v2-pin')">📍 Pin placement (maybe)</button></div>
     <div class="toolbar"><span class="navlabel discovery">Discovery</span>
-      <button onclick="show('v2-signage')">🎤 Voice + AI signage</button></div>
+      <button onclick="show('v2-signage')">🎤 Voice + AI signage</button>
+      <button onclick="show('v2-pathway-form')">📝 Signage capture in the form</button></div>
     <div class="toolbar"><span class="navlabel defer">Defer</span>
       <button onclick="show('v2-journeys')">⏸ Guided journeys</button></div>
-    <div class="toolbar"><span class="navlabel context">Context</span>
-      <button onclick="show('v2-pathway-form')">📝 Pathway form (where capture plugs in)</button></div>
   </div>
   <div class="toolbar">
     <button id="nextBtn" class="on" onclick="toggleNext()">Walkthrough guide: on</button>
@@ -535,9 +546,9 @@
       <div class="appbar"><div class="back" onclick="show('v2-photo')">‹</div>
         <div class="t">Fare gate<small>15th St / City Hall</small></div><div class="chip">Saved ✓</div></div>
       <div class="scroll">
-        <div class="prio context">Context · the app's existing pathway screen</div>
+        <div class="prio discovery">Discovery · signage capture in the form</div>
         <div class="title2" style="margin:2px 0 8px">Unpaid area → Paid area</div>
-        <div class="anno"><b>This is the app's existing per-pathway screen (its real name is the "pathway form").</b> Its signage-first, locked-measurements layout was a Jun 12 decision, not a Jun 15 one. It's shown here only as the place the new Jun 15 capture entries plug in: 🎤 voice (Discovery) and 📷 photo (Ship).</div>
+        <div class="anno"><b>This is the app's existing per-pathway screen (its real name is the "pathway form").</b> Its signage-first, locked-measurements layout was a Jun 12 decision. It sits under Discovery because the new, still-being-proven part is how signage capture (voice + AI) works in the form; the 📷 photo entry routes into the Ship work.</div>
 
         <div class="sect">Signage · unpaid → paid</div>
         <div class="field"><label>SIGNPOSTED AS</label>
@@ -605,10 +616,24 @@
       <div class="scroll">
         <div class="prio maybe">Ship now · maybe</div>
         <div class="anno"><b>Tentative for the first cut.</b> Photo + note capture is the committed Thursday build; pin placement is the agreed model but may land later, or the first cut may start with photo/comment attached to a node or pathway. Confirm with Chris.</div>
-        <div class="note">Real station graph (the app's NRG Station diagram). GPS won't place you reliably underground, so tap where you are; the pin uses the same coordinate grid as every node and pathway.</div>
-        <div class="diagram" style="height:236px;background:#e9edf4"><svg viewBox="0 0 360 250"><rect x="6" y="6" width="348" height="238" rx="10" fill="#e9edf4"/><rect x="22" y="22" width="316" height="206" rx="8" fill="none" stroke="#c9d0de" stroke-width="1.5"/><line x1="40.0" y1="124.0" x2="133.6" y2="124.0" stroke="#2E7D32" stroke-width="4" stroke-opacity=".9" stroke-linecap="round"/><line x1="133.6" y1="124.0" x2="189.7" y2="124.0" stroke="#2E7D32" stroke-width="4" stroke-opacity=".9" stroke-linecap="round"/><line x1="189.7" y1="124.0" x2="264.6" y2="124.0" stroke="#1565C0" stroke-width="4" stroke-opacity=".9" stroke-linecap="round"/><line x1="77.4" y1="40.0" x2="189.7" y2="124.0" stroke="#1565C0" stroke-width="4" stroke-opacity=".9" stroke-linecap="round"/><line x1="77.4" y1="208.0" x2="189.7" y2="124.0" stroke="#1565C0" stroke-width="4" stroke-opacity=".9" stroke-linecap="round"/><line x1="264.6" y1="124.0" x2="302.0" y2="124.0" stroke="#1565C0" stroke-width="4" stroke-opacity=".9" stroke-linecap="round"/><line x1="77.4" y1="40.0" x2="227.1" y2="40.0" stroke="#1565C0" stroke-width="4" stroke-opacity=".9" stroke-linecap="round"/><line x1="40.0" y1="124.0" x2="77.4" y2="40.0" stroke="#2E7D32" stroke-width="4" stroke-opacity=".9" stroke-linecap="round"/><line x1="40.0" y1="124.0" x2="77.4" y2="208.0" stroke="#1565C0" stroke-width="4" stroke-opacity=".9" stroke-linecap="round"/><line x1="189.7" y1="124.0" x2="227.1" y2="40.0" stroke="#1565C0" stroke-width="4" stroke-opacity=".9" stroke-linecap="round"/><circle cx="40.0" cy="124.0" r="6" fill="#1565C0" stroke="#fff" stroke-width="2"/><text x="40.0" y="142.0" fill="#2a2a30" font-size="9.5" text-anchor="middle" paint-order="stroke" stroke="#fff" stroke-width="2.5">Street Entry</text><circle cx="133.6" cy="124.0" r="6" fill="#1565C0" stroke="#fff" stroke-width="2"/><text x="133.6" y="112.0" fill="#2a2a30" font-size="9.5" text-anchor="middle" paint-order="stroke" stroke="#fff" stroke-width="2.5">Ticket Hall</text><circle cx="189.7" cy="124.0" r="6" fill="#1565C0" stroke="#fff" stroke-width="2"/><text x="189.7" y="142.0" fill="#2a2a30" font-size="9.5" text-anchor="middle" paint-order="stroke" stroke="#fff" stroke-width="2.5">Mezz Center</text><circle cx="264.6" cy="124.0" r="6" fill="#1565C0" stroke="#fff" stroke-width="2"/><text x="264.6" y="112.0" fill="#2a2a30" font-size="9.5" text-anchor="middle" paint-order="stroke" stroke="#fff" stroke-width="2.5">Concourse</text><circle cx="302.0" cy="124.0" r="6" fill="#1565C0" stroke="#fff" stroke-width="2"/><text x="302.0" y="142.0" fill="#2a2a30" font-size="9.5" text-anchor="middle" paint-order="stroke" stroke="#fff" stroke-width="2.5">Elevator</text><circle cx="77.4" cy="40.0" r="6" fill="#1565C0" stroke="#fff" stroke-width="2"/><text x="77.4" y="28.0" fill="#2a2a30" font-size="9.5" text-anchor="middle" paint-order="stroke" stroke="#fff" stroke-width="2.5">Mezz North</text><circle cx="77.4" cy="208.0" r="6" fill="#1565C0" stroke="#fff" stroke-width="2"/><text x="77.4" y="226.0" fill="#2a2a30" font-size="9.5" text-anchor="middle" paint-order="stroke" stroke="#fff" stroke-width="2.5">Mezz South</text><circle cx="227.1" cy="40.0" r="6" fill="#1565C0" stroke="#fff" stroke-width="2"/><text x="227.1" y="28.0" fill="#2a2a30" font-size="9.5" text-anchor="middle" paint-order="stroke" stroke="#fff" stroke-width="2.5">Stair Landing</text><circle cx="159.8" cy="104.4" r="10" fill="#E70750" stroke="#fff" stroke-width="2"/><circle cx="159.8" cy="104.4" r="3.2" fill="#fff"/><text x="159.8" y="89.4" fill="#E70750" font-size="10.5" font-weight="700" text-anchor="middle" paint-order="stroke" stroke="#fff" stroke-width="3">📍 You are here</text><line x1="22" y1="240" x2="40" y2="240" stroke="#1565C0" stroke-width="4" stroke-linecap="round"/><text x="44" y="243" fill="#5b6480" font-size="9">to do</text><line x1="80" y1="240" x2="98" y2="240" stroke="#2E7D32" stroke-width="4" stroke-linecap="round"/><text x="102" y="243" fill="#5b6480" font-size="9">validated</text></svg></div>
-        <div class="hint" style="margin:2px 2px 6px">Rendered from the app's real node + pathway data, styled to match the level map: blue nodes, pathways colored by field status (blue = to do, green = validated).</div>
-        <div class="hint" style="margin:2px 2px 6px">Pin dropped on the corridor between Ticket Hall and Mezz Center, a spot that is not itself a node or pathway.</div>
+        <div class="note">Pan and pinch/scroll to zoom to where you are, line up the crosshair, then drop the pin. GPS is unreliable underground, so you place it by eye on the diagram grid (same coordinates as every node and pathway).</div>
+        <div class="pinmap" id="pinmap">
+          <svg id="pinSvg" viewBox="0 0 360 250" preserveAspectRatio="xMidYMid meet">
+            <g id="pinGraph">
+              <rect x="6" y="6" width="348" height="238" rx="10" fill="#e9edf4"/>
+              <rect x="22" y="22" width="316" height="206" rx="8" fill="none" stroke="#c9d0de" stroke-width="1.5"/>
+              <line x1="40" y1="124" x2="133.6" y2="124" stroke="#2E7D32" stroke-width="4" stroke-opacity=".9" stroke-linecap="round"/><line x1="133.6" y1="124" x2="189.7" y2="124" stroke="#2E7D32" stroke-width="4" stroke-opacity=".9" stroke-linecap="round"/><line x1="189.7" y1="124" x2="264.6" y2="124" stroke="#1565C0" stroke-width="4" stroke-opacity=".9" stroke-linecap="round"/><line x1="77.4" y1="40" x2="189.7" y2="124" stroke="#1565C0" stroke-width="4" stroke-opacity=".9" stroke-linecap="round"/><line x1="77.4" y1="208" x2="189.7" y2="124" stroke="#1565C0" stroke-width="4" stroke-opacity=".9" stroke-linecap="round"/><line x1="264.6" y1="124" x2="302" y2="124" stroke="#1565C0" stroke-width="4" stroke-opacity=".9" stroke-linecap="round"/><line x1="77.4" y1="40" x2="227.1" y2="40" stroke="#1565C0" stroke-width="4" stroke-opacity=".9" stroke-linecap="round"/><line x1="40" y1="124" x2="77.4" y2="40" stroke="#2E7D32" stroke-width="4" stroke-opacity=".9" stroke-linecap="round"/><line x1="40" y1="124" x2="77.4" y2="208" stroke="#1565C0" stroke-width="4" stroke-opacity=".9" stroke-linecap="round"/><line x1="189.7" y1="124" x2="227.1" y2="40" stroke="#1565C0" stroke-width="4" stroke-opacity=".9" stroke-linecap="round"/>
+              <circle cx="40" cy="124" r="6" fill="#1565C0" stroke="#fff" stroke-width="2"/><text x="40" y="142" fill="#2a2a30" font-size="9.5" text-anchor="middle" paint-order="stroke" stroke="#fff" stroke-width="2.5">Street Entry</text><circle cx="133.6" cy="124" r="6" fill="#1565C0" stroke="#fff" stroke-width="2"/><text x="133.6" y="112" fill="#2a2a30" font-size="9.5" text-anchor="middle" paint-order="stroke" stroke="#fff" stroke-width="2.5">Ticket Hall</text><circle cx="189.7" cy="124" r="6" fill="#1565C0" stroke="#fff" stroke-width="2"/><text x="189.7" y="142" fill="#2a2a30" font-size="9.5" text-anchor="middle" paint-order="stroke" stroke="#fff" stroke-width="2.5">Mezz Center</text><circle cx="264.6" cy="124" r="6" fill="#1565C0" stroke="#fff" stroke-width="2"/><text x="264.6" y="112" fill="#2a2a30" font-size="9.5" text-anchor="middle" paint-order="stroke" stroke="#fff" stroke-width="2.5">Concourse</text><circle cx="302" cy="124" r="6" fill="#1565C0" stroke="#fff" stroke-width="2"/><text x="302" y="142" fill="#2a2a30" font-size="9.5" text-anchor="middle" paint-order="stroke" stroke="#fff" stroke-width="2.5">Elevator</text><circle cx="77.4" cy="40" r="6" fill="#1565C0" stroke="#fff" stroke-width="2"/><text x="77.4" y="28" fill="#2a2a30" font-size="9.5" text-anchor="middle" paint-order="stroke" stroke="#fff" stroke-width="2.5">Mezz North</text><circle cx="77.4" cy="208" r="6" fill="#1565C0" stroke="#fff" stroke-width="2"/><text x="77.4" y="226" fill="#2a2a30" font-size="9.5" text-anchor="middle" paint-order="stroke" stroke="#fff" stroke-width="2.5">Mezz South</text><circle cx="227.1" cy="40" r="6" fill="#1565C0" stroke="#fff" stroke-width="2"/><text x="227.1" y="28" fill="#2a2a30" font-size="9.5" text-anchor="middle" paint-order="stroke" stroke="#fff" stroke-width="2.5">Stair Landing</text>
+              <g id="droppedPin"></g>
+            </g>
+          </svg>
+          <div class="reticle"><div class="ring"></div><div class="dot"></div></div>
+          <div class="nearchip" id="nearchip">Drag the map under the crosshair</div>
+          <div class="zoomctl"><button id="zin" type="button">+</button><button id="zout" type="button">−</button><button id="zreset" type="button" title="recenter">⌖</button></div>
+        </div>
+        <div class="maplegend"><span><i style="background:#1565C0"></i>to do</span><span><i style="background:#2E7D32"></i>validated</span><span>drag = pan · scroll / pinch = zoom · ⌖ recenter</span></div>
+        <button class="btn primary" id="dropBtn" type="button">📍 Drop pin here</button>
+        <div class="hint" id="dropMsg" style="margin:4px 2px 8px">When the crosshair is near a node or pathway it snaps, so the desk can correlate it precisely. Otherwise it drops a free point on the grid.</div>
 
         <div class="sect">On this pin</div>
         <div class="seg"><button class="on">📷 Photo</button><button class="on">🗒 Note</button></div>
@@ -791,10 +816,10 @@
      from:`<div class="ip-prov">Jun 12 sync; Ryan, Jun 12 Slack thread.</div>
        <div class="ip-quote">things we are doing on the companion app currently do not have a way to display in the desktop app, that needs to be changed.<span class="ip-attr">Christopher Yamas, Jun 12 sync</span></div>
        <div class="ip-quote">it would be a little messier on the pathways studio side, but could make collecting signage much easier.<span class="ip-attr">Ryan Mahoney, Jun 12</span></div>`},
-   'v2-pathway-form':{scr:'Context',title:'Pathway form (existing app screen)',
-     what:'The app\'s per-pathway data-entry screen. Shown only as the place the new capture entries plug in: voice (Discovery) and photo (Ship).',
-     why:'Its signage-first, locked-measurements layout was a Jun 12 decision, not part of the Jun 15 reprioritization. Already represented in Version 1.',
-     from:`<div class="ip-prov">Layout decided Jun 12; the capture entry points are the Jun 15 work.</div>`},
+   'v2-pathway-form':{scr:'Discovery',title:'Signage capture in the pathway form',
+     what:'The app\'s per-pathway screen, shown as the place signage capture happens: voice and AI assist (Discovery) plus a photo entry (Ship).',
+     why:'The form layout was decided Jun 12; what is still being proven out is how voice + AI signage capture works inside it, so it sits under Discovery.',
+     from:`<div class="ip-prov">Layout decided Jun 12; signage-capture method is the Jun 15 discovery work.</div>`},
    'v2-signage':{scr:'Version 2 · Jun 15',title:'Signage by voice + AI cleanup',
      what:'A mic on the signage field: dictate the sign, it transcribes in real time, edit on the spot. At the desk, image-to-text and an LLM suggest values and flag typos.',
      why:'Typing long signage on a phone is slow and typo-prone. Dictating and cleaning up afterward matches how people already work.',
@@ -850,10 +875,10 @@
    'signage-edit':['Locked view','Multi-line edit','Common elements'],
    'stopwatch':['Timer','Runs list','Average','Use value'],
    'desk':['Zone list','Photo cards','Correlate dropdown'],
-   'v2-pathway-form':['Signage field','Type / Voice / Photo','Measurements (locked)','Stopwatch'],
+   'v2-pathway-form':['Signage field','Voice / Photo / Type entry','Measurements (locked)'],
    'v2-signage':['Mic / dictate','Live transcript','Parsed value','AI typo flag'],
    'v2-photo':['Viewfinder','Attach to pathway/node/pin','Capture'],
-   'v2-pin':['Diagram','Dropped pin','Photo or note'],
+   'v2-pin':['Pan / zoom map','Crosshair reticle','Snap to node','Drop pin','Photo or note'],
    'v2-note':['Existing comment','New comment','Voice','Attach photo'],
    'v2-journeys':['Deferred banner','Decision-node framing','No-OTP note']
   };
@@ -945,6 +970,54 @@
   }
   window.addEventListener('hashchange', applyHash);
   applyHash();
+
+  // ===== Interactive pin placement: pan / zoom / snap / drop =====
+  (function(){
+    var map=document.getElementById('pinmap'); if(!map) return;
+    var g=document.getElementById('pinGraph'), dropped=document.getElementById('droppedPin'),
+        near=document.getElementById('nearchip'), msg=document.getElementById('dropMsg');
+    var VW=360, VH=250, CX=180, CY=125;              // viewBox + reticle center
+    var s=1, tx=0, ty=0, minS=1, maxS=6;
+    // snap targets: node positions in graph (un-zoomed) coords
+    var NODES=[['Street Entry',40,124],['Ticket Hall',133.6,124],['Mezz Center',189.7,124],
+      ['Concourse',264.6,124],['Elevator',302,124],['Mezz North',77.4,40],
+      ['Mezz South',77.4,208],['Stair Landing',227.1,40]];
+    var snapTo=null;
+    function centerGraph(){ return {x:(CX-tx)/s, y:(CY-ty)/s}; }
+    function updateNear(){
+      var c=centerGraph(), best=null, bd=1e9;
+      NODES.forEach(function(n){ var d=Math.hypot(n[1]-c.x,n[2]-c.y); if(d<bd){bd=d;best=n;} });
+      if(best && bd<13){ snapTo={x:best[1],y:best[2],n:best[0]}; near.textContent='Near '+best[0]+' · will snap'; }
+      else { snapTo=null; near.textContent='Free point on the grid'; }
+    }
+    function apply(){ g.setAttribute('transform','translate('+tx.toFixed(2)+' '+ty.toFixed(2)+') scale('+s.toFixed(3)+')'); updateNear(); }
+    function zoomTo(ns){ ns=Math.max(minS,Math.min(maxS,ns)); var k=ns/s; tx=CX-(CX-tx)*k; ty=CY-(CY-ty)*k; s=ns; apply(); }
+    function vbScale(){ var r=map.getBoundingClientRect(); return {x:VW/r.width, y:VH/r.height}; }
+    // wheel zoom
+    map.addEventListener('wheel',function(e){ e.preventDefault(); zoomTo(s*(e.deltaY<0?1.15:1/1.15)); },{passive:false});
+    // pointer pan + pinch
+    var pts={}, last=null, pinch=null;
+    map.addEventListener('pointerdown',function(e){ pts[e.pointerId]={x:e.clientX,y:e.clientY}; if(Object.keys(pts).length===1){last={x:e.clientX,y:e.clientY};} try{map.setPointerCapture(e.pointerId);}catch(_){ } });
+    map.addEventListener('pointermove',function(e){
+      if(!pts[e.pointerId]) return; pts[e.pointerId]={x:e.clientX,y:e.clientY};
+      var ids=Object.keys(pts);
+      if(ids.length>=2){ var a=pts[ids[0]],b=pts[ids[1]]; var dist=Math.hypot(a.x-b.x,a.y-b.y);
+        if(pinch){ zoomTo(pinch.s*(dist/pinch.dist)); } else { pinch={dist:dist,s:s}; } last=null; return; }
+      if(last){ var sc=vbScale(); tx+=(e.clientX-last.x)*sc.x; ty+=(e.clientY-last.y)*sc.y; last={x:e.clientX,y:e.clientY}; apply(); }
+    });
+    function endPtr(e){ delete pts[e.pointerId]; pinch=null; if(Object.keys(pts).length===0) last=null; }
+    map.addEventListener('pointerup',endPtr); map.addEventListener('pointercancel',endPtr);
+    var zi=document.getElementById('zin'),zo=document.getElementById('zout'),zr=document.getElementById('zreset');
+    if(zi)zi.onclick=function(){zoomTo(s*1.4);}; if(zo)zo.onclick=function(){zoomTo(s/1.4);};
+    if(zr)zr.onclick=function(){s=1;tx=0;ty=0;apply();};
+    var drop=document.getElementById('dropBtn');
+    if(drop)drop.onclick=function(){
+      var p=snapTo?{x:snapTo.x,y:snapTo.y}:centerGraph();
+      dropped.innerHTML='<circle cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="9" fill="#E70750" stroke="#fff" stroke-width="2"/><circle cx="'+p.x.toFixed(1)+'" cy="'+p.y.toFixed(1)+'" r="3" fill="#fff"/>';
+      msg.innerHTML = snapTo ? '<b>Pin snapped to '+snapTo.n+'.</b> Drag the map and drop again to move it.' : '<b>Pin placed (free point).</b> The desk correlates it to a pathway later. Drag and drop again to move it.';
+    };
+    apply();
+  })();
 </script>
 </body>
 </html>
