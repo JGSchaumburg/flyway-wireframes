@@ -188,11 +188,13 @@
   .navlabel.ship{background:#e6f7f1;color:#00795c;}
   .navlabel.discovery{background:#fff3cd;color:#6b5800;}
   .navlabel.defer{background:#eceef6;color:#5b6480;}
+  .navlabel.decided{background:#e7ebfb;color:#0E06AA;}
+  .prio.decided{background:#e7ebfb;color:#0E06AA;}
 </style>
 </head>
 <body class="show-anno">
   <h1 class="title">Flyway · Companion App — concept wireframes</h1>
-  <p class="sub">Two dated cuts of the companion-app concept. <b>Version 1 (Jun 12 sync)</b> led with the guided-journey routing view and zone-based photo capture. <b>Version 2 (Jun 15 sync)</b> reflects the team's reprioritization, split into three buckets: <b>Ship now</b> (photo + note capture, pin-on-diagram), <b>Discovery</b> (voice-to-text and AI signage cleanup, to prove out before building), and <b>Defer</b> (guided journeys, a later task order). Switch with the version tabs; yellow notes carry the reasoning.</p>
+  <p class="sub">Two dated cuts of the companion-app concept. <b>Version 1 (Jun 12 sync)</b> led with the guided-journey routing view and zone-based photo capture. <b>Version 2 (Jun 15 sync)</b> reflects the team's reprioritization, in buckets: <b>Ship now</b> (photo + note capture, pin-on-diagram), <b>Discovery</b> (voice-to-text and AI signage cleanup, to prove out before building), <b>Defer</b> (guided journeys, a later task order), and <b>Decided Jun 12</b> (form reorder and stopwatch, carried forward). Switch with the version tabs; yellow notes carry the reasoning.</p>
   <div class="vertabs">
     <button id="vtab1" class="on" onclick="goVer(1)">Version 1 · Jun 12 sync</button>
     <button id="vtab2" onclick="goVer(2)">Version 2 · Jun 15 sync</button>
@@ -207,13 +209,14 @@
     <div class="toolbar"><span class="navlabel ship">Ship now</span>
       <button onclick="show('v2-photo')">📷 Photo capture</button>
       <button onclick="show('v2-pin')">📍 Pin + note</button>
-      <button onclick="show('v2-note')">🗒 Note / comment</button>
-      <button onclick="show('v2-pathway-form')">📝 Pathway form</button>
-      <button onclick="show('v2-stopwatch')">⏱ Stopwatch</button></div>
+      <button onclick="show('v2-note')">🗒 Note / comment</button></div>
     <div class="toolbar"><span class="navlabel discovery">Discovery</span>
       <button onclick="show('v2-signage')">🎤 Voice + AI signage</button></div>
     <div class="toolbar"><span class="navlabel defer">Defer</span>
       <button onclick="show('v2-journeys')">⏸ Guided journeys</button></div>
+    <div class="toolbar"><span class="navlabel decided">Decided Jun 12</span>
+      <button onclick="show('v2-pathway-form')">📝 Pathway form</button>
+      <button onclick="show('v2-stopwatch')">⏱ Stopwatch</button></div>
   </div>
   <div class="toolbar">
     <button id="nextBtn" class="on" onclick="toggleNext()">Walkthrough guide: on</button>
@@ -530,9 +533,9 @@
       <div class="appbar"><div class="back" onclick="show('v2-journeys')">‹</div>
         <div class="t">Fare gate<small>15th St / City Hall</small></div><div class="chip">Saved ✓</div></div>
       <div class="scroll">
-        <div class="prio ship">Ship now</div>
+        <div class="prio decided">Decided · Jun 12</div>
         <div class="title2" style="margin:2px 0 8px">Unpaid area → Paid area</div>
-        <div class="anno"><b>Jun 15 reprioritization:</b> with ~2 weeks left, the build focus is fast <b>signage capture</b>. Photo + note capture ship now; voice-to-text and AI cleanup are discovery. Guided journeys are deferred to a later task order.</div>
+        <div class="anno"><b>The form itself (signage first, measurements locked at the bottom) was decided Jun 12</b>, separate from the Jun 15 reprioritization. What's new here is the entry row: the photo and voice buttons route into the Ship-now and Discovery work.</div>
 
         <div class="sect">Signage — unpaid → paid</div>
         <div class="field"><label>SIGNPOSTED AS</label>
@@ -602,7 +605,8 @@
       <div class="scroll">
         <div class="prio ship">Ship now</div>
         <div class="note">Real station graph (the app's NRG Station diagram). GPS won't place you reliably underground, so tap where you are; the pin uses the same coordinate grid as every node and pathway.</div>
-        <div class="diagram" style="height:236px"><svg viewBox="0 0 360 250"><line x1="38.0" y1="123.0" x2="133.0" y2="123.0" stroke="#0E06AA" stroke-opacity=".28" stroke-width="2"/><line x1="133.0" y1="123.0" x2="190.0" y2="123.0" stroke="#0E06AA" stroke-opacity=".28" stroke-width="2"/><line x1="190.0" y1="123.0" x2="266.0" y2="123.0" stroke="#0E06AA" stroke-opacity=".28" stroke-width="2"/><line x1="76.0" y1="34.0" x2="190.0" y2="123.0" stroke="#0E06AA" stroke-opacity=".28" stroke-width="2"/><line x1="76.0" y1="212.0" x2="190.0" y2="123.0" stroke="#0E06AA" stroke-opacity=".28" stroke-width="2"/><line x1="266.0" y1="123.0" x2="304.0" y2="123.0" stroke="#0E06AA" stroke-opacity=".28" stroke-width="2"/><line x1="76.0" y1="34.0" x2="228.0" y2="34.0" stroke="#0E06AA" stroke-opacity=".28" stroke-width="2"/><line x1="38.0" y1="123.0" x2="76.0" y2="34.0" stroke="#0E06AA" stroke-opacity=".28" stroke-width="2"/><line x1="38.0" y1="123.0" x2="76.0" y2="212.0" stroke="#0E06AA" stroke-opacity=".28" stroke-width="2"/><line x1="190.0" y1="123.0" x2="228.0" y2="34.0" stroke="#0E06AA" stroke-opacity=".28" stroke-width="2"/><rect x="32.0" y="117.0" width="12" height="12" rx="2" fill="#00A67F"/><text x="38.0" y="140.0" fill="#5b6480" font-size="9.5" text-anchor="middle">Street Entry</text><circle cx="133.0" cy="123.0" r="5.5" fill="#0E06AA" opacity=".75"/><text x="133.0" y="111.0" fill="#5b6480" font-size="9.5" text-anchor="middle">Ticket Hall</text><circle cx="190.0" cy="123.0" r="5.5" fill="#0E06AA" opacity=".75"/><text x="190.0" y="140.0" fill="#5b6480" font-size="9.5" text-anchor="middle">Mezz Center</text><circle cx="266.0" cy="123.0" r="5.5" fill="#0E06AA" opacity=".75"/><text x="266.0" y="111.0" fill="#5b6480" font-size="9.5" text-anchor="middle">Concourse</text><circle cx="304.0" cy="123.0" r="5.5" fill="#0E06AA" opacity=".75"/><text x="304.0" y="140.0" fill="#5b6480" font-size="9.5" text-anchor="middle">Elevator</text><circle cx="76.0" cy="34.0" r="5.5" fill="#0E06AA" opacity=".75"/><text x="76.0" y="22.0" fill="#5b6480" font-size="9.5" text-anchor="middle">Mezz North</text><circle cx="76.0" cy="212.0" r="5.5" fill="#0E06AA" opacity=".75"/><text x="76.0" y="229.0" fill="#5b6480" font-size="9.5" text-anchor="middle">Mezz South</text><circle cx="228.0" cy="34.0" r="5.5" fill="#0E06AA" opacity=".75"/><text x="228.0" y="22.0" fill="#5b6480" font-size="9.5" text-anchor="middle">Stair Landing</text><circle cx="159.6" cy="102.2" r="10" fill="#E70750"/><circle cx="159.6" cy="102.2" r="3.5" fill="#fff"/><text x="159.6" y="87.2" fill="#E70750" font-size="10.5" font-weight="700" text-anchor="middle">📍 You are here</text></svg></div>
+        <div class="diagram" style="height:236px;background:#e9edf4"><svg viewBox="0 0 360 250"><rect x="6" y="6" width="348" height="238" rx="10" fill="#e9edf4"/><rect x="22" y="22" width="316" height="206" rx="8" fill="none" stroke="#c9d0de" stroke-width="1.5"/><line x1="40.0" y1="124.0" x2="133.6" y2="124.0" stroke="#2E7D32" stroke-width="4" stroke-opacity=".9" stroke-linecap="round"/><line x1="133.6" y1="124.0" x2="189.7" y2="124.0" stroke="#2E7D32" stroke-width="4" stroke-opacity=".9" stroke-linecap="round"/><line x1="189.7" y1="124.0" x2="264.6" y2="124.0" stroke="#1565C0" stroke-width="4" stroke-opacity=".9" stroke-linecap="round"/><line x1="77.4" y1="40.0" x2="189.7" y2="124.0" stroke="#1565C0" stroke-width="4" stroke-opacity=".9" stroke-linecap="round"/><line x1="77.4" y1="208.0" x2="189.7" y2="124.0" stroke="#1565C0" stroke-width="4" stroke-opacity=".9" stroke-linecap="round"/><line x1="264.6" y1="124.0" x2="302.0" y2="124.0" stroke="#1565C0" stroke-width="4" stroke-opacity=".9" stroke-linecap="round"/><line x1="77.4" y1="40.0" x2="227.1" y2="40.0" stroke="#1565C0" stroke-width="4" stroke-opacity=".9" stroke-linecap="round"/><line x1="40.0" y1="124.0" x2="77.4" y2="40.0" stroke="#2E7D32" stroke-width="4" stroke-opacity=".9" stroke-linecap="round"/><line x1="40.0" y1="124.0" x2="77.4" y2="208.0" stroke="#1565C0" stroke-width="4" stroke-opacity=".9" stroke-linecap="round"/><line x1="189.7" y1="124.0" x2="227.1" y2="40.0" stroke="#1565C0" stroke-width="4" stroke-opacity=".9" stroke-linecap="round"/><circle cx="40.0" cy="124.0" r="6" fill="#1565C0" stroke="#fff" stroke-width="2"/><text x="40.0" y="142.0" fill="#2a2a30" font-size="9.5" text-anchor="middle" paint-order="stroke" stroke="#fff" stroke-width="2.5">Street Entry</text><circle cx="133.6" cy="124.0" r="6" fill="#1565C0" stroke="#fff" stroke-width="2"/><text x="133.6" y="112.0" fill="#2a2a30" font-size="9.5" text-anchor="middle" paint-order="stroke" stroke="#fff" stroke-width="2.5">Ticket Hall</text><circle cx="189.7" cy="124.0" r="6" fill="#1565C0" stroke="#fff" stroke-width="2"/><text x="189.7" y="142.0" fill="#2a2a30" font-size="9.5" text-anchor="middle" paint-order="stroke" stroke="#fff" stroke-width="2.5">Mezz Center</text><circle cx="264.6" cy="124.0" r="6" fill="#1565C0" stroke="#fff" stroke-width="2"/><text x="264.6" y="112.0" fill="#2a2a30" font-size="9.5" text-anchor="middle" paint-order="stroke" stroke="#fff" stroke-width="2.5">Concourse</text><circle cx="302.0" cy="124.0" r="6" fill="#1565C0" stroke="#fff" stroke-width="2"/><text x="302.0" y="142.0" fill="#2a2a30" font-size="9.5" text-anchor="middle" paint-order="stroke" stroke="#fff" stroke-width="2.5">Elevator</text><circle cx="77.4" cy="40.0" r="6" fill="#1565C0" stroke="#fff" stroke-width="2"/><text x="77.4" y="28.0" fill="#2a2a30" font-size="9.5" text-anchor="middle" paint-order="stroke" stroke="#fff" stroke-width="2.5">Mezz North</text><circle cx="77.4" cy="208.0" r="6" fill="#1565C0" stroke="#fff" stroke-width="2"/><text x="77.4" y="226.0" fill="#2a2a30" font-size="9.5" text-anchor="middle" paint-order="stroke" stroke="#fff" stroke-width="2.5">Mezz South</text><circle cx="227.1" cy="40.0" r="6" fill="#1565C0" stroke="#fff" stroke-width="2"/><text x="227.1" y="28.0" fill="#2a2a30" font-size="9.5" text-anchor="middle" paint-order="stroke" stroke="#fff" stroke-width="2.5">Stair Landing</text><circle cx="159.8" cy="104.4" r="10" fill="#E70750" stroke="#fff" stroke-width="2"/><circle cx="159.8" cy="104.4" r="3.2" fill="#fff"/><text x="159.8" y="89.4" fill="#E70750" font-size="10.5" font-weight="700" text-anchor="middle" paint-order="stroke" stroke="#fff" stroke-width="3">📍 You are here</text><line x1="22" y1="240" x2="40" y2="240" stroke="#1565C0" stroke-width="4" stroke-linecap="round"/><text x="44" y="243" fill="#5b6480" font-size="9">to do</text><line x1="80" y1="240" x2="98" y2="240" stroke="#2E7D32" stroke-width="4" stroke-linecap="round"/><text x="102" y="243" fill="#5b6480" font-size="9">validated</text></svg></div>
+        <div class="hint" style="margin:2px 2px 6px">Rendered from the app's real node + pathway data, styled to match the level map: blue nodes, pathways colored by field status (blue = to do, green = validated).</div>
         <div class="hint" style="margin:2px 2px 6px">Pin dropped on the corridor between Ticket Hall and Mezz Center, a spot that is not itself a node or pathway.</div>
 
         <div class="sect">On this pin</div>
@@ -614,6 +618,7 @@
         <div class="cmt" style="border-left-color:var(--accent);margin-top:10px">Wayfinding sign here points to Platform but the stair is actually behind the column to the left. Flag for fix.<span class="cmt-meta">Christopher · 🎤 dictated · just now</span></div>
         <div class="hint" style="margin:2px">A pin can hold a photo, a note, or both. An empty pin disappears.</div>
         <div class="anno"><b>Replaces the v1 "zone" concept entirely.</b> A pin is simpler, exists today on the diagram grid, and hands the desk an exact location to correlate.</div>
+        <div class="anno"><b>Confirm with Chris:</b> photo + note capture is the committed Thursday cut; whether pin placement lands in that first cut or starts with photo/comment on a node or pathway is worth a quick check.</div>
         <button class="btn primary next" onclick="show('v2-pathway-form')">Save pin</button>
       </div>
     </section>
@@ -640,7 +645,7 @@
       <div class="appbar"><div class="back" onclick="show('v2-pathway-form')">‹</div>
         <div class="t">Traversal time<small>Elevator EL1 · door-open to door-open</small></div></div>
       <div class="scroll">
-        <div class="prio ship">Ship now · unchanged since Jun 12</div>
+        <div class="prio decided">Decided · Jun 12</div>
         <div class="anno"><b>Unchanged from Jun 12 (a decided quick win):</b> time it in-app, record runs, drop bad ones, use the average.</div>
         <div class="timer">0:00</div>
         <button class="btn primary">▶ Start</button>
