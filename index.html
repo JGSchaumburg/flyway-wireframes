@@ -190,11 +190,14 @@
   .navlabel.defer{background:#eceef6;color:#5b6480;}
   .navlabel.decided{background:#e7ebfb;color:#0E06AA;}
   .prio.decided{background:#e7ebfb;color:#0E06AA;}
+  .navlabel.context{background:#eceef6;color:#5b6480;}
+  .prio.context{background:#eceef6;color:#5b6480;}
+  .prio.maybe{background:#fff3cd;color:#6b5800;border:1px dashed #c9a400;}
 </style>
 </head>
 <body class="show-anno">
   <h1 class="title">Flyway · Companion App — concept wireframes</h1>
-  <p class="sub">Two dated cuts of the companion-app concept. <b>Version 1 (Jun 12 sync)</b> led with the guided-journey routing view and zone-based photo capture. <b>Version 2 (Jun 15 sync)</b> reflects the team's reprioritization, in buckets: <b>Ship now</b> (photo + note capture, pin-on-diagram), <b>Discovery</b> (voice-to-text and AI signage cleanup, to prove out before building), <b>Defer</b> (guided journeys, a later task order), and <b>Decided Jun 12</b> (form reorder and stopwatch, carried forward). Switch with the version tabs; yellow notes carry the reasoning.</p>
+  <p class="sub">Two dated cuts of the companion-app concept. <b>Version 1 (Jun 12 sync)</b> led with the guided-journey routing view and zone-based photo capture. <b>Version 2 (Jun 15 sync)</b> reflects the team's reprioritization, in buckets: <b>Ship now</b> (photo + note capture; pin placement is a maybe), <b>Discovery</b> (voice-to-text and AI signage cleanup, to prove out first), and <b>Defer</b> (guided journeys, a later task order). The pathway form is shown for <b>context</b> only: its layout was a Jun 12 decision, not part of this reprioritization. Switch with the version tabs; yellow notes carry the reasoning.</p>
   <div class="vertabs">
     <button id="vtab1" class="on" onclick="goVer(1)">Version 1 · Jun 12 sync</button>
     <button id="vtab2" onclick="goVer(2)">Version 2 · Jun 15 sync</button>
@@ -208,15 +211,14 @@
   <div id="nav-v2" style="display:none">
     <div class="toolbar"><span class="navlabel ship">Ship now</span>
       <button onclick="show('v2-photo')">📷 Photo capture</button>
-      <button onclick="show('v2-pin')">📍 Pin + note</button>
-      <button onclick="show('v2-note')">🗒 Note / comment</button></div>
+      <button onclick="show('v2-note')">🗒 Note / comment</button>
+      <button onclick="show('v2-pin')">📍 Pin placement (maybe)</button></div>
     <div class="toolbar"><span class="navlabel discovery">Discovery</span>
       <button onclick="show('v2-signage')">🎤 Voice + AI signage</button></div>
     <div class="toolbar"><span class="navlabel defer">Defer</span>
       <button onclick="show('v2-journeys')">⏸ Guided journeys</button></div>
-    <div class="toolbar"><span class="navlabel decided">Decided Jun 12</span>
-      <button onclick="show('v2-pathway-form')">📝 Pathway form</button>
-      <button onclick="show('v2-stopwatch')">⏱ Stopwatch</button></div>
+    <div class="toolbar"><span class="navlabel context">Context</span>
+      <button onclick="show('v2-pathway-form')">📝 Pathway form (where capture plugs in)</button></div>
   </div>
   <div class="toolbar">
     <button id="nextBtn" class="on" onclick="toggleNext()">Walkthrough guide: on</button>
@@ -530,29 +532,27 @@
     <!-- ===== V2 PATHWAY FORM: capture-first (type / voice / photo) ===== -->
     <section class="screen" id="v2-pathway-form">
       <span class="scrnname">v2-pathway-form</span>
-      <div class="appbar"><div class="back" onclick="show('v2-journeys')">‹</div>
+      <div class="appbar"><div class="back" onclick="show('v2-photo')">‹</div>
         <div class="t">Fare gate<small>15th St / City Hall</small></div><div class="chip">Saved ✓</div></div>
       <div class="scroll">
-        <div class="prio decided">Decided · Jun 12</div>
+        <div class="prio context">Context · the app's existing pathway screen</div>
         <div class="title2" style="margin:2px 0 8px">Unpaid area → Paid area</div>
-        <div class="anno"><b>The form itself (signage first, measurements locked at the bottom) was decided Jun 12</b>, separate from the Jun 15 reprioritization. What's new here is the entry row: the photo and voice buttons route into the Ship-now and Discovery work.</div>
+        <div class="anno"><b>This is the app's existing per-pathway screen (its real name is the "pathway form").</b> Its signage-first, locked-measurements layout was a Jun 12 decision, not a Jun 15 one. It's shown here only as the place the new Jun 15 capture entries plug in: 🎤 voice (Discovery) and 📷 photo (Ship).</div>
 
-        <div class="sect">Signage — unpaid → paid</div>
+        <div class="sect">Signage · unpaid → paid</div>
         <div class="field"><label>SIGNPOSTED AS</label>
           <div class="val">To Trains | 69th St TC | Sharon Hill</div>
-          <div class="hint">Approximate in-station; clean up at the desk. Three fast ways in:</div></div>
+          <div class="hint">Approximate in-station; clean up at the desk. Fast ways in:</div></div>
         <div class="seg">
-          <button onclick="show('v2-signage')">✎ Type</button>
           <button class="on" onclick="show('v2-signage')">🎤 Voice</button>
           <button onclick="show('v2-photo')">📷 Photo</button>
+          <button onclick="show('v2-signage')">✎ Type</button>
         </div>
-        <div class="anno"><b>AI assist (discovery):</b> image-to-text on the photo and an LLM pass suggest the value and flag typos at the desk. Christopher to donate field photos; Chris + Ryan compare models and pick an accessible API.</div>
 
         <div class="sect">Measurements</div>
         <div class="field"><label>MIN WIDTH (M)</label><div class="val">0.92</div></div>
-        <div class="field"><label>TRAVERSAL TIME (S)</label><div class="val" style="color:var(--muted)">— tap ⏱ to time it</div></div>
-        <button class="btn ghost" style="margin-bottom:6px" onclick="show('v2-stopwatch')">⏱ Start stopwatch</button>
-        <div class="anno">Signage-first ordering, locked measurements, the stopwatch, and the locked/edit signage field all carry over unchanged from Jun 12.</div>
+        <div class="field"><label>TRAVERSAL TIME (S)</label><div class="val">0:43</div></div>
+        <div class="anno">Measurements, the stopwatch, and the locked/edit signage field are unchanged from Jun 12 (see Version 1).</div>
       </div>
       <div class="fab-bar"><button class="btn primary" onclick="show('v2-photo')">✓ Mark done</button></div>
     </section>
@@ -603,7 +603,8 @@
       <span class="scrnname">v2-pin</span>
       <div class="appbar"><div class="back" onclick="show('v2-photo')">‹</div><div class="t">Drop a pin<small>Mezzanine · NRG Station</small></div></div>
       <div class="scroll">
-        <div class="prio ship">Ship now</div>
+        <div class="prio maybe">Ship now · maybe</div>
+        <div class="anno"><b>Tentative for the first cut.</b> Photo + note capture is the committed Thursday build; pin placement is the agreed model but may land later, or the first cut may start with photo/comment attached to a node or pathway. Confirm with Chris.</div>
         <div class="note">Real station graph (the app's NRG Station diagram). GPS won't place you reliably underground, so tap where you are; the pin uses the same coordinate grid as every node and pathway.</div>
         <div class="diagram" style="height:236px;background:#e9edf4"><svg viewBox="0 0 360 250"><rect x="6" y="6" width="348" height="238" rx="10" fill="#e9edf4"/><rect x="22" y="22" width="316" height="206" rx="8" fill="none" stroke="#c9d0de" stroke-width="1.5"/><line x1="40.0" y1="124.0" x2="133.6" y2="124.0" stroke="#2E7D32" stroke-width="4" stroke-opacity=".9" stroke-linecap="round"/><line x1="133.6" y1="124.0" x2="189.7" y2="124.0" stroke="#2E7D32" stroke-width="4" stroke-opacity=".9" stroke-linecap="round"/><line x1="189.7" y1="124.0" x2="264.6" y2="124.0" stroke="#1565C0" stroke-width="4" stroke-opacity=".9" stroke-linecap="round"/><line x1="77.4" y1="40.0" x2="189.7" y2="124.0" stroke="#1565C0" stroke-width="4" stroke-opacity=".9" stroke-linecap="round"/><line x1="77.4" y1="208.0" x2="189.7" y2="124.0" stroke="#1565C0" stroke-width="4" stroke-opacity=".9" stroke-linecap="round"/><line x1="264.6" y1="124.0" x2="302.0" y2="124.0" stroke="#1565C0" stroke-width="4" stroke-opacity=".9" stroke-linecap="round"/><line x1="77.4" y1="40.0" x2="227.1" y2="40.0" stroke="#1565C0" stroke-width="4" stroke-opacity=".9" stroke-linecap="round"/><line x1="40.0" y1="124.0" x2="77.4" y2="40.0" stroke="#2E7D32" stroke-width="4" stroke-opacity=".9" stroke-linecap="round"/><line x1="40.0" y1="124.0" x2="77.4" y2="208.0" stroke="#1565C0" stroke-width="4" stroke-opacity=".9" stroke-linecap="round"/><line x1="189.7" y1="124.0" x2="227.1" y2="40.0" stroke="#1565C0" stroke-width="4" stroke-opacity=".9" stroke-linecap="round"/><circle cx="40.0" cy="124.0" r="6" fill="#1565C0" stroke="#fff" stroke-width="2"/><text x="40.0" y="142.0" fill="#2a2a30" font-size="9.5" text-anchor="middle" paint-order="stroke" stroke="#fff" stroke-width="2.5">Street Entry</text><circle cx="133.6" cy="124.0" r="6" fill="#1565C0" stroke="#fff" stroke-width="2"/><text x="133.6" y="112.0" fill="#2a2a30" font-size="9.5" text-anchor="middle" paint-order="stroke" stroke="#fff" stroke-width="2.5">Ticket Hall</text><circle cx="189.7" cy="124.0" r="6" fill="#1565C0" stroke="#fff" stroke-width="2"/><text x="189.7" y="142.0" fill="#2a2a30" font-size="9.5" text-anchor="middle" paint-order="stroke" stroke="#fff" stroke-width="2.5">Mezz Center</text><circle cx="264.6" cy="124.0" r="6" fill="#1565C0" stroke="#fff" stroke-width="2"/><text x="264.6" y="112.0" fill="#2a2a30" font-size="9.5" text-anchor="middle" paint-order="stroke" stroke="#fff" stroke-width="2.5">Concourse</text><circle cx="302.0" cy="124.0" r="6" fill="#1565C0" stroke="#fff" stroke-width="2"/><text x="302.0" y="142.0" fill="#2a2a30" font-size="9.5" text-anchor="middle" paint-order="stroke" stroke="#fff" stroke-width="2.5">Elevator</text><circle cx="77.4" cy="40.0" r="6" fill="#1565C0" stroke="#fff" stroke-width="2"/><text x="77.4" y="28.0" fill="#2a2a30" font-size="9.5" text-anchor="middle" paint-order="stroke" stroke="#fff" stroke-width="2.5">Mezz North</text><circle cx="77.4" cy="208.0" r="6" fill="#1565C0" stroke="#fff" stroke-width="2"/><text x="77.4" y="226.0" fill="#2a2a30" font-size="9.5" text-anchor="middle" paint-order="stroke" stroke="#fff" stroke-width="2.5">Mezz South</text><circle cx="227.1" cy="40.0" r="6" fill="#1565C0" stroke="#fff" stroke-width="2"/><text x="227.1" y="28.0" fill="#2a2a30" font-size="9.5" text-anchor="middle" paint-order="stroke" stroke="#fff" stroke-width="2.5">Stair Landing</text><circle cx="159.8" cy="104.4" r="10" fill="#E70750" stroke="#fff" stroke-width="2"/><circle cx="159.8" cy="104.4" r="3.2" fill="#fff"/><text x="159.8" y="89.4" fill="#E70750" font-size="10.5" font-weight="700" text-anchor="middle" paint-order="stroke" stroke="#fff" stroke-width="3">📍 You are here</text><line x1="22" y1="240" x2="40" y2="240" stroke="#1565C0" stroke-width="4" stroke-linecap="round"/><text x="44" y="243" fill="#5b6480" font-size="9">to do</text><line x1="80" y1="240" x2="98" y2="240" stroke="#2E7D32" stroke-width="4" stroke-linecap="round"/><text x="102" y="243" fill="#5b6480" font-size="9">validated</text></svg></div>
         <div class="hint" style="margin:2px 2px 6px">Rendered from the app's real node + pathway data, styled to match the level map: blue nodes, pathways colored by field status (blue = to do, green = validated).</div>
@@ -618,8 +619,7 @@
         <div class="cmt" style="border-left-color:var(--accent);margin-top:10px">Wayfinding sign here points to Platform but the stair is actually behind the column to the left. Flag for fix.<span class="cmt-meta">Christopher · 🎤 dictated · just now</span></div>
         <div class="hint" style="margin:2px">A pin can hold a photo, a note, or both. An empty pin disappears.</div>
         <div class="anno"><b>Replaces the v1 "zone" concept entirely.</b> A pin is simpler, exists today on the diagram grid, and hands the desk an exact location to correlate.</div>
-        <div class="anno"><b>Confirm with Chris:</b> photo + note capture is the committed Thursday cut; whether pin placement lands in that first cut or starts with photo/comment on a node or pathway is worth a quick check.</div>
-        <button class="btn primary next" onclick="show('v2-pathway-form')">Save pin</button>
+        <button class="btn primary next" onclick="show('v2-photo')">Save pin</button>
       </div>
     </section>
 
@@ -636,24 +636,6 @@
         <div class="seg"><button class="on">🎤 Voice</button><button>📷 Attach photo</button></div>
         <div class="anno"><b>Voice here too:</b> Kristin asked for audio capture on notes, not just signage. Same dictate-then-clean-up model.</div>
         <button class="btn primary" onclick="show('v2-pin')">Post comment</button>
-      </div>
-    </section>
-
-    <!-- ===== V2 STOPWATCH (carried forward, unchanged) ===== -->
-    <section class="screen" id="v2-stopwatch">
-      <span class="scrnname">v2-stopwatch</span>
-      <div class="appbar"><div class="back" onclick="show('v2-pathway-form')">‹</div>
-        <div class="t">Traversal time<small>Elevator EL1 · door-open to door-open</small></div></div>
-      <div class="scroll">
-        <div class="prio decided">Decided · Jun 12</div>
-        <div class="anno"><b>Unchanged from Jun 12 (a decided quick win):</b> time it in-app, record runs, drop bad ones, use the average.</div>
-        <div class="timer">0:00</div>
-        <button class="btn primary">▶ Start</button>
-        <div class="stateLabel">Recorded runs</div>
-        <div class="runrow"><span>Run 1</span><span style="color:var(--muted)">0:42</span><span class="del">✕</span></div>
-        <div class="runrow"><span>Run 2</span><span style="color:var(--muted)">0:45</span><span class="del">✕</span></div>
-        <div class="avgbox">Average <b>0:43</b></div>
-        <button class="btn primary" onclick="show('v2-pathway-form')">Use 0:43</button>
       </div>
     </section>
 
@@ -809,11 +791,10 @@
      from:`<div class="ip-prov">Jun 12 sync; Ryan, Jun 12 Slack thread.</div>
        <div class="ip-quote">things we are doing on the companion app currently do not have a way to display in the desktop app, that needs to be changed.<span class="ip-attr">Christopher Yamas, Jun 12 sync</span></div>
        <div class="ip-quote">it would be a little messier on the pathways studio side, but could make collecting signage much easier.<span class="ip-attr">Ryan Mahoney, Jun 12</span></div>`},
-   'v2-pathway-form':{scr:'Version 2 · Jun 15',title:'Pathway form (v2): capture-first',
-     what:'The same signage-first form, now with three fast ways into the signage field: type, voice, or photo. AI cleanup happens later at the desk.',
-     why:'With ~2 weeks left, the team chose to pour the hours into making signage capture fast, since signage is the single biggest time sink.',
-     from:`<div class="ip-prov">Jun 15 sync.</div>
-       <div class="ip-quote">the image and overall signage approach here is definitely the biggest win because signage is the single most time consuming thing.<span class="ip-attr">Christopher Yamas, Jun 15</span></div>`},
+   'v2-pathway-form':{scr:'Context',title:'Pathway form (existing app screen)',
+     what:'The app\'s per-pathway data-entry screen. Shown only as the place the new capture entries plug in: voice (Discovery) and photo (Ship).',
+     why:'Its signage-first, locked-measurements layout was a Jun 12 decision, not part of the Jun 15 reprioritization. Already represented in Version 1.',
+     from:`<div class="ip-prov">Layout decided Jun 12; the capture entry points are the Jun 15 work.</div>`},
    'v2-signage':{scr:'Version 2 · Jun 15',title:'Signage by voice + AI cleanup',
      what:'A mic on the signage field: dictate the sign, it transcribes in real time, edit on the spot. At the desk, image-to-text and an LLM suggest values and flag typos.',
      why:'Typing long signage on a phone is slow and typo-prone. Dictating and cleaning up afterward matches how people already work.',
@@ -839,10 +820,6 @@
      from:`<div class="ip-prov">Jun 15 sync.</div>
        <div class="ip-quote">structure it as a comment that someone can leave, so it's got a time stamp, an author.<span class="ip-attr">Chris Alfano, Jun 15</span></div>
        <div class="ip-quote">audio too for notes would be a good add-on instead of the typing.<span class="ip-attr">Kristin Taylor, Jun 15</span></div>`},
-   'v2-stopwatch':{scr:'Version 2 · Jun 15',title:'Stopwatch (unchanged)',
-     what:'The in-app traversal stopwatch, unchanged from the Jun 12 decisions. A decided quick win that carries straight into v2.',
-     why:'Times a traversal in-app instead of pulling out a separate stopwatch.',
-     from:`<div class="ip-prov">Carried from Jun 12.</div>`},
    'v2-journeys':{scr:'Version 2 · Jun 15',title:'Guided journeys (deferred)',
      what:'The guided-journey routing view, parked for now. It is the bigger build and the feature SEPTA most wants, so it is a strong candidate to anchor a future task order.',
      why:'A whole new user flow that needs several test rounds; not enough time in the ~2 weeks left. Two refinements landed: journeys break at decision nodes (not entrance-to-platform), and no OTP is needed.',
@@ -878,7 +855,6 @@
    'v2-photo':['Viewfinder','Attach to pathway/node/pin','Capture'],
    'v2-pin':['Diagram','Dropped pin','Photo or note'],
    'v2-note':['Existing comment','New comment','Voice','Attach photo'],
-   'v2-stopwatch':['Timer','Runs','Average'],
    'v2-journeys':['Deferred banner','Decision-node framing','No-OTP note']
   };
   function esc(s){return (s||'').replace(/[&<>"]/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m];});}
@@ -932,7 +908,7 @@
     document.getElementById('ip-from').innerHTML=d.from;
     fillElements(id); renderComments(id);
   }
-  var V2SCREENS={'v2-pathway-form':1,'v2-signage':1,'v2-photo':1,'v2-pin':1,'v2-note':1,'v2-stopwatch':1,'v2-journeys':1};
+  var V2SCREENS={'v2-pathway-form':1,'v2-signage':1,'v2-photo':1,'v2-pin':1,'v2-note':1,'v2-journeys':1};
   function setVer(v){
     var t1=document.getElementById('vtab1'),t2=document.getElementById('vtab2'),
         n1=document.getElementById('nav-v1'),n2=document.getElementById('nav-v2');
