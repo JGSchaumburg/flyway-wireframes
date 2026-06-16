@@ -732,6 +732,7 @@
       <h3 id="ip-title"></h3>
       <div class="ip-sect">What this is</div><p id="ip-what"></p>
       <div class="ip-sect">Why</div><p id="ip-why"></p>
+      <div class="ip-sect" id="ip-spec-h">Interaction</div><div id="ip-spec"></div>
       <div class="ip-sect">Where it came from</div><div id="ip-from"></div>
       <div class="ip-sect">Comments on this screen</div>
       <div id="ip-comments"></div>
@@ -836,6 +837,12 @@
    'v2-pin':{scr:'Version 2 · Jun 15',title:'Pin on the diagram (replaces zones)',
      what:'Drop a pin where you are on the level diagram and attach a photo and/or a note. The pin uses the same coordinate grid as nodes and pathways.',
      why:'"Zones" do not exist as data. GPS is unreliable indoors, but the diagram grid is exact, so a pin is simpler and lands precisely.',
+     spec:`<p style="margin:0 0 6px">The map above is live. Try it:</p>
+       <div class="ip-quote" style="font-style:normal"><b>Pan</b> drag the diagram. <b>Zoom</b> scroll, pinch, or the + / − buttons. <b>Recenter</b> the ⌖ button.</div>
+       <div class="ip-quote" style="font-style:normal"><b>Fixed crosshair.</b> The target stays at screen center and the map moves under it (the Maps / Uber "set location" pattern), so you zoom in for precision instead of fat-fingering a spot. This mirrors the app's MapLibre level-map gestures.</div>
+       <div class="ip-quote" style="font-style:normal"><b>Snap to nearest.</b> Within a node or pathway's hit radius the chip reads "will snap" and Drop locks to that exact coordinate, so the desk can correlate it. Otherwise it drops a free grid point.</div>
+       <div class="ip-quote" style="font-style:normal"><b>Drop / move.</b> "Drop pin here" places it; it then pans and zooms with the diagram. Drop again to move it.</div>
+       <p style="margin:6px 0 0;color:var(--muted);font-size:12px">Wireframe-level interaction: snap threshold, zoom limits, and rotation are illustrative, not production-tuned.</p>`,
      from:`<div class="ip-prov">Jun 15 sync.</div>
        <div class="ip-quote">zones don't exist, right? They're like an idea.<span class="ip-attr">Ryan Mahoney, Jun 15</span></div>
        <div class="ip-quote">we don't need to predefine zones if you have the ability to drop a pin and add a picture... on the diagrams, coordinates on the grid.<span class="ip-attr">Christopher Yamas, Jun 15</span></div>`},
@@ -931,6 +938,9 @@
     document.getElementById('ip-what').textContent=d.what;
     document.getElementById('ip-why').textContent=d.why;
     document.getElementById('ip-from').innerHTML=d.from;
+    var sp=document.getElementById('ip-spec'), sph=document.getElementById('ip-spec-h');
+    if(d.spec){ sp.innerHTML=d.spec; sp.style.display=''; sph.style.display=''; }
+    else { sp.innerHTML=''; sp.style.display='none'; sph.style.display='none'; }
     fillElements(id); renderComments(id);
   }
   var V2SCREENS={'v2-pathway-form':1,'v2-signage':1,'v2-photo':1,'v2-pin':1,'v2-note':1,'v2-journeys':1};
