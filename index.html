@@ -172,16 +172,33 @@
   .cf-in{width:100%;border:1px solid var(--surfaceDim);border-radius:8px;padding:8px 10px;margin:5px 0;font-family:inherit;font-size:13px;background:#fff;}
   #ip-cform .btn{padding:11px;font-size:14px;margin-top:4px;}
   .cf-status{font-size:11.5px;margin-top:5px;min-height:14px;}
+  /* version tabs */
+  .vertabs{display:flex;gap:8px;justify-content:center;margin:4px 0 12px;flex-wrap:wrap;}
+  .vertabs button{padding:9px 18px;border-radius:999px;border:1px solid var(--surfaceDim);background:#fff;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;color:var(--muted);}
+  .vertabs button.on{background:var(--primary);color:#fff;border-color:var(--primary);box-shadow:0 2px 8px rgba(14,6,170,.25);}
 </style>
 </head>
 <body class="show-anno">
   <h1 class="title">Flyway · Companion App — concept wireframes</h1>
-  <p class="sub">Clickable concept for the two net-new flows from the usability sync: the <b>guided-journey</b> routing view and <b>zone-based photo capture</b>. Styled to match the current build (Inter, primary&nbsp;#0E06AA, Material&nbsp;3). Tap through; yellow notes flag open questions for Monday.</p>
+  <p class="sub">Two dated cuts of the companion-app concept. <b>Version 1 (Jun 12 sync)</b> led with the guided-journey routing view and zone-based photo capture. <b>Version 2 (Jun 15 sync)</b> reflects the team's reprioritization: with ~2 weeks left, ship fast signage capture (photo, voice-to-text, AI cleanup) and a pin-on-diagram for photos/notes, and defer guided journeys to task order 2. Switch with the version tabs; yellow notes carry the reasoning.</p>
+  <div class="vertabs">
+    <button id="vtab1" class="on" onclick="goVer(1)">Version 1 · Jun 12 sync</button>
+    <button id="vtab2" onclick="goVer(2)">Version 2 · Jun 15 sync</button>
+  </div>
+  <div class="toolbar" id="nav-v1">
+    <button onclick="show('task-list')">📱 The app today</button>
+    <button onclick="show('journeys')">▶ Guided journeys</button>
+    <button onclick="show('photo-capture')">📷 Photo capture (zones)</button>
+    <button onclick="showDesk()">🖥 Studio: desk view</button>
+  </div>
+  <div class="toolbar" id="nav-v2" style="display:none">
+    <button onclick="show('v2-pathway-form')">📝 Pathway form (v2)</button>
+    <button onclick="show('v2-signage')">🎤 Signage: voice + AI</button>
+    <button onclick="show('v2-photo')">📷 Photo + pin</button>
+    <button onclick="show('v2-note')">🗒 Note / comment</button>
+    <button onclick="show('v2-journeys')">⏸ Journeys (deferred)</button>
+  </div>
   <div class="toolbar">
-    <button onclick="show('task-list')">📱 Start: The app today</button>
-    <button onclick="show('journeys')">▶ Guided journeys (new)</button>
-    <button onclick="show('photo-capture')">📷 Photo capture (new)</button>
-    <button onclick="showDesk()">🖥 Studio: desk view (new)</button>
     <button id="nextBtn" class="on" onclick="toggleNext()">Walkthrough guide: on</button>
     <button id="annoBtn" class="on" onclick="toggleAnno()">Discussion notes: on</button>
   </div>
@@ -486,6 +503,152 @@
       </div>
     </section>
 
+    <!-- ============================================================ -->
+    <!-- ============ VERSION 2 SCREENS (Jun 15 sync) =============== -->
+    <!-- ============================================================ -->
+
+    <!-- ===== V2 PATHWAY FORM: capture-first (type / voice / photo) ===== -->
+    <section class="screen" id="v2-pathway-form">
+      <span class="scrnname">v2-pathway-form</span>
+      <div class="appbar"><div class="back" onclick="show('v2-journeys')">‹</div>
+        <div class="t">Fare gate<small>15th St / City Hall</small></div><div class="chip">Saved ✓</div></div>
+      <div class="scroll">
+        <div class="title2" style="margin:2px 0 8px">Unpaid area → Paid area</div>
+        <div class="anno"><b>Jun 15 reprioritization:</b> with ~2 weeks left, the build focus is fast <b>signage capture</b> — photo, voice-to-text, and AI cleanup. Guided journeys are deferred to task order 2.</div>
+
+        <div class="sect">Signage — unpaid → paid</div>
+        <div class="field"><label>SIGNPOSTED AS</label>
+          <div class="val">To Trains | 69th St TC | Sharon Hill</div>
+          <div class="hint">Approximate in-station; clean up at the desk. Three fast ways in:</div></div>
+        <div class="seg">
+          <button onclick="show('v2-signage')">✎ Type</button>
+          <button class="on" onclick="show('v2-signage')">🎤 Voice</button>
+          <button onclick="show('v2-photo')">📷 Photo</button>
+        </div>
+        <div class="anno"><b>AI assist (discovery):</b> image-to-text on the photo and an LLM pass suggest the value and flag typos at the desk. Christopher to donate field photos; Chris + Ryan compare models and pick an accessible API.</div>
+
+        <div class="sect">Measurements</div>
+        <div class="field"><label>MIN WIDTH (M)</label><div class="val">0.92</div></div>
+        <div class="field"><label>TRAVERSAL TIME (S)</label><div class="val" style="color:var(--muted)">— tap ⏱ to time it</div></div>
+        <button class="btn ghost" style="margin-bottom:6px" onclick="show('v2-stopwatch')">⏱ Start stopwatch</button>
+        <div class="anno">Signage-first ordering, locked measurements, the stopwatch, and the locked/edit signage field all carry over unchanged from Jun 12.</div>
+      </div>
+      <div class="fab-bar"><button class="btn primary" onclick="show('v2-photo')">✓ Mark done</button></div>
+    </section>
+
+    <!-- ===== V2 SIGNAGE: voice-to-text + AI cleanup ===== -->
+    <section class="screen" id="v2-signage">
+      <span class="scrnname">v2-signage</span>
+      <div class="appbar"><div class="back" onclick="show('v2-pathway-form')">‹</div>
+        <div class="t">Signage by voice<small>unpaid → paid</small></div></div>
+      <div class="scroll">
+        <div class="anno"><b>New in v2:</b> a mic on the signage field. Say it, it transcribes in real time, edit on the spot or let the desk clean it up. "Bar separator" becomes <b>|</b>.</div>
+        <div class="stateLabel">Listening…</div>
+        <div class="editField"><div class="ta">to trains bar separator 69th street transit center bar separator sharon hill<span style="color:var(--secondary)">▏</span></div></div>
+        <button class="btn primary">🎤 Stop &amp; transcribe</button>
+        <div class="stateLabel">Parsed value (editable)</div>
+        <div class="lockedField"><div class="txt">To Trains | 69th St TC | Sharon Hill</div><div class="pencil">✎</div></div>
+        <div class="anno"><b>Why voice, not photo-only:</b> typing long signage on a phone is the time sink, and the worry is typos, not keystrokes. Dictate-then-clean-up matches how people already work.</div>
+        <div class="stateLabel">At the desk (discovery)</div>
+        <div class="avgbox">AI flags: "Sharon Hil" looks like a typo of "Sharon Hill" <b>fix</b></div>
+        <button class="btn primary" onclick="show('v2-pathway-form')">Use this value</button>
+      </div>
+    </section>
+
+    <!-- ===== V2 PHOTO CAPTURE: signage-first; pin replaces zone ===== -->
+    <section class="screen" id="v2-photo">
+      <span class="scrnname">v2-photo</span>
+      <div class="appbar"><div class="back" onclick="show('v2-pathway-form')">‹</div><div class="t">Capture<small>15th St / City Hall</small></div></div>
+      <div class="scroll">
+        <div class="viewfinder">
+          <div class="sign">TO TRAINS →<br>69th St TC · Sharon Hill</div>
+          <div class="shutter" onclick="show('v2-pin')"></div>
+        </div>
+        <div class="anno"><b>Primary use = signage.</b> Photo-plus-note ("this pathway is not where we thought") is a separate, lower-priority use case.</div>
+        <div class="sect">Attach this capture to…</div>
+        <div class="seg">
+          <button>Pathway</button><button>Node</button><button class="on" onclick="show('v2-pin')">Pin on diagram</button>
+        </div>
+        <div class="anno"><b>Changed from v1:</b> "zones" don't exist as data. Instead drop a <b>pin on the level diagram</b> — GPS is unreliable indoors, but the diagram already has a coordinate grid, so a pin lands precisely.</div>
+        <button class="btn primary next" onclick="show('v2-pin')">Place on diagram</button>
+      </div>
+    </section>
+
+    <!-- ===== V2 PIN DROP on the diagram ===== -->
+    <section class="screen" id="v2-pin">
+      <span class="scrnname">v2-pin</span>
+      <div class="appbar"><div class="back" onclick="show('v2-photo')">‹</div><div class="t">Drop a pin<small>Mezzanine level</small></div></div>
+      <div class="scroll">
+        <div class="note">GPS won't place you reliably underground. Tap where you are on the diagram; the pin uses the same grid as every node and pathway.</div>
+        <div class="diagram" style="height:230px">
+          <svg viewBox="0 0 360 230">
+            <rect x="20" y="20" width="320" height="170" rx="10" fill="#0E06AA" opacity=".06" stroke="#0E06AA" stroke-opacity=".25"/>
+            <line x1="20" y1="105" x2="340" y2="105" stroke="#0E06AA" stroke-opacity=".2"/>
+            <circle cx="90" cy="70" r="5" fill="#0E06AA" opacity=".5"/>
+            <circle cx="250" cy="70" r="5" fill="#0E06AA" opacity=".5"/>
+            <circle cx="170" cy="165" r="5" fill="#0E06AA" opacity=".5"/>
+            <text x="120" y="40" fill="#5b6480" font-size="11">North Mezzanine</text>
+            <circle cx="150" cy="120" r="11" fill="#E70750"/>
+            <text x="150" y="148" fill="#E70750" font-size="11" font-weight="700" text-anchor="middle">📍 You are here</text>
+          </svg>
+        </div>
+        <div class="sect">On this pin</div>
+        <div class="seg"><button class="on">📷 Photo</button><button onclick="show('v2-note')">🗒 Note</button></div>
+        <div class="hint" style="margin:2px">A pin can hold a photo, a note, or both. An empty pin disappears.</div>
+        <div class="anno"><b>Replaces the v1 "zone" concept entirely.</b> A pin is simpler, exists today on the diagram grid, and hands the desk an exact location to correlate.</div>
+        <button class="btn primary next" onclick="show('v2-pathway-form')">Save pin</button>
+      </div>
+    </section>
+
+    <!-- ===== V2 NOTE / COMMENT ===== -->
+    <section class="screen" id="v2-note">
+      <span class="scrnname">v2-note</span>
+      <div class="appbar"><div class="back" onclick="show('v2-pin')">‹</div><div class="t">Add a note<small>Fare gate (unpaid → paid)</small></div></div>
+      <div class="scroll">
+        <div class="anno"><b>Structured as a comment, not a free-text blob:</b> timestamp + author, like a Miro comment, on a node or pathway (not the bare floor plan). Avoids the "notes nobody reads" problem.</div>
+        <div class="cmt" style="border-left-color:var(--accent)">This pathway is not where we thought — actual gate is ~3m east. Flag to fix at desk.<span class="cmt-meta">Christopher · just now</span></div>
+        <div class="stateLabel">New comment</div>
+        <div class="editField"><div class="ta">Type, or 🎤 dictate…<span style="color:var(--secondary)">▏</span></div></div>
+        <div class="seg"><button class="on">🎤 Voice</button><button>📷 Attach photo</button></div>
+        <div class="anno"><b>Voice here too:</b> Kristin asked for audio capture on notes, not just signage. Same dictate-then-clean-up model.</div>
+        <button class="btn primary" onclick="show('v2-pin')">Post comment</button>
+      </div>
+    </section>
+
+    <!-- ===== V2 STOPWATCH (carried forward, unchanged) ===== -->
+    <section class="screen" id="v2-stopwatch">
+      <span class="scrnname">v2-stopwatch</span>
+      <div class="appbar"><div class="back" onclick="show('v2-pathway-form')">‹</div>
+        <div class="t">Traversal time<small>Elevator EL1 · door-open to door-open</small></div></div>
+      <div class="scroll">
+        <div class="anno"><b>Unchanged from Jun 12 (a decided quick win):</b> time it in-app, record runs, drop bad ones, use the average.</div>
+        <div class="timer">0:00</div>
+        <button class="btn primary">▶ Start</button>
+        <div class="stateLabel">Recorded runs</div>
+        <div class="runrow"><span>Run 1</span><span style="color:var(--muted)">0:42</span><span class="del">✕</span></div>
+        <div class="runrow"><span>Run 2</span><span style="color:var(--muted)">0:45</span><span class="del">✕</span></div>
+        <div class="avgbox">Average <b>0:43</b></div>
+        <button class="btn primary" onclick="show('v2-pathway-form')">Use 0:43</button>
+      </div>
+    </section>
+
+    <!-- ===== V2 GUIDED JOURNEYS — DEFERRED ===== -->
+    <section class="screen" id="v2-journeys">
+      <span class="scrnname">v2-journeys</span>
+      <div class="appbar"><div class="t">Guided journeys</div><div class="chip" style="background:#fff3cd;color:#6b5800">Task order 2</div></div>
+      <div class="scroll">
+        <div class="anno" style="background:#fffbe6;border:1px dashed #e0c200;color:#6b5800"><b>Deferred to task order 2.</b> It's the bigger build — a whole new user flow that needs several test rounds, and there isn't room in the ~2 weeks left. It's also the feature SEPTA most wants, so it anchors the next task's scope.</div>
+        <div class="sect">What it still is</div>
+        <div class="note">Pick a start and a key junction; get one linear, ordered list of segments with the tasks along the way, mark done as you go, then spot-check the rest. Likely planned desktop-first and served to the app.</div>
+        <div class="sect">Two refinements from Jun 15</div>
+        <div class="field"><label>NOT END-TO-END</label><div class="val">entrance → decision node → platform</div>
+          <div class="hint">Journeys break at fare gates / decision points, not entrance-to-platform, so you don't re-capture the same wayfinding on every route. Acceptance = every decision point documented, not every pathway.</div></div>
+        <div class="field"><label>NO OTP</label><div class="val">shortest-path on the pathways graph</div>
+          <div class="hint">Once you have the graph, routing is straightforward; OTP adds confusing failure modes with no in-station upside.</div></div>
+        <div class="anno">The full v1 concept is still clickable under Version 1 → Guided journeys.</div>
+      </div>
+    </section>
+
   </div>
 
   <!-- ================= STUDIO DESK VIEW (desktop) ================= -->
@@ -619,7 +782,48 @@
      why:'It completes the rough-in-station, refine-at-desk loop. The studio currently has no way to display field photos or notes, so this is a new backend dependency.',
      from:`<div class="ip-prov">Jun 12 sync; Ryan, Jun 12 Slack thread.</div>
        <div class="ip-quote">things we are doing on the companion app currently do not have a way to display in the desktop app, that needs to be changed.<span class="ip-attr">Christopher Yamas, Jun 12 sync</span></div>
-       <div class="ip-quote">it would be a little messier on the pathways studio side, but could make collecting signage much easier.<span class="ip-attr">Ryan Mahoney, Jun 12</span></div>`}
+       <div class="ip-quote">it would be a little messier on the pathways studio side, but could make collecting signage much easier.<span class="ip-attr">Ryan Mahoney, Jun 12</span></div>`},
+   'v2-pathway-form':{scr:'Version 2 · Jun 15',title:'Pathway form (v2): capture-first',
+     what:'The same signage-first form, now with three fast ways into the signage field: type, voice, or photo. AI cleanup happens later at the desk.',
+     why:'With ~2 weeks left, the team chose to pour the hours into making signage capture fast, since signage is the single biggest time sink.',
+     from:`<div class="ip-prov">Jun 15 sync.</div>
+       <div class="ip-quote">the image and overall signage approach here is definitely the biggest win because signage is the single most time consuming thing.<span class="ip-attr">Christopher Yamas, Jun 15</span></div>`},
+   'v2-signage':{scr:'Version 2 · Jun 15',title:'Signage by voice + AI cleanup',
+     what:'A mic on the signage field: dictate the sign, it transcribes in real time, edit on the spot. At the desk, image-to-text and an LLM suggest values and flag typos.',
+     why:'Typing long signage on a phone is slow and typo-prone. Dictating and cleaning up afterward matches how people already work.',
+     from:`<div class="ip-prov">Jun 15 sync.</div>
+       <div class="ip-quote">a voice dictation that you can have in front of you in real time... say it, it shows up, edit it later or do data quality on it later.<span class="ip-attr">Christopher Yamas, Jun 15</span></div>
+       <div class="ip-quote">have we tried image to text at all... get the right pictures and let it deal with it in the cleanup process later.<span class="ip-attr">Ryan Mahoney, Jun 15</span></div>
+       <div class="ip-quote">have an LLM run through each batch and just suggest, hey, this one might be a typo.<span class="ip-attr">Chris Alfano, Jun 15</span></div>`},
+   'v2-photo':{scr:'Version 2 · Jun 15',title:'Photo capture (v2)',
+     what:'Capture a sign, then attach it to a pathway, a node, or a pin on the diagram. Signage is the primary use; photo-plus-note is a separate, lower-priority case.',
+     why:'Photos are the fast in-station capture; precise mapping happens at the desk.',
+     from:`<div class="ip-prov">Jun 15 sync.</div>
+       <div class="ip-quote">the primary use case of the photo is signage.<span class="ip-attr">Kristin Taylor, Jun 15</span></div>
+       <div class="ip-quote">a photo of a sign and a photo about a note are two different things.<span class="ip-attr">Ryan Mahoney, Jun 15</span></div>`},
+   'v2-pin':{scr:'Version 2 · Jun 15',title:'Pin on the diagram (replaces zones)',
+     what:'Drop a pin where you are on the level diagram and attach a photo and/or a note. The pin uses the same coordinate grid as nodes and pathways.',
+     why:'"Zones" do not exist as data. GPS is unreliable indoors, but the diagram grid is exact, so a pin is simpler and lands precisely.',
+     from:`<div class="ip-prov">Jun 15 sync.</div>
+       <div class="ip-quote">zones don't exist, right? They're like an idea.<span class="ip-attr">Ryan Mahoney, Jun 15</span></div>
+       <div class="ip-quote">we don't need to predefine zones if you have the ability to drop a pin and add a picture... on the diagrams, coordinates on the grid.<span class="ip-attr">Christopher Yamas, Jun 15</span></div>`},
+   'v2-note':{scr:'Version 2 · Jun 15',title:'Note / comment',
+     what:'A timestamped, authored comment on a node or pathway, like a Miro comment. Voice dictation works here too.',
+     why:'A structured comment beats a free-text notes blob, which fills with things people never read or transcribe.',
+     from:`<div class="ip-prov">Jun 15 sync.</div>
+       <div class="ip-quote">structure it as a comment that someone can leave, so it's got a time stamp, an author.<span class="ip-attr">Chris Alfano, Jun 15</span></div>
+       <div class="ip-quote">audio too for notes would be a good add-on instead of the typing.<span class="ip-attr">Kristin Taylor, Jun 15</span></div>`},
+   'v2-stopwatch':{scr:'Version 2 · Jun 15',title:'Stopwatch (unchanged)',
+     what:'The in-app traversal stopwatch, unchanged from the Jun 12 decisions. A decided quick win that carries straight into v2.',
+     why:'Times a traversal in-app instead of pulling out a separate stopwatch.',
+     from:`<div class="ip-prov">Carried from Jun 12.</div>`},
+   'v2-journeys':{scr:'Version 2 · Jun 15',title:'Guided journeys — deferred to task order 2',
+     what:'The guided-journey routing view, parked for now. It is the bigger build and the feature SEPTA most wants, so it anchors the next task.',
+     why:'A whole new user flow that needs several test rounds; not enough time in the ~2 weeks left. Two refinements landed: journeys break at decision nodes (not entrance-to-platform), and no OTP is needed.',
+     from:`<div class="ip-prov">Jun 15 sync.</div>
+       <div class="ip-quote">the journey-based thing is more complex... in two weeks there's not enough time to do that.<span class="ip-attr">Kristin Taylor, Jun 15</span></div>
+       <div class="ip-quote">it is more of a beast. We want to put it through more rounds... put it in the next task.<span class="ip-attr">Chris Alfano, Jun 15</span></div>
+       <div class="ip-quote">I don't think we need OTP involved in this at all.<span class="ip-attr">Ryan Mahoney, Jun 15</span></div>`}
   };
   var APPS_SCRIPT_URL='';
   var COLLECTOR_URL='https://webhook.site/b2fae54a-8213-4382-942f-6cab3b57862d'; // set to the deployed Apps Script /exec URL to turn on shared (all-reviewers) comments
@@ -642,7 +846,14 @@
    'photo-zone':['Zone gallery','Zones diagram','See at desk'],
    'signage-edit':['Locked view','Multi-line edit','Common elements'],
    'stopwatch':['Timer','Runs list','Average','Use value'],
-   'desk':['Zone list','Photo cards','Correlate dropdown']
+   'desk':['Zone list','Photo cards','Correlate dropdown'],
+   'v2-pathway-form':['Signage field','Type / Voice / Photo','Measurements (locked)','Stopwatch'],
+   'v2-signage':['Mic / dictate','Live transcript','Parsed value','AI typo flag'],
+   'v2-photo':['Viewfinder','Attach to pathway/node/pin','Capture'],
+   'v2-pin':['Diagram','Dropped pin','Photo or note'],
+   'v2-note':['Existing comment','New comment','Voice','Attach photo'],
+   'v2-stopwatch':['Timer','Runs','Average'],
+   'v2-journeys':['Deferred banner','Decision-node framing','No-OTP note']
   };
   function esc(s){return (s||'').replace(/[&<>"]/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m];});}
   function lc(){try{return JSON.parse(localStorage.getItem('flyway_comments')||'[]');}catch(e){return [];}}
@@ -695,14 +906,23 @@
     document.getElementById('ip-from').innerHTML=d.from;
     fillElements(id); renderComments(id);
   }
+  var V2SCREENS={'v2-pathway-form':1,'v2-signage':1,'v2-photo':1,'v2-pin':1,'v2-note':1,'v2-stopwatch':1,'v2-journeys':1};
+  function setVer(v){
+    var t1=document.getElementById('vtab1'),t2=document.getElementById('vtab2'),
+        n1=document.getElementById('nav-v1'),n2=document.getElementById('nav-v2');
+    if(t1)t1.classList.toggle('on',v===1); if(t2)t2.classList.toggle('on',v===2);
+    if(n1)n1.style.display=(v===1?'':'none'); if(n2)n2.style.display=(v===2?'':'none');
+  }
+  function goVer(v){ show(v===2?'v2-pathway-form':'journeys'); }
   function show(id){
     document.body.classList.remove('deskmode');
     document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
     var el=document.getElementById(id); if(el){el.classList.add('active'); el.querySelector('.scroll').scrollTop=0;}
+    setVer(V2SCREENS[id]?2:1);
     updateInfo(id);
     try{history.replaceState(null,'','#'+id);}catch(e){}
   }
-  function showDesk(){ document.body.classList.add('deskmode'); updateInfo('desk'); try{history.replaceState(null,'','#desk');}catch(e){} }
+  function showDesk(){ document.body.classList.add('deskmode'); setVer(1); updateInfo('desk'); try{history.replaceState(null,'','#desk');}catch(e){} }
   function showApp(){ document.body.classList.remove('deskmode'); show('photo-zone'); }
   function toggleNext(){
     document.body.classList.toggle('hide-next');
