@@ -209,7 +209,7 @@
 </head>
 <body class="show-anno">
   <h1 class="title">Flyway · Companion App — concept wireframes</h1>
-  <p class="sub">Two dated cuts of the companion-app concept. <b>Version 1 (Jun 12 sync)</b> led with the guided-journey routing view and zone-based photo capture. <b>Version 2 (Jun 15 sync)</b> reflects the team's reprioritization, in buckets: <b>Ship now</b> (photo + note capture; pin placement is a maybe), <b>Discovery</b> (voice-to-text and AI signage cleanup, to prove out first), and <b>Defer</b> (guided journeys, a later task order). Discovery also covers how signage capture sits in the existing pathway form (the form's layout itself was a Jun 12 decision). Switch with the version tabs; yellow notes carry the reasoning.</p>
+  <p class="sub">Two dated cuts of the companion-app concept. <b>Version 1 (Jun 12 sync)</b> led with the guided-journey routing view and zone-based photo capture. <b>Version 2 (Jun 15 sync)</b> reflects the team's reprioritization, in buckets: <b>Ship now</b> (photo + note capture; pin placement is a maybe), <b>Discovery</b> (voice-to-text and AI signage cleanup, to prove out first), and <b>Defer</b> (guided journeys, a later task order). The pathway form's signage field is the shared context for both photo (Ship) and voice (Discovery) capture, so it's bundled into those rather than standing alone. Switch with the version tabs; yellow notes carry the reasoning.</p>
   <div class="vertabs">
     <button id="vtab1" class="on" onclick="goVer(1)">Version 1 · Jun 12 sync</button>
     <button id="vtab2" onclick="goVer(2)">Version 2 · Jun 15 sync</button>
@@ -226,8 +226,7 @@
       <button onclick="show('v2-note')">🗒 Note / comment</button>
       <button onclick="show('v2-pin')">📍 Pin placement (maybe)</button></div>
     <div class="toolbar"><span class="navlabel discovery">Discovery</span>
-      <button onclick="show('v2-signage')">🎤 Voice + AI signage</button>
-      <button onclick="show('v2-pathway-form')">📝 Signage capture in the form</button></div>
+      <button onclick="show('v2-signage')">🎤 Voice + AI signage</button></div>
     <div class="toolbar"><span class="navlabel defer">Defer</span>
       <button onclick="show('v2-journeys')">⏸ Guided journeys</button></div>
   </div>
@@ -405,7 +404,7 @@
           <span><i style="background:#2E7D32"></i>Done</span>
           <span><i style="background:#1565C0"></i>To do</span>
         </div>
-        <div class="anno"><b>Diagram-first.</b> Most of the work is on non-street levels where the geo map is useless; the desktop-style diagram is the real "map." Progressive completion needs to read at zoomed-out scale (today green/blue look alike).</div>
+        <div class="anno"><b>Diagram-first.</b> Most work is on non-street levels where the geo map is useless, so the diagram is the real map. Done vs to-do needs to read when zoomed out.</div>
         <button class="btn outline" onclick="show('journey-overview')">Back to segment list</button>
       </div>
     </section>
@@ -417,7 +416,7 @@
         <div class="t">Fare gate<small>Segment 3 of 7</small></div><div class="chip">Saved ✓</div></div>
       <div class="scroll">
         <div class="title2" style="margin:2px 0 8px">Unpaid area → Paid area</div>
-        <div class="anno"><b>Decided:</b> signage at the top, measurements at the bottom — capture follows the physical sequence and measurement fields are harder to nudge by accident.</div>
+        <div class="anno"><b>Decided:</b> signage at the top, measurements locked at the bottom, so capture follows the physical sequence.</div>
 
         <div class="sect">Signage — unpaid → paid</div>
         <div class="field" style="cursor:pointer" onclick="show('signage-edit')"><label>SIGNPOSTED AS</label>
@@ -448,19 +447,19 @@
           <div class="sign">TO TRAINS →<br>69th St TC · Sharon Hill</div>
           <div class="shutter" onclick="show('photo-zone')"></div>
         </div>
-        <div class="anno"><b>Open Q (Ryan):</b> reframe from “attach a photo” to a capture philosophy — <b>rough capture in-station, precise mapping later at a desk.</b> Naive capture alone becomes a photo-management problem.</div>
+        <div class="anno"><b>Open Q (Ryan):</b> capture rough in-station, map precisely at the desk. Capture alone becomes a photo-management problem.</div>
 
         <div class="sect">Tag this capture to…</div>
         <div class="seg">
           <button class="on">Zone (fast)</button><button>Node</button><button>Pathway</button>
         </div>
-        <div class="anno"><b>Capture unit Q:</b> Station = easy, <b>Zone = probably easy</b>, Node/Edge = hard while standing in a station. Lead with the unit a person can reliably give in the moment.</div>
+        <div class="anno"><b>Capture unit Q:</b> Station easy, Zone probably easy, Node/Edge hard in the moment. Lead with what a person can reliably give.</div>
         <div class="field"><label>ZONE</label><div class="val">North Mezzanine ▾</div>
           <div class="hint">Human-readable areas of the station; correlate to exact pathways at the desk later.</div></div>
 
         <div class="sect">Capture mode</div>
         <div class="seg"><button class="on">Single photo</button><button>Walk-through video</button></div>
-        <div class="anno"><b>Mode Q:</b> continuous street-view-style imagery along a pathway read signage better than discrete photos or signage plans (Olney). Worth testing vs single shots.</div>
+        <div class="anno"><b>Mode Q:</b> continuous street-view-style video read signage better than discrete photos (Olney). Worth testing.</div>
 
         <button class="btn primary next" onclick="show('photo-zone')">Capture</button>
       </div>
@@ -481,7 +480,7 @@
           <div class="thumb">map case</div>
           <div class="thumb">＋ add</div>
         </div>
-        <div class="anno"><b>Studio side (messier, on purpose):</b> photos arrive as a zone bucket; the desk tool needs to display them and let someone correlate each to a pathway/node. Chris has to sell Ryan on the feature + a backend upload API.</div>
+        <div class="anno"><b>Studio side (messier, on purpose):</b> photos land in a zone bucket; the desk correlates each to a pathway/node. Needs a backend upload API.</div>
         <div class="sect" style="margin-top:18px">Diagram zones</div>
         <div class="diagram" style="height:200px">
           <svg viewBox="0 0 360 200">
@@ -505,14 +504,14 @@
       <div class="appbar"><div class="back" onclick="show('pathway-form')">‹</div>
         <div class="t">Signage<small>unpaid → paid</small></div><div class="chip">Saved ✓</div></div>
       <div class="scroll">
-        <div class="anno"><b>Decided direction (field styling):</b> long signage shows as locked, scannable text, not a cramped one-line input. Tap the pencil to edit; it expands to multi-line; tap Done and it locks back to a full-text view.</div>
+        <div class="anno"><b>Decided:</b> long signage shows as locked, scannable text; a pencil opens a multi-line editor, then locks back.</div>
         <div class="stateLabel">Locked — full value visible, dense</div>
         <div class="lockedField"><div class="txt">To Trains | 69th St TC | Sharon Hill | Bus 17, 31, 44</div><div class="pencil">✎</div></div>
         <div class="stateLabel">Editing — expands to multi-line</div>
         <div class="editField"><div class="ta">To Trains | 69th St TC | Sharon Hill | Bus 17, 31, 44<span style="color:var(--secondary)">▏</span></div></div>
         <div class="stateLabel">Common elements (optional, one tap)</div>
         <div class="seg"><button class="on">| separator</button><button>Westbound</button><button>Eastbound</button></div>
-        <div class="anno"><b>Backlog (Chris flagged as hard):</b> autocomplete / custom keyboard from the station's expected values. Easy to make worse than the native keyboard, so it sits behind the photo capture + locked-field wins.</div>
+        <div class="anno"><b>Backlog (Chris: hard):</b> autocomplete keyboard from expected values. Easy to make worse than the native keyboard, so it waits behind the photo + locked-field wins.</div>
         <button class="btn primary" onclick="show('pathway-form')">Done</button>
       </div>
     </section>
@@ -540,71 +539,40 @@
     <!-- ============ VERSION 2 SCREENS (Jun 15 sync) =============== -->
     <!-- ============================================================ -->
 
-    <!-- ===== V2 PATHWAY FORM: capture-first (type / voice / photo) ===== -->
-    <section class="screen" id="v2-pathway-form">
-      <span class="scrnname">v2-pathway-form</span>
-      <div class="appbar"><div class="back" onclick="show('v2-photo')">‹</div>
-        <div class="t">Fare gate<small>15th St / City Hall</small></div><div class="chip">Saved ✓</div></div>
-      <div class="scroll">
-        <div class="prio discovery">Discovery · signage capture in the form</div>
-        <div class="title2" style="margin:2px 0 8px">Unpaid area → Paid area</div>
-        <div class="anno"><b>This is the app's existing per-pathway screen (its real name is the "pathway form").</b> Its signage-first, locked-measurements layout was a Jun 12 decision. It sits under Discovery because the new, still-being-proven part is how signage capture (voice + AI) works in the form; the 📷 photo entry routes into the Ship work.</div>
-
-        <div class="sect">Signage · unpaid → paid</div>
-        <div class="field"><label>SIGNPOSTED AS</label>
-          <div class="val">To Trains | 69th St TC | Sharon Hill</div>
-          <div class="hint">Approximate in-station; clean up at the desk. Fast ways in:</div></div>
-        <div class="seg">
-          <button class="on" onclick="show('v2-signage')">🎤 Voice</button>
-          <button onclick="show('v2-photo')">📷 Photo</button>
-          <button onclick="show('v2-signage')">✎ Type</button>
-        </div>
-
-        <div class="sect">Measurements</div>
-        <div class="field"><label>MIN WIDTH (M)</label><div class="val">0.92</div></div>
-        <div class="field"><label>TRAVERSAL TIME (S)</label><div class="val">0:43</div></div>
-        <div class="anno">Measurements, the stopwatch, and the locked/edit signage field are unchanged from Jun 12 (see Version 1).</div>
-      </div>
-      <div class="fab-bar"><button class="btn primary" onclick="show('v2-photo')">✓ Mark done</button></div>
-    </section>
-
-    <!-- ===== V2 SIGNAGE: voice-to-text + AI cleanup ===== -->
+    <!-- ===== V2 VOICE + AI (Discovery): the pathway form's signage field, by voice ===== -->
     <section class="screen" id="v2-signage">
       <span class="scrnname">v2-signage</span>
-      <div class="appbar"><div class="back" onclick="show('v2-pathway-form')">‹</div>
-        <div class="t">Signage by voice<small>unpaid → paid</small></div></div>
+      <div class="appbar"><div class="back" onclick="show('v2-photo')">‹</div>
+        <div class="t">Fare gate<small>Signage by voice</small></div></div>
       <div class="scroll">
-        <div class="prio discovery">Discovery · prove out before building</div>
-        <div class="anno"><b>Discovery, not a commit-to-ship yet:</b> we test image-to-text and audio models and pick an API before building. The locked / multi-line signage field itself is decided and ships; voice + AI ride on top once proven.</div>
-        <div class="anno"><b>New in v2:</b> a mic on the signage field. Say it, it transcribes in real time, edit on the spot or let the desk clean it up. "Bar separator" becomes <b>|</b>.</div>
+        <div class="prio discovery">Discovery · prove out first</div>
+        <div class="field"><label>SIGNPOSTED AS</label><div class="val">To Trains | 69th St TC | Sharon Hill</div></div>
+        <div class="anno">Same pathway-form signage field, captured by voice. "Bar separator" becomes <b>|</b>. Test models and pick an API before building.</div>
         <div class="stateLabel">Listening…</div>
         <div class="editField"><div class="ta">to trains bar separator 69th street transit center bar separator sharon hill<span style="color:var(--secondary)">▏</span></div></div>
         <button class="btn primary">🎤 Stop &amp; transcribe</button>
-        <div class="stateLabel">Parsed value (editable)</div>
-        <div class="lockedField"><div class="txt">To Trains | 69th St TC | Sharon Hill</div><div class="pencil">✎</div></div>
-        <div class="anno"><b>Why voice, not photo-only:</b> typing long signage on a phone is the time sink, and the worry is typos, not keystrokes. Dictate-then-clean-up matches how people already work.</div>
-        <div class="stateLabel">At the desk (discovery)</div>
-        <div class="avgbox">AI flags: "Sharon Hil" looks like a typo of "Sharon Hill" <b>fix</b></div>
-        <button class="btn primary" onclick="show('v2-pathway-form')">Use this value</button>
+        <div class="stateLabel">AI cleanup at the desk</div>
+        <div class="avgbox">"Sharon Hil" looks like a typo of "Sharon Hill" <b>fix</b></div>
+        <div class="anno">Photo and voice both feed AI text extraction. Voice saves typing; the worry was typos, not keystrokes.</div>
+        <button class="btn primary" onclick="show('v2-photo')">Use value</button>
       </div>
     </section>
 
     <!-- ===== V2 PHOTO CAPTURE: signage-first; pin replaces zone ===== -->
     <section class="screen" id="v2-photo">
       <span class="scrnname">v2-photo</span>
-      <div class="appbar"><div class="back" onclick="show('v2-pathway-form')">‹</div><div class="t">Capture<small>15th St / City Hall</small></div></div>
+      <div class="appbar"><div class="t">Fare gate<small>Signage · unpaid → paid</small></div><div class="chip">Saved ✓</div></div>
       <div class="scroll">
         <div class="prio ship">Ship now</div>
+        <div class="field"><label>SIGNPOSTED AS</label><div class="val">To Trains | 69th St TC | Sharon Hill</div></div>
+        <div class="anno">Signage is the photo's main job: snap the sign instead of typing it. (Voice is the other way in, under Discovery.)</div>
         <div class="viewfinder">
           <div class="sign">TO TRAINS →<br>69th St TC · Sharon Hill</div>
           <div class="shutter" onclick="show('v2-pin')"></div>
         </div>
-        <div class="anno"><b>Primary use = signage.</b> Photo-plus-note ("this pathway is not where we thought") is a separate, lower-priority use case.</div>
-        <div class="sect">Attach this capture to…</div>
-        <div class="seg">
-          <button>Pathway</button><button>Node</button><button class="on" onclick="show('v2-pin')">Pin on diagram</button>
-        </div>
-        <div class="anno"><b>Changed from v1:</b> "zones" don't exist as data. Instead drop a <b>pin on the level diagram</b>. GPS is unreliable indoors, but the diagram already has a coordinate grid, so a pin lands precisely.</div>
+        <div class="sect">Attach to</div>
+        <div class="seg"><button class="on">Pathway</button><button>Node</button><button onclick="show('v2-pin')">Pin on diagram</button></div>
+        <div class="anno">"Pin on diagram" replaces the old "zones" idea.</div>
         <button class="btn primary next" onclick="show('v2-pin')">Place on diagram</button>
       </div>
     </section>
@@ -615,8 +583,8 @@
       <div class="appbar"><div class="back" onclick="show('v2-photo')">‹</div><div class="t">Drop a pin<small>Mezzanine · NRG Station</small></div></div>
       <div class="scroll">
         <div class="prio maybe">Ship now · maybe</div>
-        <div class="anno"><b>Tentative for the first cut.</b> Photo + note capture is the committed Thursday build; pin placement is the agreed model but may land later, or the first cut may start with photo/comment attached to a node or pathway. Confirm with Chris.</div>
-        <div class="note">Pan and pinch/scroll to zoom to where you are, line up the crosshair, then drop the pin. GPS is unreliable underground, so you place it by eye on the diagram grid (same coordinates as every node and pathway).</div>
+        <div class="anno">Agreed model, but may slip past the first cut. Confirm with Chris.</div>
+        <div class="note">Zoom to where you are, line up the crosshair, drop the pin. Full interaction in the panel →</div>
         <div class="pinmap" id="pinmap">
           <svg id="pinSvg" viewBox="0 0 360 250" preserveAspectRatio="xMidYMid meet">
             <g id="pinGraph">
@@ -633,7 +601,7 @@
         </div>
         <div class="maplegend"><span><i style="background:#1565C0"></i>to do</span><span><i style="background:#2E7D32"></i>validated</span><span>drag = pan · scroll / pinch = zoom · ⌖ recenter</span></div>
         <button class="btn primary" id="dropBtn" type="button">📍 Drop pin here</button>
-        <div class="hint" id="dropMsg" style="margin:4px 2px 8px">When the crosshair is near a node or pathway it snaps, so the desk can correlate it precisely. Otherwise it drops a free point on the grid.</div>
+        <div class="hint" id="dropMsg" style="margin:4px 2px 8px">Snaps to a nearby node or pathway so the desk can correlate it; otherwise drops a free grid point.</div>
 
         <div class="sect">On this pin</div>
         <div class="seg"><button class="on">📷 Photo</button><button class="on">🗒 Note</button></div>
@@ -641,9 +609,8 @@
           <div class="thumb">sign photo:<br>To Platform ↑</div>
           <div class="thumb">＋ add photo</div>
         </div>
-        <div class="cmt" style="border-left-color:var(--accent);margin-top:10px">Wayfinding sign here points to Platform but the stair is actually behind the column to the left. Flag for fix.<span class="cmt-meta">Christopher · 🎤 dictated · just now</span></div>
-        <div class="hint" style="margin:2px">A pin can hold a photo, a note, or both. An empty pin disappears.</div>
-        <div class="anno"><b>Replaces the v1 "zone" concept entirely.</b> A pin is simpler, exists today on the diagram grid, and hands the desk an exact location to correlate.</div>
+        <div class="cmt" style="border-left-color:var(--accent);margin-top:10px">Sign points to Platform but the stair is behind the column to the left. Flag for fix.<span class="cmt-meta">Christopher · 🎤 dictated · just now</span></div>
+        <div class="hint" style="margin:2px">A pin holds a photo, a note, or both.</div>
         <button class="btn primary next" onclick="show('v2-photo')">Save pin</button>
       </div>
     </section>
@@ -654,12 +621,11 @@
       <div class="appbar"><div class="back" onclick="show('v2-pin')">‹</div><div class="t">Add a note<small>Fare gate (unpaid → paid)</small></div></div>
       <div class="scroll">
         <div class="prio ship">Ship now</div>
-        <div class="anno"><b>Structured as a comment, not a free-text blob:</b> timestamp + author, like a Miro comment, on a node or pathway (not the bare floor plan). Avoids the "notes nobody reads" problem.</div>
+        <div class="anno">A timestamped, authored comment on a node or pathway (like Miro), not a free-text blob. Voice works here too.</div>
         <div class="cmt" style="border-left-color:var(--accent)">This pathway is not where we thought. Actual gate is ~3m east, flag to fix at desk.<span class="cmt-meta">Christopher · just now</span></div>
         <div class="stateLabel">New comment</div>
         <div class="editField"><div class="ta">Type, or 🎤 dictate…<span style="color:var(--secondary)">▏</span></div></div>
         <div class="seg"><button class="on">🎤 Voice</button><button>📷 Attach photo</button></div>
-        <div class="anno"><b>Voice here too:</b> Kristin asked for audio capture on notes, not just signage. Same dictate-then-clean-up model.</div>
         <button class="btn primary" onclick="show('v2-pin')">Post comment</button>
       </div>
     </section>
@@ -670,15 +636,14 @@
       <div class="appbar"><div class="t">Guided journeys</div><div class="chip" style="background:#eceef6;color:#5b6480">Deferred</div></div>
       <div class="scroll">
         <div class="prio defer">Defer · later task order</div>
-        <div class="anno" style="background:#fffbe6;border:1px dashed #e0c200;color:#6b5800"><b>Deferred to a later task order.</b> It's the bigger build: a whole new user flow that needs several test rounds, and there isn't room in the ~2 weeks left. It's also the feature SEPTA most wants, so it's a strong candidate to anchor future scope.</div>
-        <div class="sect">What it still is</div>
-        <div class="note">Pick a start and a key junction; get one linear, ordered list of segments with the tasks along the way, mark done as you go, then spot-check the rest. Likely planned desktop-first and served to the app.</div>
+        <div class="anno" style="background:#fffbe6;border:1px dashed #e0c200;color:#6b5800">Bigger build, needs several test rounds, no room in the ~2 weeks left. Also the feature SEPTA most wants. Full concept under Version 1.</div>
+        <div class="sect">What it is</div>
+        <div class="note">Pick a start and a key junction; get one ordered list of segments with the tasks along the way, mark done as you go.</div>
         <div class="sect">Two refinements from Jun 15</div>
         <div class="field"><label>NOT END-TO-END</label><div class="val">entrance → decision node → platform</div>
-          <div class="hint">Journeys break at fare gates / decision points, not entrance-to-platform, so you don't re-capture the same wayfinding on every route. Acceptance = every decision point documented, not every pathway.</div></div>
+          <div class="hint">Break at fare gates, not entrance-to-platform, so wayfinding isn't re-captured on every route.</div></div>
         <div class="field"><label>NO OTP</label><div class="val">shortest-path on the pathways graph</div>
-          <div class="hint">Once you have the graph, routing is straightforward; OTP adds confusing failure modes with no in-station upside.</div></div>
-        <div class="anno">The full v1 concept is still clickable under Version 1 → Guided journeys.</div>
+          <div class="hint">Routing is straightforward once you have the graph.</div></div>
       </div>
     </section>
 
@@ -817,10 +782,6 @@
      from:`<div class="ip-prov">Jun 12 sync; Ryan, Jun 12 Slack thread.</div>
        <div class="ip-quote">things we are doing on the companion app currently do not have a way to display in the desktop app, that needs to be changed.<span class="ip-attr">Christopher Yamas, Jun 12 sync</span></div>
        <div class="ip-quote">it would be a little messier on the pathways studio side, but could make collecting signage much easier.<span class="ip-attr">Ryan Mahoney, Jun 12</span></div>`},
-   'v2-pathway-form':{scr:'Discovery',title:'Signage capture in the pathway form',
-     what:'The app\'s per-pathway screen, shown as the place signage capture happens: voice and AI assist (Discovery) plus a photo entry (Ship).',
-     why:'The form layout was decided Jun 12; what is still being proven out is how voice + AI signage capture works inside it, so it sits under Discovery.',
-     from:`<div class="ip-prov">Layout decided Jun 12; signage-capture method is the Jun 15 discovery work.</div>`},
    'v2-signage':{scr:'Version 2 · Jun 15',title:'Signage by voice + AI cleanup',
      what:'A mic on the signage field: dictate the sign, it transcribes in real time, edit on the spot. At the desk, image-to-text and an LLM suggest values and flag typos.',
      why:'Typing long signage on a phone is slow and typo-prone. Dictating and cleaning up afterward matches how people already work.',
@@ -882,8 +843,7 @@
    'signage-edit':['Locked view','Multi-line edit','Common elements'],
    'stopwatch':['Timer','Runs list','Average','Use value'],
    'desk':['Zone list','Photo cards','Correlate dropdown'],
-   'v2-pathway-form':['Signage field','Voice / Photo / Type entry','Measurements (locked)'],
-   'v2-signage':['Mic / dictate','Live transcript','Parsed value','AI typo flag'],
+   'v2-signage':['Signage field','Mic / dictate','Parsed value','AI typo flag'],
    'v2-photo':['Viewfinder','Attach to pathway/node/pin','Capture'],
    'v2-pin':['Pan / zoom map','Crosshair reticle','Snap to node','Drop pin','Photo or note'],
    'v2-note':['Existing comment','New comment','Voice','Attach photo'],
@@ -943,14 +903,14 @@
     else { sp.innerHTML=''; sp.style.display='none'; sph.style.display='none'; }
     fillElements(id); renderComments(id);
   }
-  var V2SCREENS={'v2-pathway-form':1,'v2-signage':1,'v2-photo':1,'v2-pin':1,'v2-note':1,'v2-journeys':1};
+  var V2SCREENS={'v2-signage':1,'v2-photo':1,'v2-pin':1,'v2-note':1,'v2-journeys':1};
   function setVer(v){
     var t1=document.getElementById('vtab1'),t2=document.getElementById('vtab2'),
         n1=document.getElementById('nav-v1'),n2=document.getElementById('nav-v2');
     if(t1)t1.classList.toggle('on',v===1); if(t2)t2.classList.toggle('on',v===2);
     if(n1)n1.style.display=(v===1?'':'none'); if(n2)n2.style.display=(v===2?'':'none');
   }
-  function goVer(v){ show(v===2?'v2-pathway-form':'journeys'); }
+  function goVer(v){ show(v===2?'v2-photo':'journeys'); }
   function show(id){
     document.body.classList.remove('deskmode');
     document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
