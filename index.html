@@ -1099,6 +1099,8 @@
       <div class="ip-sect">What this is</div><p id="ip-what"></p>
       <div class="ip-sect">Why</div><p id="ip-why"></p>
       <div class="ip-sect" id="ip-spec-h">Interaction</div><div id="ip-spec"></div>
+      <div class="ip-sect" id="ip-build-h" style="display:none">To build · paste to your coding AI</div>
+      <div id="ip-build" style="display:none"></div>
       <div class="ip-sect">Where it came from</div><div id="ip-from"></div>
       <div class="ip-sect">Comments on this screen</div>
       <div id="ip-comments"></div>
@@ -1217,48 +1219,57 @@
    'qw-tasklist':{scr:'Quick win',title:'Task list: filter + clearer rows',
      what:'A pathway-type filter on the task list, plus rows that split the two endpoints onto their own lines, color-code the type tags, clarify the expander, and rename "spanning" to "between levels".',
      why:'Testers scrolled long undifferentiated lists where rows blended together and there was no way to see just one pathway type.',
+     build:`In the task list screen, add a pathway-type filter chip row (All · Walkway · Stairs · Elevator · Fare gate · Escalator) that filters the PathwayWithStopNames list by mode. Render each row with from-stop and to-stop on separate lines and a color-coded mode tag; add a per-row expander for the fields. Rename "spanning" → "between levels" in labels. When a type has no matches, show "No pathways of this type modeled on this level." Related: issue #20 (dynamic task-list header).`,
      from:`<div class="ip-prov">Jun 9 session (Adam, SEPTA wayfinding and maps lead). Findings doc "Status and navigation"; 6/15 backlog P2.</div>
        <div class="ip-quote">I want to be able to filter by those tags, so I can only see fare gate rather than scroll through a million walkways.<span class="ip-attr">Adam, Jun 9 session</span></div>
        <div class="ip-quote">these names all blend together... maybe even color coding the tags would help.<span class="ip-attr">Adam, Jun 9 session</span></div>`},
    'qw-legibility':{scr:'Quick win',title:'Diagram status legibility',
      what:'Encode done vs needs-attention with shape, line style, and color together (solid line + filled ✓ node for done; dashed line + hollow ! node for to-do), so status reads at the default zoom and works for colorblind users.',
      why:'Green and blue look alike when the diagram is zoomed out, so you have to already know status to read it, which defeats progress tracking.',
+     build:`In lib/screens/level_map/level_map_view.dart, encode pathway status with redundant cues so it reads at the default zoom: done = solid stroke + filled node with a check; needs-attention = dashed stroke + hollow node with a dot; keep color as a secondary cue, never the only signal. Verify at the zoomed-out default. Related: issue #58 (restore offline node labels).`,
      from:`<div class="ip-prov">Jun 9 session and Jun 12 sync. Findings doc; 6/15 backlog P1.</div>
        <div class="ip-quote">the blue and the green, it is hard to tell the difference at the diagram, especially when it is zoomed out.<span class="ip-attr">Julia, Jun 12 sync</span></div>`},
    'qw-message':{scr:'Quick win',title:'Messages stay until dismissed',
      what:'Keep important messages on screen with an explicit X to dismiss, instead of a toast that auto-closes before it can be read. Includes a retry affordance where relevant.',
      why:'The first hit was the alignment save error flashing by, leaving the user unsure what failed or what to do.',
+     build:`Add a persistent, dismissible banner component for blocking errors (explicit X to close, optional Retry) and use it for the alignment-save failure instead of an auto-closing toast. Reserve transient toasts for non-critical confirmations only.`,
      from:`<div class="ip-prov">Findings doc "Status and navigation"; 6/15 backlog P2.</div>
        <div class="ip-quote">Keep large or important messages on screen with an X to dismiss, instead of auto-closing (first hit on the alignment save error).<span class="ip-attr">Findings doc, suggested changes</span></div>`},
    'qw-emptylevel':{scr:'Quick win',title:'Empty levels: tap feedback',
      what:'Tapping a level with no modeled pathways shows an inline message (plus a subtle shake) instead of doing nothing.',
      why:'A dead tap reads as a broken app; clear feedback tells the user the tap registered and why nothing opened.',
+     build:`In the level selector, when a level resolves to zero modeled pathways, show an inline "No pathways modeled on this level yet" row plus a brief shake on tap, instead of a silent no-op. Related: issue #16 (level-selector help text), issue #23 (pathways touching null-level stops missing from lists).`,
      from:`<div class="ip-prov">Findings doc "Status and navigation"; 6/15 backlog P2.</div>
        <div class="ip-quote">Give empty levels tap feedback (level selector).<span class="ip-attr">Findings doc, suggested changes</span></div>`},
    'qw-sync':{scr:'Quick win',title:'Sync & offline status',
      what:'A persistent app-bar chip showing whether field data is synced, pending upload, or offline. Edits are saved on the device immediately and upload automatically when a connection returns.',
      why:'Collectors are underground without signal for most of a session. The P0 finding was that edits save locally but it was unclear whether they synced; a visible status removes that doubt.',
+     build:`Add a persistent sync-status chip to the app bar with three states — ✓ synced / ⟳ N pending / ⚠ offline — driven by the local write queue and connectivity. Edits save to the local store immediately and upload automatically on reconnect; the chip reflects queue depth and online state. Related OPEN issue #42 (sync conflict guard: optimistic concurrency on pathway updated_at); see also #19 (Sync First dialog).`,
      from:`<div class="ip-prov">Findings doc P0 (data persistence and sync); Jun 9 session note that the "saved" indicator was local-only.</div>
        <div class="ip-quote">Data persistence is the most critical need to make the app useful... it needs to actually be a live data collection tool, not just a local scratchpad.<span class="ip-attr">Findings doc, Jun 9-11 sessions</span></div>`},
    'qw-station':{scr:'Quick win',title:'Station selector + data version',
      what:'Guide the first GTFS schedule-version pick (most recent selected by default, with an explanation), and rename the vague "update" action to "re-download station data" with a note on what it does.',
      why:'First-run users had no guidance on which version to pick, and the sync label did not say what syncing would change.',
+     build:`In the station selector, default the GTFS schedule-version picker to the most recent published version with helper text, and rename the "update" action to "Re-download station data" with a one-line note that unsynced field edits upload first. Related: issue #19 (re-download Sync First dialog), issue #15 (tap cached stations while online).`,
      from:`<div class="ip-prov">Findings doc "Status and navigation"; 6/15 backlog P2.</div>
        <div class="ip-quote">Guide the first GTFS-version pick, and clarify the "update / re-sync" label (station selector).<span class="ip-attr">Findings doc, suggested changes</span></div>`},
    'qw-alignment':{scr:'Quick win',title:'Alignment workspace polish (v0.8.x)',
      what:'Cleanup on the active diagram-to-map alignment workspace: calmer zoom, the opacity slider moved out of the bottom swipe zone, base-map rotation, a clearly-labeled "place alignment point" control, and removing the empty "None" layer.',
      why:'The workspace is live but rough; these are the specific snags testers and the team hit.',
+     build:`In the touch diagram↔map alignment workspace (v0.8.x): reduce zoom sensitivity, move the opacity slider out of the bottom home-swipe zone, allow base-map rotation, replace the stray 3-dot glyph with a labeled "Place alignment point" control, and remove the empty "None" base layer. Refs PRs #69 / #70 / #75 (alignment workflow + pin anchor).`,
      from:`<div class="ip-prov">Findings doc "Already shipped / in development"; 6/15 backlog P2.</div>
        <div class="ip-quote">zoom too sensitive; opacity slider in the home-swipe zone; allow base map rotation; clearer "pinning" affordance... drop the "None" layer.<span class="ip-attr">Findings doc, v0.8.x notes</span></div>`},
    'qw-tooltips':{scr:'Quick win',title:'Field hints + save confirmation',
      what:'A per-field hint that states the measurement method (e.g. door-open to door-open), and a visible "saved" confirmation on fields that currently save silently, signage especially.',
      why:'People were unsure how a field should be measured, and unsure their signage input had saved because nothing confirmed it.',
+     build:`In lib/screens/pathway_form/pathway_form_screen.dart, add per-field helper text stating the measurement method (e.g. "door-open to door-open" for traversal time), and a visible save confirmation on the signage field to match the save feedback used elsewhere in the app. Related: issue #27 (debounce field writes).`,
      from:`<div class="ip-prov">Findings doc "Signage" + "Data entry"; 6/15 backlog P1.</div>
        <div class="ip-quote">Add per-field tooltips with the measurement method (for example, door-open to door-open).<span class="ip-attr">Findings doc, suggested changes</span></div>
        <div class="ip-quote">Show a visible save confirmation on signage input.<span class="ip-attr">Findings doc, suggested changes</span></div>`},
    'qw-back':{scr:'Quick win · behavior',title:'Back navigation overshoot',
      what:'A behavior fix, not a screen: after jumping from a Level Map element into the Pathway form, Back should return to the Level Map sheet in one step instead of overshooting to the level list.',
      why:'Overshooting two screens loses the user place and forces them to re-navigate after every element edit.',
+     build:`Ensure Back from the Pathway form (reached by tapping an element on the Level Map sheet) returns to the Level Map sheet in one step, not the level list — use replace-stack semantics on the element→form jump. NOTE: PR #66 (merged) "replace-stack hops, map-sheet navigation, tap precedence" likely already covers this — verify this exact case before re-implementing.`,
      from:`<div class="ip-prov">Findings doc "Status and navigation"; 6/15 backlog P2.</div>
        <div class="ip-quote">Fix Back overshooting two screens after an element-to-diagram jump (Navigation: Level Map sheet to Pathway Form).<span class="ip-attr">Findings doc, suggested changes</span></div>`},
    'v2-journeys':{scr:'Version 2 · Jun 15',title:'Guided journeys (deferred)',
@@ -1358,6 +1369,9 @@
     var sp=document.getElementById('ip-spec'), sph=document.getElementById('ip-spec-h');
     if(d.spec){ sp.innerHTML=d.spec; sp.style.display=''; sph.style.display=''; }
     else { sp.innerHTML=''; sp.style.display='none'; sph.style.display='none'; }
+    var bd=document.getElementById('ip-build'), bdh=document.getElementById('ip-build-h');
+    if(d.build){ bd.innerHTML='<div class="ip-quote" style="font-style:normal;white-space:pre-wrap">'+d.build+'</div>'; bd.style.display=''; bdh.style.display=''; }
+    else { bd.innerHTML=''; bd.style.display='none'; bdh.style.display='none'; }
     fillElements(id); renderComments(id);
   }
   // Each screen belongs to a top-line tab: 'v2' (Ship now), 'disc' (Discovery/Deferred), or 'v1'. Default 'v1'.
@@ -1531,7 +1545,7 @@
     b.classList.toggle('on',on); b.textContent='Discussion notes: '+(on?'on':'off');
   }
   (function(){var n=localStorage.getItem('flyway_name');if(n)document.getElementById('cf-name').value=n;})();
-  var BUILD_DATE='June 17, 2026 · 2:49 PM EDT'; // @BUILD_DATE@ (stamped by deploy.sh)
+  var BUILD_DATE='June 17, 2026 · 2:55 PM EDT'; // @BUILD_DATE@ (stamped by deploy.sh)
   var RELEASE='v0.3';            // @RELEASE@
   (function(){var d=document.getElementById('build-date'); if(d)d.textContent=BUILD_DATE;
     var r=document.getElementById('release'); if(r)r.textContent='Companion App wireframes · '+RELEASE;})();
