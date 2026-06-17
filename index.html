@@ -1308,7 +1308,7 @@
 
 <script id="dev-data">window.DEV_PROGRESS={
  "repo": "JarvusInnovations/pathways-field-companion",
- "generatedAt": "2026-06-17T20:31:07Z",
+ "generatedAt": "2026-06-17T20:31:59Z",
  "wins": [
   {
    "label": "Graph traversal / Connected view",
@@ -2124,14 +2124,14 @@
     function fmtDT(t){ try{return new Date(t).toLocaleString(undefined,{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});}catch(e){return t;} }
     var counts={shipped:0,in_progress:0,planned:0,not_started:0};
     d.wins.forEach(function(w){counts[w.status]=(counts[w.status]||0)+1;});
-    var h='<div class="dev-head"><h2>Companion app \u00b7 dev progress</h2><div class="dev-sub">'+d.repo+' \u00b7 auto-refreshed '+fmt(d.generatedAt)+' \u00b7 latest release '+((d.releases[0]||{}).tag||'')+'</div>'
+    var h='<div class="dev-head"><h2>Companion app \u00b7 dev progress</h2><div class="dev-sub">'+d.repo+' \u00b7 auto-refreshed '+fmtDT(d.generatedAt)+' \u00b7 latest release '+((d.releases[0]||{}).tag||'')+'</div>'
       +'<div class="dev-chips"><span class="dchip ship">\u2705 '+counts.shipped+' shipped</span><span class="dchip wip">\ud83d\udd27 '+counts.in_progress+' in progress</span><span class="dchip ns">\u26aa '+counts.not_started+' not started</span></div></div>';
     ['ship','quickwin','discovery'].forEach(function(b){
       var ws=d.wins.filter(function(w){return w.bucket===b;}); if(!ws.length) return;
       h+='<div class="dev-group">'+bname[b]+'</div>';
       ws.forEach(function(w){
         var arts=(w.artifacts||[]).map(function(a){var done=(a.state==='MERGED'||a.state==='CLOSED');return '<a href="'+a.url+'" target="_blank" class="dev-art '+(done?'done':'open')+'">'+(a.type==='pr'?'PR #':'#')+a.n+'</a>';}).join(' ');
-        h+='<div class="dev-row dev-'+w.status+'"><div class="dev-ic">'+icon[w.status]+'</div><div class="dev-main"><div class="dev-label">'+w.label+'</div><div class="dev-note">'+w.note+'</div>'+(arts?'<div class="dev-arts">'+arts+'</div>':'<div class="dev-arts" style="color:#b06a6a;font-size:11px">no issue / PR yet</div>')+'</div><div class="dev-meta"><div>'+sname[w.status]+'</div><div class="dev-dates">'+fmt(w.started)+(w.completed?' \u2192 '+fmt(w.completed):'')+'</div></div></div>';
+        h+='<div class="dev-row dev-'+w.status+'"><div class="dev-ic">'+icon[w.status]+'</div><div class="dev-main"><div class="dev-label">'+w.label+'</div><div class="dev-note">'+w.note+'</div>'+(arts?'<div class="dev-arts">'+arts+'</div>':'<div class="dev-arts" style="color:#b06a6a;font-size:11px">no issue / PR yet</div>')+'</div><div class="dev-meta"><div>'+sname[w.status]+'</div><div class="dev-dates">'+fmtDT(w.started)+(w.completed?' \u2192 '+fmtDT(w.completed):'')+'</div></div></div>';
       });
     });
     if(d.priorWork&&d.priorWork.length){h+='<div class="dev-group">Prior related work &mdash; closed before the June sessions</div><div class="dev-prior">'+d.priorWork.map(function(x){return '<a class="dev-prioritem" target="_blank" href="https://github.com/'+d.repo+'/issues/'+x.n+'">#'+x.n+' '+x.title+' <span>'+fmt(x.closedAt)+'</span></a>';}).join('')+'</div>';}
@@ -2322,7 +2322,7 @@
     b.classList.toggle('on',on); b.textContent='Discussion notes: '+(on?'on':'off');
   }
   (function(){var n=localStorage.getItem('flyway_name');if(n)document.getElementById('cf-name').value=n;})();
-  var BUILD_DATE='June 17, 2026 · 4:31 PM EDT'; // @BUILD_DATE@ (stamped by deploy.sh)
+  var BUILD_DATE='June 17, 2026 · 4:32 PM EDT'; // @BUILD_DATE@ (stamped by deploy.sh)
   var RELEASE='v0.3';            // @RELEASE@
   (function(){var d=document.getElementById('build-date'); if(d)d.textContent=BUILD_DATE;
     var r=document.getElementById('release'); if(r)r.textContent='Companion App wireframes · '+RELEASE;})();
