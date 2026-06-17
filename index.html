@@ -1126,6 +1126,40 @@
       </div>
     </section>
 
+    <!-- qw: spanning pathway across two levels (open issue #21) -->
+    <section class="screen" id="qw-spanning">
+      <span class="scrnname">qw · spanning</span>
+      <div class="appbar"><div class="back" onclick="showQWList()">‹</div>
+        <div class="t">Spanning pathway<small>Stair S2 · L1 Mezzanine ↔ Platform</small></div></div>
+      <div class="scroll">
+        <div class="anno"><b>Spanning pathways cross two levels</b>, so they sit cleanly on neither single-level diagram. Toggle the level to place and verify each end. Maps to open issue #21 (map overlay: toggle levels for spanning pathways).</div>
+        <div class="statepane" id="span-mezz">
+          <div class="sect">L1 Mezzanine — top of the stair</div>
+          <div class="diagram" style="height:180px"><svg viewBox="0 0 360 190">
+            <rect x="0" y="0" width="360" height="190" fill="#e9edf4"/>
+            <g stroke="#c2c9d8" stroke-width="4" stroke-linecap="round" fill="none"><line x1="50" y1="90" x2="150" y2="90"/><line x1="150" y1="90" x2="250" y2="90"/></g>
+            <g fill="#8a93a6"><circle cx="50" cy="90" r="5"/><circle cx="150" cy="90" r="5"/></g>
+            <text x="50" y="74" font-size="9" fill="#5b6480" text-anchor="middle">Mezz Center</text>
+            <circle cx="250" cy="90" r="10" fill="#F97900" stroke="#fff" stroke-width="2.5"/><text x="250" y="74" font-size="9" fill="#a65200" text-anchor="middle">Stair S2 (top)</text>
+            <text x="250" y="118" font-size="10" fill="#a65200" text-anchor="middle">↓ continues to Platform</text>
+          </svg></div>
+          <div class="cmt" style="border-left-color:#F97900">This end: <b>Stair S2 top</b> on L1 Mezzanine. Step count + signage captured here.</div>
+        </div>
+        <div class="statepane" id="span-plat" style="display:none">
+          <div class="sect">Platform — bottom of the stair</div>
+          <div class="diagram" style="height:180px"><svg viewBox="0 0 360 190">
+            <rect x="0" y="0" width="360" height="190" fill="#e9edf4"/>
+            <g stroke="#c2c9d8" stroke-width="4" stroke-linecap="round" fill="none"><line x1="110" y1="100" x2="250" y2="100"/><line x1="250" y1="100" x2="320" y2="100"/></g>
+            <g fill="#8a93a6"><circle cx="250" cy="100" r="5"/><circle cx="320" cy="100" r="5"/></g>
+            <text x="285" y="118" font-size="9" fill="#5b6480" text-anchor="middle">WB Platform</text>
+            <circle cx="110" cy="100" r="10" fill="#F97900" stroke="#fff" stroke-width="2.5"/><text x="110" y="84" font-size="9" fill="#a65200" text-anchor="middle">Stair S2 (bottom)</text>
+            <text x="110" y="128" font-size="10" fill="#a65200" text-anchor="middle">↑ continues to Mezzanine</text>
+          </svg></div>
+          <div class="cmt" style="border-left-color:#F97900">Same pathway, other end: <b>Stair S2 bottom</b> on the platform. The two ends stay linked as one pathway.</div>
+        </div>
+      </div>
+    </section>
+
     <!-- ===== V2 GUIDED JOURNEYS — DEFERRED ===== -->
     <section class="screen" id="v2-journeys">
       <span class="scrnname">v2-journeys</span>
@@ -1170,22 +1204,22 @@
         <div class="pgrid">
           <div class="pcard next"><div class="img" style="background-image:var(--photo-sign);background-size:cover;background-position:center;color:#fff;text-shadow:0 1px 3px #000;align-items:end">L/T Westbound sign</div>
             <div class="ft"><div class="uncorr">● Needs correlation</div>
-              <select><option>Correlate to pathway…</option><option>Fare gate (unpaid → paid)</option><option>Mezzanine landing → Fare gate</option></select></div></div>
+              <select onchange="qwCorr(this)"><option>Correlate to pathway…</option><option>Fare gate (unpaid → paid)</option><option>Mezzanine landing → Fare gate</option></select></div></div>
           <div class="pcard"><div class="img" style="background-image:var(--photo-corridor);background-size:cover;background-position:center;color:#fff;text-shadow:0 1px 3px #000;align-items:end">fare line wide shot</div>
             <div class="ft"><div class="corr">✓ Fare gate (unpaid → paid)</div>
               <select><option selected>Fare gate (unpaid → paid)</option><option>Re-assign…</option></select></div></div>
           <div class="pcard"><div class="img" style="background-image:var(--photo-stair);background-size:cover;background-position:center top;color:#fff;text-shadow:0 1px 3px #000;align-items:end">stair S2 head sign</div>
             <div class="ft"><div class="uncorr">● Needs correlation</div>
-              <select><option>Correlate to pathway…</option><option>Stair S2 (concourse → platform)</option></select></div></div>
+              <select onchange="qwCorr(this)"><option>Correlate to pathway…</option><option>Stair S2 (concourse → platform)</option></select></div></div>
           <div class="pcard"><div class="img" style="background-image:var(--photo-pylon);background-size:cover;background-position:center;color:#fff;text-shadow:0 1px 3px #000;align-items:end">elevator EL1 sign</div>
             <div class="ft"><div class="uncorr">● Needs correlation</div>
-              <select><option>Correlate to node…</option><option>Elevator EL1 landing</option></select></div></div>
+              <select onchange="qwCorr(this)"><option>Correlate to node…</option><option>Elevator EL1 landing</option></select></div></div>
           <div class="pcard"><div class="img" style="background-image:var(--photo-sign);background-size:cover;background-position:right;color:#fff;text-shadow:0 1px 3px #000;align-items:end">map case / wayfinding</div>
             <div class="ft"><div class="corr">✓ Node: Mezzanine landing</div>
               <select><option selected>Node: Mezzanine landing</option></select></div></div>
           <div class="pcard"><div class="img" style="background-image:var(--photo-corridor);background-size:cover;background-position:center bottom;color:#fff;text-shadow:0 1px 3px #000;align-items:end">walk-through clip</div>
             <div class="ft"><div class="uncorr">● Needs correlation</div>
-              <select><option>Correlate to pathway…</option><option>Entrance A → Mezzanine landing</option></select></div></div>
+              <select onchange="qwCorr(this)"><option>Correlate to pathway…</option><option>Entrance A → Mezzanine landing</option></select></div></div>
         </div>
       </div>
     </div>
@@ -1235,6 +1269,9 @@
     <div class="qwitem"><div class="qwtxt"><div class="qwtitle">Rename "spanning" → "between levels"</div>
       <div class="qwdesc">Plain language in the task list + level selector.</div></div>
       <button class="qwbtn" onclick="showQW('qw-tasklist')">View →</button></div>
+    <div class="qwitem"><div class="qwtxt"><div class="qwtitle">Spanning pathway across levels</div>
+      <div class="qwdesc">Toggle levels to see and place each end of a stair/elevator that crosses two levels (open issue #21).</div></div>
+      <button class="qwbtn" onclick="showQW('qw-spanning')">View →</button></div>
     <div class="qwitem"><div class="qwtxt"><div class="qwtitle">Sync &amp; offline status</div>
       <div class="qwdesc">A persistent app-bar chip: synced / N pending / offline — so a collector underground always knows their data is safe. (P0 data persistence, made visible.)</div></div>
       <button class="qwbtn" onclick="showQW('qw-sync')">View →</button></div>
@@ -1893,6 +1930,11 @@
      build:`In the level selector, when a level resolves to zero modeled pathways, show an inline "No pathways modeled on this level yet" row plus a brief shake on tap, instead of a silent no-op. Related: issue #16 (level-selector help text), issue #23 (pathways touching null-level stops missing from lists).`,
      from:`<div class="ip-prov">Findings doc "Status and navigation"; 6/15 backlog P2.</div>
        <div class="ip-quote">Give empty levels tap feedback (level selector).<span class="ip-attr">Findings doc, suggested changes</span></div>`},
+   'qw-spanning':{scr:'Quick win',title:'Spanning pathway across two levels',
+     what:'A stair or elevator that connects two levels appears on each level\'s diagram at its respective end; a level toggle moves between them, and the two ends stay linked as one pathway.',
+     why:'Spanning pathways live on neither single-level diagram cleanly, so collectors could not place/verify both ends. Visualizing a spanning pathway was called out as a real open design problem.',
+     build:`Map overlay: when a pathway\'s two stops are on different levels, render it on each level\'s diagram at the corresponding node and add a level toggle to move between ends; keep it a single pathway record. Open issue #21.`,
+     from:`<div class="ip-prov">Findings doc (spanning confused testers); open issue #21.</div>`},
    'qw-sync':{scr:'Quick win',title:'Sync & offline status',
      what:'A persistent app-bar chip showing whether field data is synced, pending upload, or offline. Edits are saved on the device immediately and upload automatically when a connection returns.',
      why:'Collectors are underground without signal for most of a session. The P0 finding was that edits save locally but it was unclear whether they synced; a visible status removes that doubt.',
@@ -1969,6 +2011,7 @@
    'qw-message':['Persistent banner','Dismiss X','Retry action'],
    'qw-emptylevel':['Empty-level feedback','Level row'],
    'qw-station':['Schedule version pick','Re-sync label'],
+   'qw-spanning':['Mezzanine end','Platform end'],
    'qw-sync':['Sync chip','State meanings'],
    'qw-alignment':['Opacity slider placement','Rotation','Pin affordance','Layer options'],
    'qw-tooltips':['Field hint','Save confirmation'],
@@ -2171,6 +2214,7 @@
     if(e){ e.style.display=n?'none':''; e.textContent='No '+type+' pathways modeled on this level.'; }
     requestAnimationFrame(positionNotes);
   }
+  function qwCorr(sel){ if(sel.selectedIndex<=0) return; var ft=sel.closest('.ft'); var st=ft&&ft.querySelector('.uncorr'); if(st){ st.className='corr'; st.textContent='\u2713 '+sel.options[sel.selectedIndex].text; } }
   function qwRm(x){var t=x.closest('.thumb'); if(t)t.remove(); requestAnimationFrame(positionNotes);}
   function qwSwDrop(x){var r=x.closest('.runrow'); if(r)r.remove();
     var rows=document.querySelectorAll('#sw-runs .runrow'); var n=rows.length, tot=0;
@@ -2229,7 +2273,8 @@
    'v2-note':[{l:'Compose',p:'note-s0'},{l:'Note saved',p:'note-s1'},{l:'Resolved at desk',p:'note-s2'}],
    'v2-signage':[{l:'Listening',p:'sig-s0'},{l:'Transcribed',p:'sig-s1'},{l:'AI cleanup',p:'sig-s2'}],
    'v2-captures':[{l:'All on level',p:'cap-all'},{l:'Photos only',p:'cap-photos'},{l:'Notes only',p:'cap-notes'},{l:'On a pathway',p:'cap-pathway'},{l:'On a node',p:'cap-node'},{l:'None yet',p:'cap-empty'}],
-   'qw-sync':[{l:'Synced',run:"qwSync('#7BE0BE','✓ Synced','All field edits are saved to the server. Nothing pending.')"},{l:'3 pending',run:"qwSync('#FFD466','⟳ 3 pending','3 edits are saved on this device, waiting to upload when you reconnect.')"},{l:'Offline',run:"qwSync('#F4A6A6','⚠ Offline','No connection. Keep working — edits are saved on the device and sync automatically when signal returns.')"},{l:'Sync conflict',run:"qwSync('#F08A8A','\u26a0 1 conflict','One pathway changed on the server while you were offline \u2014 resolve before it syncs.');var cf=document.getElementById('qw-conflict');if(cf)cf.style.display='block';"}],
+   'qw-spanning':[{l:'Mezzanine end',p:'span-mezz'},{l:'Platform end',p:'span-plat'}],
+   'qw-sync':[{l:'Synced',run:"qwSync('#7BE0BE','✓ Synced','All field edits are saved to the server. Nothing pending.')"},{l:'3 pending',run:"qwSync('#FFD466','⟳ 3 pending','3 edits are saved on this device, waiting to upload when you reconnect.')"},{l:'Offline',run:"qwSync('#F4A6A6','⚠ Offline','No connection. Keep working — edits are saved on the device and sync automatically when signal returns.')"},{l:'Sync conflict',run:"qwSync('#F08A8A','\u26a0 1 conflict','One pathway changed on the server while you were offline \u2014 resolve before it syncs.');var cf=document.getElementById('qw-conflict');if(cf)cf.style.display='block';"},{l:'Reconnecting',run:"qwSync('#FFD466','\u27f3 syncing\u2026','Back online \u2014 uploading pending edits\u2026');setTimeout(function(){qwSync('#7BE0BE','\u2713 Synced','All caught up \u2014 pending edits uploaded.');},1100);"}],
    'qw-tasklist':[{l:'All pathways',run:"qwFilter(document.querySelector('#qw-tasklist .seg button'),'all')"},{l:'Filter: fare gates',run:"var b=document.querySelectorAll('#qw-tasklist .seg button');qwFilter(b[4],'fare gate')"},{l:'Row expanded',run:"qwFilter(document.querySelector('#qw-tasklist .seg button'),'all');var p=document.getElementById('qwd1');if(p)p.style.display='block'"}],
    'qw-message':[{l:'Error shown',run:"var b=document.getElementById('qw-msg-banner'),c=document.getElementById('qw-msg-clear');if(b)b.style.display='';if(c)c.style.display='none'"},{l:'Dismissed',run:"qwDismiss()"}],
    'qw-emptylevel':[{l:'Before tap',run:"var f=document.getElementById('qw-empty-feedback');if(f)f.style.display='none'"},{l:'Tapped · feedback',run:"qwTapEmpty(document.getElementById('qw-empty-row'))"}],
@@ -2266,7 +2311,7 @@
     b.classList.toggle('on',on); b.textContent='Discussion notes: '+(on?'on':'off');
   }
   (function(){var n=localStorage.getItem('flyway_name');if(n)document.getElementById('cf-name').value=n;})();
-  var BUILD_DATE='June 17, 2026 · 4:05 PM EDT'; // @BUILD_DATE@ (stamped by deploy.sh)
+  var BUILD_DATE='June 17, 2026 · 4:26 PM EDT'; // @BUILD_DATE@ (stamped by deploy.sh)
   var RELEASE='v0.3';            // @RELEASE@
   (function(){var d=document.getElementById('build-date'); if(d)d.textContent=BUILD_DATE;
     var r=document.getElementById('release'); if(r)r.textContent='Companion App wireframes · '+RELEASE;})();
