@@ -247,6 +247,16 @@
   .noteflag{position:absolute;width:15px;height:15px;border-radius:50%;background:#e0c200;border:2px solid #fff;
     color:#3d3200;font-size:9px;font-weight:800;display:grid;place-items:center;z-index:7;
     box-shadow:0 1px 3px rgba(0,0,0,.3);pointer-events:none;transition:opacity .15s;}
+
+  /* ===== phone + state switcher beneath it (dev control, outside the app frame) ===== */
+  .phonecol{display:flex;flex-direction:column;align-items:center;flex:none;}
+  #statebar{display:none;margin-top:10px;width:412px;max-width:96vw;flex-wrap:wrap;gap:6px;
+    justify-content:center;align-items:center;background:#fff;border:1px solid var(--surfaceDim);
+    border-radius:12px;padding:9px 10px;box-shadow:0 4px 14px rgba(0,0,0,.06);}
+  #statebar .sb-label{font-size:10px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);margin-right:2px;}
+  #statebar button{font-family:inherit;font-size:11.5px;font-weight:600;border:1px solid var(--surfaceDim);
+    background:#fff;color:var(--primary);padding:7px 11px;border-radius:8px;cursor:pointer;}
+  #statebar button.on{background:var(--primary);color:#fff;border-color:var(--primary);}
 </style>
 </head>
 <body>
@@ -280,6 +290,7 @@
   <div class="stage">
   <svg id="noteSvg" xmlns="http://www.w3.org/2000/svg"></svg>
   <div id="noterail"></div>
+  <div class="phonecol">
   <div class="phone">
     <div class="notch"></div>
 
@@ -605,19 +616,31 @@
     <!-- ===== V2 PHOTO CAPTURE: signage-first; pin replaces zone ===== -->
     <section class="screen" id="v2-photo">
       <span class="scrnname">v2-photo</span>
-      <div class="appbar"><div class="t">Fare gate<small>Signage · unpaid → paid</small></div><div class="chip">Saved ✓</div></div>
+      <div class="appbar"><div class="t">Fare gate<small>Signage · unpaid → paid</small></div></div>
       <div class="scroll">
-        <div class="prio ship">Ship now</div>
-        <div class="field"><label>SIGNPOSTED AS</label><div class="val">To Trains | 69th St TC | Sharon Hill</div></div>
         <div class="anno">Signage is the photo's main job: snap the sign instead of typing it. (Voice is the other way in, under Discovery.)</div>
-        <div class="viewfinder">
-          <div class="sign">TO TRAINS →<br>69th St TC · Sharon Hill</div>
-          <div class="shutter" onclick="show('v2-pin')"></div>
-        </div>
-        <div class="sect">Attach to</div>
-        <div class="seg"><button class="on">Pathway</button><button>Node</button><button onclick="show('v2-pin')">Pin on diagram</button></div>
         <div class="anno">"Pin on diagram" replaces the old "zones" idea.</div>
-        <button class="btn primary next" onclick="show('v2-pin')">Place on diagram</button>
+        <!-- state: capture -->
+        <div class="statepane" id="photo-s0">
+          <div class="field"><label>SIGNPOSTED AS</label><div class="val">To Trains | 69th St TC | Sharon Hill</div></div>
+          <div class="viewfinder">
+            <div class="sign">TO TRAINS →<br>69th St TC · Sharon Hill</div>
+            <div class="shutter" onclick="qwSetState('v2-photo',1)"></div>
+          </div>
+          <div class="sect">Attach to</div>
+          <div class="seg"><button class="on">Pathway</button><button onclick="qwSeg(this)">Node</button><button onclick="show('v2-pin')">Pin on diagram</button></div>
+          <button class="btn primary" onclick="qwSetState('v2-photo',1)">📷 Capture</button>
+        </div>
+        <!-- state: photo saved & attached -->
+        <div class="statepane" id="photo-s1" style="display:none">
+          <div class="field" style="border-color:#bfe4d8;background:#f3faf7"><label>SIGNPOSTED AS</label><div class="val">To Trains | 69th St TC | Sharon Hill</div>
+            <div class="hint" style="color:#00795c">✓ filled from the photo</div></div>
+          <div class="sect">Photo</div>
+          <div class="grid3" style="grid-template-columns:1fr 1fr"><div class="thumb">📷 sign:<br>To Trains | 69th St TC</div><div class="thumb">＋ add another</div></div>
+          <div class="card" style="cursor:default"><div class="meta">Attached to <b>Pathway · Fare gate (unpaid → paid)</b></div></div>
+          <div class="cmt" style="border-left-color:var(--complete)">Saved ✓ — the photo travels to Studio for text extraction at the desk.<span class="cmt-meta">just now</span></div>
+          <div class="seg" style="margin-top:8px"><button class="on" onclick="qwSetState('v2-photo',0)">📷 Capture another</button><button onclick="show('v2-note')">🗒 Add a note instead</button></div>
+        </div>
       </div>
     </section>
 
@@ -626,9 +649,10 @@
       <span class="scrnname">v2-pin</span>
       <div class="appbar"><div class="back" onclick="show('v2-photo')">‹</div><div class="t">Drop a pin<small>Mezzanine · NRG Station</small></div></div>
       <div class="scroll">
-        <div class="prio maybe">Ship now · maybe</div>
         <div class="anno">Agreed model, but may slip past the first cut. Confirm with Chris.</div>
-        <div class="note">Zoom to where you are, line up the crosshair, drop the pin. Full interaction in the panel →</div>
+        <div class="anno">Zoom to where you are, line up the crosshair, drop the pin. The crosshair stays centered and the map moves under it (the Maps / Uber pattern).</div>
+        <!-- state 0: live empty map -->
+        <div class="statepane" id="pin-s0">
         <div class="pinmap" id="pinmap">
           <svg id="pinSvg" viewBox="0 0 360 250" preserveAspectRatio="xMidYMid meet">
             <g id="pinGraph">
@@ -645,17 +669,62 @@
         </div>
         <div class="maplegend"><span><i style="background:#1565C0"></i>to do</span><span><i style="background:#2E7D32"></i>validated</span><span>drag = pan · scroll / pinch = zoom · ⌖ recenter</span></div>
         <button class="btn primary" id="dropBtn" type="button">📍 Drop pin here</button>
-        <div class="hint" id="dropMsg" style="margin:4px 2px 8px">Snaps to a nearby node or pathway so the desk can correlate it; otherwise drops a free grid point.</div>
+        <div class="hint" id="dropMsg" style="margin:4px 2px 8px">Snaps to a nearby node or pathway so the desk can correlate it; otherwise drops a free grid point. (Use the state switcher below to see a placed pin, multiple pins, and a saved pin.)</div>
+        </div><!-- /pin-s0 -->
 
-        <div class="sect">On this pin</div>
-        <div class="seg"><button class="on">📷 Photo</button><button class="on">🗒 Note</button></div>
-        <div class="grid3" style="grid-template-columns:1fr 1fr">
-          <div class="thumb">sign photo:<br>To Platform ↑</div>
-          <div class="thumb">＋ add photo</div>
+        <!-- state 1: one pin placed, attach photo/note -->
+        <div class="statepane" id="pin-s1" style="display:none">
+          <div class="diagram" style="height:188px"><svg viewBox="0 0 360 200">
+            <rect x="0" y="0" width="360" height="200" fill="#e9edf4"/>
+            <g stroke="#c2c9d8" stroke-width="4" stroke-linecap="round" fill="none">
+              <line x1="45" y1="110" x2="130" y2="110"/><line x1="130" y1="110" x2="215" y2="110"/><line x1="215" y1="110" x2="300" y2="110"/>
+              <line x1="130" y1="110" x2="108" y2="50"/><line x1="130" y1="110" x2="108" y2="170"/><line x1="215" y1="110" x2="245" y2="50"/></g>
+            <g fill="#8a93a6"><circle cx="45" cy="110" r="5"/><circle cx="130" cy="110" r="5"/><circle cx="300" cy="110" r="5"/><circle cx="108" cy="50" r="5"/><circle cx="108" cy="170" r="5"/><circle cx="245" cy="50" r="5"/></g>
+            <text x="215" y="96" font-size="9" fill="#5b6480" text-anchor="middle">Mezz Center</text>
+            <circle cx="215" cy="110" r="9" fill="#E70750" stroke="#fff" stroke-width="2.5"/><circle cx="215" cy="110" r="3" fill="#fff"/>
+          </svg></div>
+          <div class="cmt" style="border-left-color:var(--secondary)">📍 Pin 1 · snapped to <b>Mezz Center</b><span class="cmt-meta">drop again on the map to move it</span></div>
+          <div class="sect">On this pin</div>
+          <div class="seg"><button class="on">📷 Photo</button><button class="on">🗒 Note</button></div>
+          <div class="hint">A pin can hold a photo, a note, or both. Add them, then save.</div>
+          <button class="btn primary" onclick="qwSetState('v2-pin',3)">Save pin</button>
         </div>
-        <div class="cmt" style="border-left-color:var(--accent);margin-top:10px">Sign points to Platform but the stair is behind the column to the left. Flag for fix.<span class="cmt-meta">Christopher · 🎤 dictated · just now</span></div>
-        <div class="hint" style="margin:2px">A pin holds a photo, a note, or both.</div>
-        <button class="btn primary next" onclick="show('v2-photo')">Save pin</button>
+
+        <!-- state 2: multiple pins on the level -->
+        <div class="statepane" id="pin-s2" style="display:none">
+          <div class="diagram" style="height:188px"><svg viewBox="0 0 360 200">
+            <rect x="0" y="0" width="360" height="200" fill="#e9edf4"/>
+            <g stroke="#c2c9d8" stroke-width="4" stroke-linecap="round" fill="none">
+              <line x1="45" y1="110" x2="130" y2="110"/><line x1="130" y1="110" x2="215" y2="110"/><line x1="215" y1="110" x2="300" y2="110"/>
+              <line x1="130" y1="110" x2="108" y2="50"/><line x1="130" y1="110" x2="108" y2="170"/><line x1="215" y1="110" x2="245" y2="50"/></g>
+            <g fill="#8a93a6"><circle cx="45" cy="110" r="5"/><circle cx="108" cy="50" r="5"/><circle cx="108" cy="170" r="5"/><circle cx="245" cy="50" r="5"/></g>
+            <g><circle cx="130" cy="110" r="9" fill="#E70750" stroke="#fff" stroke-width="2.5"/><text x="130" y="113.5" font-size="9" fill="#fff" font-weight="700" text-anchor="middle">1</text>
+              <circle cx="215" cy="110" r="9" fill="#E70750" stroke="#fff" stroke-width="2.5"/><text x="215" y="113.5" font-size="9" fill="#fff" font-weight="700" text-anchor="middle">2</text>
+              <circle cx="300" cy="110" r="9" fill="#E70750" stroke="#fff" stroke-width="2.5"/><text x="300" y="113.5" font-size="9" fill="#fff" font-weight="700" text-anchor="middle">3</text></g>
+          </svg></div>
+          <div class="sect">Pins on this level · 3</div>
+          <div class="card" style="cursor:default"><div class="meta">📍 <b>Pin 1</b> · Ticket Hall · 📷 1 photo</div></div>
+          <div class="card" style="cursor:default"><div class="meta">📍 <b>Pin 2</b> · Mezz Center · 📷 1 photo · 🗒 1 note</div></div>
+          <div class="card" style="cursor:default"><div class="meta">📍 <b>Pin 3</b> · Concourse · 🗒 1 note</div></div>
+        </div>
+
+        <!-- state 3: pin saved with photo + note; what happens next -->
+        <div class="statepane" id="pin-s3" style="display:none">
+          <div class="diagram" style="height:160px"><svg viewBox="0 0 360 170">
+            <rect x="0" y="0" width="360" height="170" fill="#e9edf4"/>
+            <g stroke="#c2c9d8" stroke-width="4" stroke-linecap="round" fill="none">
+              <line x1="45" y1="95" x2="130" y2="95"/><line x1="130" y1="95" x2="215" y2="95"/><line x1="215" y1="95" x2="300" y2="95"/>
+              <line x1="215" y1="95" x2="245" y2="45"/></g>
+            <g fill="#8a93a6"><circle cx="45" cy="95" r="5"/><circle cx="130" cy="95" r="5"/><circle cx="300" cy="95" r="5"/><circle cx="245" cy="45" r="5"/></g>
+            <circle cx="215" cy="95" r="11" fill="#E70750" stroke="#fff" stroke-width="3"/><circle cx="215" cy="95" r="3.5" fill="#fff"/>
+            <text x="215" y="80" font-size="9" fill="#5b6480" text-anchor="middle">Mezz Center</text>
+          </svg></div>
+          <div class="cmt" style="border-left-color:var(--complete)">Pin saved ✓ — kept on the diagram grid so the desk can correlate it.<span class="cmt-meta">just now</span></div>
+          <div class="sect">On this pin</div>
+          <div class="grid3" style="grid-template-columns:1fr 1fr"><div class="thumb">📷 sign:<br>To Platform ↑</div><div class="thumb">＋ add photo</div></div>
+          <div class="cmt" style="border-left-color:var(--accent);margin-top:8px">Sign points to Platform but the stair is behind the column to the left. Flag for fix.<span class="cmt-meta">Christopher · 🎤 dictated · just now</span></div>
+          <div class="seg" style="margin-top:8px"><button class="on" onclick="qwSetState('v2-pin',0)">📍 Drop another pin</button><button onclick="qwSetState('v2-pin',2)">See all pins</button></div>
+        </div>
       </div>
     </section>
 
@@ -664,13 +733,21 @@
       <span class="scrnname">v2-note</span>
       <div class="appbar"><div class="back" onclick="show('v2-pin')">‹</div><div class="t">Add a note<small>Fare gate (unpaid → paid)</small></div></div>
       <div class="scroll">
-        <div class="prio ship">Ship now</div>
         <div class="anno">A timestamped, authored comment on a node or pathway (like Miro), not a free-text blob. Voice works here too.</div>
-        <div class="cmt" style="border-left-color:var(--accent)">This pathway is not where we thought. Actual gate is ~3m east, flag to fix at desk.<span class="cmt-meta">Christopher · just now</span></div>
-        <div class="stateLabel">New comment</div>
-        <div class="editField"><div class="ta">Type, or 🎤 dictate…<span style="color:var(--secondary)">▏</span></div></div>
-        <div class="seg"><button class="on">🎤 Voice</button><button>📷 Attach photo</button></div>
-        <button class="btn primary" onclick="show('v2-pin')">Post comment</button>
+        <!-- state: compose -->
+        <div class="statepane" id="note-s0">
+          <div class="editField"><div class="ta">Actual gate is ~3m east of where it's modeled — flag to fix at desk.<span style="color:var(--secondary)">▏</span></div></div>
+          <div class="seg"><button class="on">🎤 Voice</button><button onclick="qwSeg(this)">📷 Attach photo</button></div>
+          <button class="btn primary" onclick="qwSetState('v2-note',1)">Post comment</button>
+        </div>
+        <!-- state: note saved (threaded, authored, timestamped) -->
+        <div class="statepane" id="note-s1" style="display:none">
+          <div class="sect">Comments on this pathway</div>
+          <div class="cmt" style="border-left-color:var(--complete)">Actual gate is ~3m east of where it's modeled — flag to fix at desk.<span class="cmt-meta">You · 🎤 dictated · just now</span></div>
+          <div class="cmt" style="border-left-color:var(--accent)">Confirmed the unpaid-side sign reads "To Trains".<span class="cmt-meta">Christopher · earlier today</span></div>
+          <div class="cmt" style="border-left-color:var(--complete)">Saved ✓ — the comment syncs to Studio attached to this pathway.<span class="cmt-meta">just now</span></div>
+          <div class="seg" style="margin-top:8px"><button class="on" onclick="qwSetState('v2-note',0)">🗒 Add another note</button><button onclick="show('v2-photo')">📷 Add a photo instead</button></div>
+        </div>
       </div>
     </section>
 
@@ -897,7 +974,9 @@
       </div>
     </section>
 
-  </div>
+  </div><!-- /phone -->
+  <div id="statebar"></div>
+  </div><!-- /phonecol -->
 
   <!-- ================= STUDIO DESK VIEW (desktop) ================= -->
   <div class="desk">
@@ -1276,16 +1355,16 @@
     document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
     var el=document.getElementById(id); if(el){el.classList.add('active'); el.querySelector('.scroll').scrollTop=0;}
     setMode(modeOf(id));
-    updateInfo(id); buildNotes();
+    updateInfo(id); renderStateBar(id); buildNotes();
     try{history.replaceState(null,'','#'+id);}catch(e){}
   }
-  function showDesk(){ document.body.classList.remove('qwmode','qwview','hasrail'); document.body.classList.add('deskmode'); setMode('v1'); updateInfo('desk'); buildNotes(); try{history.replaceState(null,'','#desk');}catch(e){} }
+  function showDesk(){ document.body.classList.remove('qwmode','qwview','hasrail'); document.body.classList.add('deskmode'); setMode('v1'); updateInfo('desk'); renderStateBar(); buildNotes(); try{history.replaceState(null,'','#desk');}catch(e){} }
   function showApp(){ document.body.classList.remove('deskmode'); show('photo-zone'); }
   // Quick wins: clean list view (no phone frame)
   function showQWList(){
     document.body.classList.remove('deskmode','qwview','hasrail');
     document.body.classList.add('qwmode');
-    setMode('v2'); buildNotes();
+    setMode('v2'); renderStateBar(); buildNotes();
     try{history.replaceState(null,'','#quickwins');}catch(e){}
     window.scrollTo(0,0);
   }
@@ -1296,7 +1375,7 @@
     document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
     var el=document.getElementById(id); if(el){el.classList.add('active'); el.querySelector('.scroll').scrollTop=0;}
     setMode('v2');
-    updateInfo(id); buildNotes();
+    updateInfo(id); renderStateBar(id); buildNotes();
     try{history.replaceState(null,'','#qwview='+id);}catch(e){}
     window.scrollTo(0,0);
   }
@@ -1309,7 +1388,7 @@
     Array.prototype.forEach.call(document.querySelectorAll('.noteflag'),function(f){f.remove();});
     if(!document.body.classList.contains('hasrail')) return;
     var scr=document.querySelector('.screen.active'); if(!scr||!rail||!stage) return;
-    var annos=Array.prototype.slice.call(scr.querySelectorAll('.anno'));
+    var annos=Array.prototype.slice.call(scr.querySelectorAll('.anno')).filter(function(a){return a.getClientRects().length>0;});
     annos.forEach(function(a,i){
       if(!a.dataset.note) a.dataset.note=a.innerHTML;
       var card=document.createElement('div'); card.className='notecard';
@@ -1351,6 +1430,50 @@
     });
   }
   window.addEventListener('resize', positionNotes);
+
+  // ===== Quick-win prototype interactions (clickable, show desired states) =====
+  function qwFilter(btn,type){
+    Array.prototype.forEach.call(btn.parentNode.children,function(b){b.classList.toggle('on',b===btn);});
+    Array.prototype.forEach.call(document.querySelectorAll('#qw-task-rows [data-type]'),function(r){
+      r.style.display=(type==='all'||r.getAttribute('data-type')===type)?'':'none';});
+    requestAnimationFrame(positionNotes);
+  }
+  function qwExpand(chev,id){var p=document.getElementById(id);if(!p)return;var open=p.style.display==='block';
+    p.style.display=open?'none':'block';chev.textContent=open?'⌄':'⌃';requestAnimationFrame(positionNotes);}
+  function qwDismiss(){var b=document.getElementById('qw-msg-banner');if(b)b.style.display='none';
+    var c=document.getElementById('qw-msg-clear');if(c)c.style.display='flex';requestAnimationFrame(positionNotes);}
+  function qwRetry(el){el.textContent='↻ Retrying…';el.style.opacity='.65';}
+  function qwTapEmpty(row){var f=document.getElementById('qw-empty-feedback');if(f)f.style.display='block';
+    if(row.animate)row.animate([{transform:'translateX(0)'},{transform:'translateX(-5px)'},{transform:'translateX(5px)'},{transform:'translateX(0)'}],{duration:240});
+    requestAnimationFrame(positionNotes);}
+  function qwResync(btn){btn.textContent='↻ Re-downloading…';setTimeout(function(){btn.textContent='✓ Up to date';btn.style.color='var(--complete)';btn.style.borderColor='var(--complete)';},1100);}
+  function qwTip(el){var t=document.getElementById('qw-tip-pop');if(t){t.style.display=t.style.display==='block'?'none':'block';requestAnimationFrame(positionNotes);}}
+  function qwRotate(){var g=document.getElementById('qw-align-graph');if(!g)return;var r=parseInt(g.getAttribute('data-rot')||'-8',10)-15;g.setAttribute('data-rot',r);g.setAttribute('transform','rotate('+r+' 180 95)');}
+  function qwOpacity(v){var g=document.getElementById('qw-align-graph');if(g)g.setAttribute('opacity',(v/100).toFixed(2));var l=document.getElementById('qw-op-val');if(l)l.textContent=v+'%';}
+  function qwSeg(btn){Array.prototype.forEach.call(btn.parentNode.children,function(b){b.classList.toggle('on',b===btn);});}
+
+  // ===== State switcher (toggle between interaction states beneath the phone) =====
+  var STATES={
+   'v2-pin':[{l:'Empty diagram',p:'pin-s0'},{l:'1 pin placed',p:'pin-s1'},{l:'Multiple pins',p:'pin-s2'},{l:'Saved · photo + note',p:'pin-s3'}],
+   'v2-photo':[{l:'Capture',p:'photo-s0'},{l:'Photo saved',p:'photo-s1'}],
+   'v2-note':[{l:'Compose',p:'note-s0'},{l:'Note saved',p:'note-s1'}]
+  };
+  function renderStateBar(id){
+    var bar=document.getElementById('statebar'); if(!bar) return;
+    var st=STATES[id];
+    if(!st || document.body.classList.contains('qwmode') || document.body.classList.contains('deskmode')){ bar.style.display='none'; bar.innerHTML=''; return; }
+    bar.style.display='flex';
+    bar.innerHTML='<span class="sb-label">State</span>'+st.map(function(s,i){return '<button onclick="qwSetState(\''+id+'\','+i+')">'+s.l+'</button>';}).join('');
+    qwSetState(id,0);
+  }
+  function qwSetState(id,idx){
+    var st=STATES[id]; if(!st) return;
+    st.forEach(function(s,i){var p=document.getElementById(s.p); if(p)p.style.display=(i===idx)?'':'none';});
+    var bar=document.getElementById('statebar');
+    if(bar)Array.prototype.forEach.call(bar.querySelectorAll('button'),function(b,i){b.classList.toggle('on',i===idx);});
+    var sc=document.querySelector('.screen.active .scroll'); if(sc) sc.scrollTop=0;
+    buildNotes();
+  }
   function toggleNext(){
     document.body.classList.toggle('hide-next');
     var b=document.getElementById('nextBtn'), off=document.body.classList.contains('hide-next');
@@ -1362,7 +1485,7 @@
     b.classList.toggle('on',on); b.textContent='Discussion notes: '+(on?'on':'off');
   }
   (function(){var n=localStorage.getItem('flyway_name');if(n)document.getElementById('cf-name').value=n;})();
-  var BUILD_DATE='June 16, 2026 · 9:55 PM EDT'; // @BUILD_DATE@ (stamped by deploy.sh)
+  var BUILD_DATE='June 16, 2026 · 10:08 PM EDT'; // @BUILD_DATE@ (stamped by deploy.sh)
   var RELEASE='v0.3';            // @RELEASE@
   (function(){var d=document.getElementById('build-date'); if(d)d.textContent=BUILD_DATE;
     var r=document.getElementById('release'); if(r)r.textContent='Companion App wireframes · '+RELEASE;})();
