@@ -205,30 +205,61 @@
   .nearchip{position:absolute;left:8px;top:8px;background:rgba(255,255,255,.92);border:1px solid var(--surfaceDim);border-radius:999px;padding:4px 10px;font-size:10.5px;font-weight:600;color:#2a2a30;max-width:70%;}
   .maplegend{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin:5px 2px;font-size:10px;color:#5b6480;}
   .maplegend i{display:inline-block;width:16px;height:4px;border-radius:2px;vertical-align:middle;margin-right:4px;}
+
+  /* ===== Quick wins: clean list view (no phone frame) ===== */
+  .qwlist{display:none;width:780px;max-width:96vw;}
+  body.qwmode .phone,body.qwmode #infopanel,body.qwmode .desk{display:none;}
+  body.qwmode .qwlist{display:block;}
+  .qwlist .qwhead{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin:0 2px 4px;}
+  .qwlist h2{font-size:18px;margin:0;}
+  .qwlist .qwsub{color:var(--muted);font-size:13px;margin:0 2px 16px;line-height:1.5;}
+  .qwgroup{font-size:11px;font-weight:700;letter-spacing:1.2px;color:var(--primary);text-transform:uppercase;margin:22px 2px 9px;}
+  .qwitem{display:flex;gap:14px;align-items:center;background:#fff;border:1px solid var(--surfaceDim);border-radius:12px;padding:13px 15px;margin-bottom:9px;}
+  .qwitem .qwtxt{flex:1;min-width:0;}
+  .qwitem .qwtitle{font-weight:600;font-size:14px;}
+  .qwitem .qwdesc{font-size:12px;color:var(--muted);margin-top:3px;line-height:1.45;}
+  .qwitem .qwbtn{flex:none;font-family:inherit;font-size:12px;font-weight:600;border:1.5px solid var(--primary);
+    background:var(--primary);color:#fff;padding:9px 13px;border-radius:9px;cursor:pointer;white-space:nowrap;}
+  .qwitem .qwbtn:hover{opacity:.92;}
+  .qwitem .qwtag{flex:none;font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--muted);
+    background:var(--surface);border:1px solid var(--surfaceDim);border-radius:8px;padding:7px 10px;white-space:nowrap;}
+
+  /* ===== Quick win detail: prototype on top, info box pushed below ===== */
+  #qwback{display:none;width:390px;max-width:96vw;margin-bottom:6px;}
+  #qwback button{font-family:inherit;font-size:13px;font-weight:600;border:1px solid var(--surfaceDim);
+    background:#fff;color:var(--primary);padding:10px 14px;border-radius:10px;cursor:pointer;width:100%;}
+  body.qwview .stage{flex-direction:column;align-items:center;}
+  body.qwview #infopanel{width:390px;max-width:96vw;margin-top:10px;}
+  body.qwview .desk,body.qwview .qwlist{display:none;}
+  body.qwview #qwback{display:block;}
 </style>
 </head>
 <body class="show-anno">
   <h1 class="title">Flyway · Companion App — concept wireframes</h1>
-  <p class="sub">Two dated cuts of the companion-app concept. <b>Version 1 (Jun 12 sync)</b> led with the guided-journey routing view and zone-based photo capture. <b>Version 2 (Jun 15 sync)</b> reflects the team's reprioritization, in buckets: <b>Ship now</b> (photo + note capture; pin placement is a maybe), <b>Discovery</b> (voice-to-text and AI signage cleanup, to prove out first), and <b>Defer</b> (guided journeys, a later task order). The pathway form's signage field is the shared context for both photo (Ship) and voice (Discovery) capture, so it's bundled into those rather than standing alone. Switch with the version tabs; yellow notes carry the reasoning.</p>
+  <p class="sub">Three cuts of the companion-app concept. <b>Version 2 · Ship now</b> (the default) is what we build this task order: photo + note capture, a batch of small usability quick wins, and pin placement (a maybe). <b>In discovery / deferred</b> holds what we're proving out first (voice-to-text + AI signage cleanup) and what's parked for a later task order (guided journeys). <b>Version 1 · Jun 12</b> is the original cut that led with guided-journey routing and zone-based photo capture. Switch with the tabs; yellow notes carry the reasoning.</p>
   <div class="vertabs">
-    <button id="vtab1" class="on" onclick="goVer(1)">Version 1 · Jun 12 sync</button>
-    <button id="vtab2" onclick="goVer(2)">Version 2 · Jun 15 sync</button>
+    <button id="tab-v2" class="on" onclick="goMode('v2')">Version 2 · Ship now</button>
+    <button id="tab-disc" onclick="goMode('disc')">In discovery / deferred</button>
+    <button id="tab-v1" onclick="goMode('v1')">Version 1 · Jun 12</button>
   </div>
-  <div class="toolbar" id="nav-v1">
+  <div id="nav-v2">
+    <div class="toolbar"><span class="navlabel ship">Ship now</span>
+      <button onclick="showQWList()">⚡ Quick wins</button>
+      <button onclick="show('v2-photo')">📷 Photo capture</button>
+      <button onclick="show('v2-note')">🗒 Note / comment</button>
+      <button onclick="show('v2-pin')">📍 Pin placement (maybe)</button></div>
+  </div>
+  <div id="nav-disc" style="display:none">
+    <div class="toolbar"><span class="navlabel discovery">Discovery</span>
+      <button onclick="show('v2-signage')">🎤 Voice + AI signage</button></div>
+    <div class="toolbar"><span class="navlabel defer">Deferred</span>
+      <button onclick="show('v2-journeys')">⏸ Guided journeys</button></div>
+  </div>
+  <div class="toolbar" id="nav-v1" style="display:none">
     <button onclick="show('task-list')">📱 The app today</button>
     <button onclick="show('journeys')">▶ Guided journeys</button>
     <button onclick="show('photo-capture')">📷 Photo capture (zones)</button>
     <button onclick="showDesk()">🖥 Studio: desk view</button>
-  </div>
-  <div id="nav-v2" style="display:none">
-    <div class="toolbar"><span class="navlabel ship">Ship now</span>
-      <button onclick="show('v2-photo')">📷 Photo capture</button>
-      <button onclick="show('v2-note')">🗒 Note / comment</button>
-      <button onclick="show('v2-pin')">📍 Pin placement (maybe)</button></div>
-    <div class="toolbar"><span class="navlabel discovery">Discovery</span>
-      <button onclick="show('v2-signage')">🎤 Voice + AI signage</button></div>
-    <div class="toolbar"><span class="navlabel defer">Defer</span>
-      <button onclick="show('v2-journeys')">⏸ Guided journeys</button></div>
   </div>
   <div class="toolbar">
     <button id="nextBtn" class="on" onclick="toggleNext()">Walkthrough guide: on</button>
@@ -236,6 +267,7 @@
   </div>
 
   <div class="stage">
+  <div id="qwback"><button onclick="showQWList()">‹ Back to quick wins list</button></div>
   <div class="phone">
     <div class="notch"></div>
 
@@ -630,6 +662,212 @@
       </div>
     </section>
 
+    <!-- ===================================================== -->
+    <!-- ===== QUICK-WIN EXAMPLE PROTOTYPES (phone frame) ==== -->
+    <!-- ===================================================== -->
+
+    <!-- qw: task list — filter + clearer rows + "between levels" -->
+    <section class="screen" id="qw-tasklist">
+      <span class="scrnname">qw · task list</span>
+      <div class="appbar"><div class="back" onclick="showQWList()">‹</div>
+        <div class="t">L1 Mezzanine<small>Filter + clearer rows</small></div></div>
+      <div class="scroll">
+        <div class="anno"><b>Fixes shown:</b> filter by pathway type, split the two endpoints onto their own lines, color-code the type tags, clarify the row expander, and rename "spanning" → "between levels".</div>
+        <div class="field" style="padding:8px 12px"><div class="val" style="color:var(--muted)">🔍 Search pathways</div></div>
+        <div class="stateLabel">Filter by type</div>
+        <div class="seg" style="flex-wrap:wrap">
+          <button class="on">All</button><button>Walkway</button><button>Stairs</button><button>Elevator</button><button>Fare gate</button>
+        </div>
+        <div class="sect">Pathways · 12</div>
+        <div class="card">
+          <div class="row"><div class="dot todo">○</div>
+            <div style="flex:1"><div class="title2">Entrance A</div>
+              <div class="meta" style="margin:1px 0 1px">↓ to</div>
+              <div class="title2">Mezzanine landing</div>
+              <div style="margin-top:6px"><span class="pill" style="background:#eef0ff;border-color:#c9cdf7;color:#0E06AA">Walkway</span> 2 of 3 fields</div></div>
+            <span class="chev" title="Expand details">⌄</span></div>
+        </div>
+        <div class="card">
+          <div class="row"><div class="dot todo">○</div>
+            <div style="flex:1"><div class="title2">Concourse</div>
+              <div class="meta" style="margin:1px 0 1px">↓ to</div>
+              <div class="title2">Westbound platform</div>
+              <div style="margin-top:6px"><span class="pill" style="background:#fff1e6;border-color:#ffd2ab;color:#a65200">Stairs</span><span class="pill" style="background:#eef7f4;border-color:#bfe4d8;color:#00795c">between levels</span> step count, signage</div></div>
+            <span class="chev" title="Expand details">⌄</span></div>
+        </div>
+        <div class="card">
+          <div class="row"><div class="dot now">●</div>
+            <div style="flex:1"><div class="title2">Unpaid area</div>
+              <div class="meta" style="margin:1px 0 1px">↔ to</div>
+              <div class="title2">Paid area</div>
+              <div style="margin-top:6px"><span class="pill" style="background:#fde8ef;border-color:#f6bcd0;color:#b00045">Fare gate</span> min width req'd</div></div>
+            <span class="chev" title="Expand details">⌄</span></div>
+        </div>
+        <div class="anno"><b>Today:</b> one cramped line per row, all the same gray tag, endpoints run together ("these names all blend together" — Adam), and no quick way to see only fare gates.</div>
+      </div>
+    </section>
+
+    <!-- qw: diagram status legibility (colorblind-safe) -->
+    <section class="screen" id="qw-legibility">
+      <span class="scrnname">qw · status legibility</span>
+      <div class="appbar"><div class="back" onclick="showQWList()">‹</div>
+        <div class="t">Diagram status<small>Reads when zoomed out · colorblind-safe</small></div></div>
+      <div class="scroll">
+        <div class="anno"><b>Fix:</b> encode done vs needs-attention with shape + line style + color, not green vs blue alone, so status reads at the default zoom without zooming in.</div>
+        <div class="stateLabel">Today — color only (hard to read zoomed out)</div>
+        <div class="diagram" style="height:140px">
+          <svg viewBox="0 0 360 140">
+            <g stroke-width="5" fill="none" stroke-linecap="round">
+              <line x1="30" y1="70" x2="130" y2="40" stroke="#2E7D32"/>
+              <line x1="130" y1="40" x2="230" y2="70" stroke="#1565C0"/>
+              <line x1="230" y1="70" x2="330" y2="50" stroke="#2E7D32"/>
+              <line x1="130" y1="40" x2="160" y2="115" stroke="#1565C0"/>
+            </g>
+            <g fill="#2E7D32"><circle cx="30" cy="70" r="6"/><circle cx="330" cy="50" r="6"/></g>
+            <g fill="#1565C0"><circle cx="130" cy="40" r="6"/><circle cx="230" cy="70" r="6"/><circle cx="160" cy="115" r="6"/></g>
+          </svg>
+        </div>
+        <div class="stateLabel">Proposed — shape + dashes + color (redundant cues)</div>
+        <div class="diagram" style="height:160px">
+          <svg viewBox="0 0 360 160">
+            <g stroke-width="5" fill="none" stroke-linecap="round">
+              <line x1="30" y1="80" x2="130" y2="45" stroke="#2E7D32"/>
+              <line x1="130" y1="45" x2="230" y2="80" stroke="#F97900" stroke-dasharray="3 9"/>
+              <line x1="230" y1="80" x2="330" y2="55" stroke="#2E7D32"/>
+              <line x1="130" y1="45" x2="165" y2="130" stroke="#F97900" stroke-dasharray="3 9"/>
+            </g>
+            <g fill="#2E7D32" stroke="#fff" stroke-width="2"><circle cx="30" cy="80" r="8"/><circle cx="330" cy="55" r="8"/></g>
+            <text x="30" y="84" font-size="10" fill="#fff" text-anchor="middle">✓</text>
+            <text x="330" y="59" font-size="10" fill="#fff" text-anchor="middle">✓</text>
+            <g fill="#fff" stroke="#F97900" stroke-width="3"><circle cx="130" cy="45" r="8"/><circle cx="230" cy="80" r="8"/><circle cx="165" cy="130" r="8"/></g>
+            <g fill="#F97900" font-size="11" font-weight="700" text-anchor="middle"><text x="130" y="49">!</text><text x="230" y="84">!</text><text x="165" y="134">!</text></g>
+          </svg>
+        </div>
+        <div class="legend">
+          <span><i style="background:#2E7D32"></i>Done — solid line, ✓ filled node</span>
+          <span><i style="background:#F97900"></i>Needs attention — dashed line, ! hollow node</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- qw: messages stay until dismissed -->
+    <section class="screen" id="qw-message">
+      <span class="scrnname">qw · messages</span>
+      <div class="appbar"><div class="back" onclick="showQWList()">‹</div>
+        <div class="t">Messages<small>Stay until you dismiss them</small></div></div>
+      <div class="scroll">
+        <div class="anno"><b>Fix:</b> keep important messages on screen with an X to dismiss, instead of a toast that auto-closes before you can read it. First hit was the alignment save error.</div>
+        <div class="stateLabel">Proposed — persistent, dismissible</div>
+        <div style="background:#fde8ee;border:1px solid #f4b6c6;border-radius:12px;padding:12px 14px;display:flex;gap:11px;align-items:flex-start">
+          <div style="font-size:18px;line-height:1.2">⚠️</div>
+          <div style="flex:1"><div style="font-weight:700;color:#b00020;font-size:13.5px">Couldn't save alignment</div>
+            <div class="meta" style="margin-top:3px">The alignment save endpoint isn't responding. Your work is kept on the phone and will retry on the next sync.</div>
+            <div style="margin-top:8px"><span class="pill" style="background:#fff;border-color:#f4b6c6;color:#b00020">↻ Retry now</span></div></div>
+          <div style="font-size:16px;color:#b00020;cursor:pointer">✕</div>
+        </div>
+        <div class="stateLabel">Today — flashes and disappears</div>
+        <div class="note">A ~2-second toast at the bottom that's gone before you've read what failed or what to do about it.</div>
+      </div>
+    </section>
+
+    <!-- qw: empty level tap feedback -->
+    <section class="screen" id="qw-emptylevel">
+      <span class="scrnname">qw · empty level</span>
+      <div class="appbar"><div class="back" onclick="showQWList()">‹</div>
+        <div class="t">Select a level<small>15th St / City Hall</small></div></div>
+      <div class="scroll">
+        <div class="anno"><b>Fix:</b> tapping a level with no modeled pathways gives clear feedback, instead of doing nothing and feeling broken.</div>
+        <div class="card"><div class="row"><div style="flex:1"><div class="title2">L1 Mezzanine</div><div class="meta">12 pathways</div></div><span class="chev">›</span></div></div>
+        <div class="card"><div class="row"><div style="flex:1"><div class="title2">Concourse</div><div class="meta">8 pathways</div></div><span class="chev">›</span></div></div>
+        <div class="card" style="border-color:#ffd2ab;background:#fff8f0"><div class="row"><div style="flex:1"><div class="title2">Upper Mezzanine</div>
+          <div class="meta" style="color:#a65200;font-weight:600">No pathways modeled on this level yet</div></div></div></div>
+        <div class="note">Tapping the empty level shows this inline message (plus a subtle shake), so it's obvious the tap registered and why nothing opened.</div>
+      </div>
+    </section>
+
+    <!-- qw: station selector + data version + re-sync -->
+    <section class="screen" id="qw-station">
+      <span class="scrnname">qw · station + sync</span>
+      <div class="appbar"><div class="back" onclick="showQWList()">‹</div>
+        <div class="t">Station &amp; data version<small>First-run guidance</small></div></div>
+      <div class="scroll">
+        <div class="anno"><b>Fixes:</b> guide the first GTFS-version pick, and rename the vague "update" action to a clear "re-download station data" with an explanation.</div>
+        <div class="field"><label>STATION</label><div class="val">15th St / City Hall ▾</div></div>
+        <div class="field"><label>SCHEDULE VERSION (GTFS)</label><div class="val">Spring 2026 · published Apr 2 ▾</div>
+          <div class="hint">Pick the schedule version your fieldwork is checked against. The most recent is selected for you by default.</div></div>
+        <div class="stateLabel">Sync</div>
+        <button class="btn outline" style="margin-bottom:6px">↻ Re-download station data</button>
+        <div class="hint">Replaces your local copy with the latest from the server. Any unsynced field edits upload first, so nothing is lost.</div>
+      </div>
+    </section>
+
+    <!-- qw: alignment workspace polish -->
+    <section class="screen" id="qw-alignment">
+      <span class="scrnname">qw · alignment polish</span>
+      <div class="appbar"><div class="back" onclick="showQWList()">‹</div>
+        <div class="t">Diagram ⇄ map alignment<small>v0.8.x polish</small></div></div>
+      <div class="scroll">
+        <div class="anno"><b>Fixes (v0.8.x):</b> calmer zoom, opacity slider moved out of the bottom swipe zone, base-map rotation, a clearly-labeled pin control, and dropping the empty "None" layer.</div>
+        <div class="field"><label>BASE MAP OPACITY · 45%</label>
+          <div class="progress" style="height:8px;background:var(--surfaceDim)"><i style="width:45%;background:var(--primary)"></i></div>
+          <div class="hint">Moved up here, off the bottom edge, so adjusting it no longer fights the home-swipe gesture.</div></div>
+        <div class="diagram" style="height:190px">
+          <svg viewBox="0 0 360 190">
+            <rect x="0" y="0" width="360" height="190" fill="#1b2740"/>
+            <g stroke="#2e6df0" stroke-width="3" fill="none" opacity=".7" transform="rotate(-8 180 95)">
+              <line x1="60" y1="70" x2="180" y2="70"/><line x1="180" y1="70" x2="180" y2="140"/><line x1="180" y1="140" x2="300" y2="140"/>
+            </g>
+            <circle cx="180" cy="70" r="9" fill="#E70750" stroke="#fff" stroke-width="2.5"/>
+            <circle cx="180" cy="70" r="3" fill="#fff"/>
+            <text x="196" y="66" fill="#cfe0ff" font-size="11" font-weight="700">alignment pin</text>
+          </svg>
+        </div>
+        <div class="seg"><button class="on">Street map</button><button>Satellite</button></div>
+        <div class="meta" style="margin:2px 2px 10px">The "None" layer was removed — it only ever showed a blank canvas.</div>
+        <button class="btn ghost" style="margin-bottom:6px">⟲ Rotate base map</button>
+        <div class="anno"><b>Pin affordance:</b> a labeled "📍 Place alignment point" button replaces the stray 3-dots icon that landed semi-randomly and didn't look tappable.</div>
+      </div>
+    </section>
+
+    <!-- qw: per-field tooltips + save confirmation -->
+    <section class="screen" id="qw-tooltips">
+      <span class="scrnname">qw · tooltips + save</span>
+      <div class="appbar"><div class="back" onclick="showQWList()">‹</div>
+        <div class="t">Field hints + save confirmation<small>Small, but high-trust</small></div></div>
+      <div class="scroll">
+        <div class="anno"><b>Fixes:</b> a per-field hint stating the measurement method, and a visible "saved" confirmation on fields that currently save silently (signage especially).</div>
+        <div class="stateLabel">Per-field hint</div>
+        <div class="field"><label>TRAVERSAL TIME (S)</label><div class="val">43</div>
+          <div class="hint">ⓘ Measured door-open to door-open. Use the in-app stopwatch to capture it.</div></div>
+        <div class="stateLabel">Save confirmation</div>
+        <div class="lockedField" style="border-color:#bfe4d8;background:#f3faf7"><div class="txt">To Trains | 69th St TC | Sharon Hill</div>
+          <div class="pencil" style="color:#00795c;font-weight:700;font-size:12px">Saved ✓</div></div>
+        <div class="note">Today signage saves with no confirmation, unlike the rest of the app, so people aren't sure their input stuck.</div>
+        <div class="sect">Reference screens</div>
+        <button class="btn ghost" style="margin-bottom:6px" onclick="showQW('stopwatch')">↗ Stopwatch (field hint in context)</button>
+        <button class="btn ghost" onclick="showQW('signage-edit')">↗ Signage field</button>
+      </div>
+    </section>
+
+    <!-- qw: Back-navigation overshoot (behavior fix, no new UI) -->
+    <section class="screen" id="qw-back">
+      <span class="scrnname">qw · back behavior</span>
+      <div class="appbar"><div class="back" onclick="showQWList()">‹</div>
+        <div class="t">Back navigation fix<small>Behavior change · no new UI</small></div></div>
+      <div class="scroll">
+        <div class="anno"><b>Behavior fix, not a screen.</b> Everything needed to implement it is here; the source quote is in the panel below.</div>
+        <div class="sect">Problem</div>
+        <div class="note">After tapping an element on the Level Map to jump into the Pathway form, pressing Back skips two screens: it overshoots the Level Map sheet and lands on the level list, so you lose your place.</div>
+        <div class="sect">Steps to reproduce</div>
+        <div class="card" style="cursor:default"><div class="meta">1. Open a level → 2. Level Map sheet → 3. tap an element → Pathway form → 4. press Back → ❌ lands on the level list (expected: the Level Map sheet).</div></div>
+        <div class="sect">Expected</div>
+        <div class="note">Back returns to the Level Map sheet you came from in one step, preserving scroll and the open element. Likely a duplicate route push on the element→form jump.</div>
+        <div class="sect">Reference screens</div>
+        <button class="btn ghost" style="margin-bottom:6px" onclick="showQW('qw-tasklist')">↗ Level Map / task list</button>
+        <button class="btn ghost" onclick="showQW('pathway-form')">↗ Pathway form (the jump target)</button>
+      </div>
+    </section>
+
     <!-- ===== V2 GUIDED JOURNEYS — DEFERRED ===== -->
     <section class="screen" id="v2-journeys">
       <span class="scrnname">v2-journeys</span>
@@ -690,6 +928,57 @@
         </div>
       </div>
     </div>
+  </div>
+
+  <!-- ================= QUICK WINS — clean list view ================= -->
+  <div class="qwlist">
+    <div class="qwhead"><span class="navlabel ship">Ship now</span><h2>Quick wins — small usability fixes</h2></div>
+    <p class="qwsub">A batch of small, mostly independent fixes from the two in-station sessions, grouped so they ship together instead of getting lost behind the headline features. Each opens an example mockup or a deploy-ready spec with the source quotes. From the "Suggested changes" in the findings doc + the P2 quick wins in the 6/15 backlog.</p>
+
+    <div class="qwgroup">Form &amp; capture</div>
+    <div class="qwitem"><div class="qwtxt"><div class="qwtitle">Signage field: scannable, locked + multi-line</div>
+      <div class="qwdesc">Full value shown as locked text; pencil opens a multi-line editor; one-tap | separator.</div></div>
+      <button class="qwbtn" onclick="showQW('signage-edit')">View →</button></div>
+    <div class="qwitem"><div class="qwtxt"><div class="qwtitle">Reorder the pathway form</div>
+      <div class="qwdesc">Signage first, distance locked at the bottom; capture order follows the physical walk (signage A → traversal → signage B on stairs/elevators).</div></div>
+      <button class="qwbtn" onclick="showQW('pathway-form')">View →</button></div>
+    <div class="qwitem"><div class="qwtxt"><div class="qwtitle">In-app stopwatch for traversal time</div>
+      <div class="qwdesc">Time door-open to door-open, record runs, drop bad ones, use the average.</div></div>
+      <button class="qwbtn" onclick="showQW('stopwatch')">View →</button></div>
+    <div class="qwitem"><div class="qwtxt"><div class="qwtitle">Per-field tooltips + save confirmation</div>
+      <div class="qwdesc">Each field states its measurement method; signage shows an unambiguous "saved" state.</div></div>
+      <button class="qwbtn" onclick="showQW('qw-tooltips')">View →</button></div>
+
+    <div class="qwgroup">Status &amp; navigation</div>
+    <div class="qwitem"><div class="qwtxt"><div class="qwtitle">Filter the task list by pathway type</div>
+      <div class="qwdesc">"filter by those tags rather than scroll through a million walkways" — Adam.</div></div>
+      <button class="qwbtn" onclick="showQW('qw-tasklist')">View →</button></div>
+    <div class="qwitem"><div class="qwtxt"><div class="qwtitle">Differentiate list rows</div>
+      <div class="qwdesc">Split the two endpoints, color-code type tags, clarify the row expander.</div></div>
+      <button class="qwbtn" onclick="showQW('qw-tasklist')">View →</button></div>
+    <div class="qwitem"><div class="qwtxt"><div class="qwtitle">Colorblind-safe done vs needs-attention</div>
+      <div class="qwdesc">Legible at the zoomed-out default using shape + line style + color, not green vs blue alone.</div></div>
+      <button class="qwbtn" onclick="showQW('qw-legibility')">View →</button></div>
+    <div class="qwitem"><div class="qwtxt"><div class="qwtitle">Keep important messages on screen</div>
+      <div class="qwdesc">An X to dismiss instead of auto-closing (first hit: the alignment save error).</div></div>
+      <button class="qwbtn" onclick="showQW('qw-message')">View →</button></div>
+    <div class="qwitem"><div class="qwtxt"><div class="qwtitle">Fix Back overshooting two screens</div>
+      <div class="qwdesc">Behavior fix after an element-to-diagram jump. Click for the spec + repro + references.</div></div>
+      <button class="qwbtn" onclick="showQW('qw-back')">Spec →</button></div>
+    <div class="qwitem"><div class="qwtxt"><div class="qwtitle">Empty levels: tap feedback</div>
+      <div class="qwdesc">A tap on an empty level responds instead of doing nothing.</div></div>
+      <button class="qwbtn" onclick="showQW('qw-emptylevel')">View →</button></div>
+    <div class="qwitem"><div class="qwtxt"><div class="qwtitle">Station selector: guide the first sync</div>
+      <div class="qwdesc">Guide the first GTFS-version pick and clarify the "update / re-sync" label.</div></div>
+      <button class="qwbtn" onclick="showQW('qw-station')">View →</button></div>
+    <div class="qwitem"><div class="qwtxt"><div class="qwtitle">Rename "spanning" → "between levels"</div>
+      <div class="qwdesc">Plain language in the task list + level selector.</div></div>
+      <button class="qwbtn" onclick="showQW('qw-tasklist')">View →</button></div>
+
+    <div class="qwgroup">Alignment workspace polish (v0.8.x)</div>
+    <div class="qwitem"><div class="qwtxt"><div class="qwtitle">Alignment workspace, still rough</div>
+      <div class="qwdesc">Calmer zoom · opacity slider out of the swipe zone · base-map rotation · clearer pin affordance · drop the "None" layer.</div></div>
+      <button class="qwbtn" onclick="showQW('qw-alignment')">View →</button></div>
   </div>
 
     <aside id="infopanel">
@@ -813,6 +1102,48 @@
      from:`<div class="ip-prov">Jun 15 sync.</div>
        <div class="ip-quote">structure it as a comment that someone can leave, so it's got a time stamp, an author.<span class="ip-attr">Chris Alfano, Jun 15</span></div>
        <div class="ip-quote">audio too for notes would be a good add-on instead of the typing.<span class="ip-attr">Kristin Taylor, Jun 15</span></div>`},
+   'qw-tasklist':{scr:'Quick win',title:'Task list: filter + clearer rows',
+     what:'A pathway-type filter on the task list, plus rows that split the two endpoints onto their own lines, color-code the type tags, clarify the expander, and rename "spanning" to "between levels".',
+     why:'Testers scrolled long undifferentiated lists where rows blended together and there was no way to see just one pathway type.',
+     from:`<div class="ip-prov">Jun 9 session (Adam, SEPTA wayfinding and maps lead). Findings doc "Status and navigation"; 6/15 backlog P2.</div>
+       <div class="ip-quote">I want to be able to filter by those tags, so I can only see fare gate rather than scroll through a million walkways.<span class="ip-attr">Adam, Jun 9 session</span></div>
+       <div class="ip-quote">these names all blend together... maybe even color coding the tags would help.<span class="ip-attr">Adam, Jun 9 session</span></div>`},
+   'qw-legibility':{scr:'Quick win',title:'Diagram status legibility',
+     what:'Encode done vs needs-attention with shape, line style, and color together (solid line + filled ✓ node for done; dashed line + hollow ! node for to-do), so status reads at the default zoom and works for colorblind users.',
+     why:'Green and blue look alike when the diagram is zoomed out, so you have to already know status to read it, which defeats progress tracking.',
+     from:`<div class="ip-prov">Jun 9 session and Jun 12 sync. Findings doc; 6/15 backlog P1.</div>
+       <div class="ip-quote">the blue and the green, it is hard to tell the difference at the diagram, especially when it is zoomed out.<span class="ip-attr">Julia, Jun 12 sync</span></div>`},
+   'qw-message':{scr:'Quick win',title:'Messages stay until dismissed',
+     what:'Keep important messages on screen with an explicit X to dismiss, instead of a toast that auto-closes before it can be read. Includes a retry affordance where relevant.',
+     why:'The first hit was the alignment save error flashing by, leaving the user unsure what failed or what to do.',
+     from:`<div class="ip-prov">Findings doc "Status and navigation"; 6/15 backlog P2.</div>
+       <div class="ip-quote">Keep large or important messages on screen with an X to dismiss, instead of auto-closing (first hit on the alignment save error).<span class="ip-attr">Findings doc, suggested changes</span></div>`},
+   'qw-emptylevel':{scr:'Quick win',title:'Empty levels: tap feedback',
+     what:'Tapping a level with no modeled pathways shows an inline message (plus a subtle shake) instead of doing nothing.',
+     why:'A dead tap reads as a broken app; clear feedback tells the user the tap registered and why nothing opened.',
+     from:`<div class="ip-prov">Findings doc "Status and navigation"; 6/15 backlog P2.</div>
+       <div class="ip-quote">Give empty levels tap feedback (level selector).<span class="ip-attr">Findings doc, suggested changes</span></div>`},
+   'qw-station':{scr:'Quick win',title:'Station selector + data version',
+     what:'Guide the first GTFS schedule-version pick (most recent selected by default, with an explanation), and rename the vague "update" action to "re-download station data" with a note on what it does.',
+     why:'First-run users had no guidance on which version to pick, and the sync label did not say what syncing would change.',
+     from:`<div class="ip-prov">Findings doc "Status and navigation"; 6/15 backlog P2.</div>
+       <div class="ip-quote">Guide the first GTFS-version pick, and clarify the "update / re-sync" label (station selector).<span class="ip-attr">Findings doc, suggested changes</span></div>`},
+   'qw-alignment':{scr:'Quick win',title:'Alignment workspace polish (v0.8.x)',
+     what:'Cleanup on the active diagram-to-map alignment workspace: calmer zoom, the opacity slider moved out of the bottom swipe zone, base-map rotation, a clearly-labeled "place alignment point" control, and removing the empty "None" layer.',
+     why:'The workspace is live but rough; these are the specific snags testers and the team hit.',
+     from:`<div class="ip-prov">Findings doc "Already shipped / in development"; 6/15 backlog P2.</div>
+       <div class="ip-quote">zoom too sensitive; opacity slider in the home-swipe zone; allow base map rotation; clearer "pinning" affordance... drop the "None" layer.<span class="ip-attr">Findings doc, v0.8.x notes</span></div>`},
+   'qw-tooltips':{scr:'Quick win',title:'Field hints + save confirmation',
+     what:'A per-field hint that states the measurement method (e.g. door-open to door-open), and a visible "saved" confirmation on fields that currently save silently, signage especially.',
+     why:'People were unsure how a field should be measured, and unsure their signage input had saved because nothing confirmed it.',
+     from:`<div class="ip-prov">Findings doc "Signage" + "Data entry"; 6/15 backlog P1.</div>
+       <div class="ip-quote">Add per-field tooltips with the measurement method (for example, door-open to door-open).<span class="ip-attr">Findings doc, suggested changes</span></div>
+       <div class="ip-quote">Show a visible save confirmation on signage input.<span class="ip-attr">Findings doc, suggested changes</span></div>`},
+   'qw-back':{scr:'Quick win · behavior',title:'Back navigation overshoot',
+     what:'A behavior fix, not a screen: after jumping from a Level Map element into the Pathway form, Back should return to the Level Map sheet in one step instead of overshooting to the level list.',
+     why:'Overshooting two screens loses the user place and forces them to re-navigate after every element edit.',
+     from:`<div class="ip-prov">Findings doc "Status and navigation"; 6/15 backlog P2.</div>
+       <div class="ip-quote">Fix Back overshooting two screens after an element-to-diagram jump (Navigation: Level Map sheet to Pathway Form).<span class="ip-attr">Findings doc, suggested changes</span></div>`},
    'v2-journeys':{scr:'Version 2 · Jun 15',title:'Guided journeys (deferred)',
      what:'The guided-journey routing view, parked for now. It is the bigger build and the feature SEPTA most wants, so it is a strong candidate to anchor a future task order.',
      why:'A whole new user flow that needs several test rounds; not enough time in the ~2 weeks left. Two refinements landed: journeys break at decision nodes (not entrance-to-platform), and no OTP is needed.',
@@ -847,6 +1178,14 @@
    'v2-photo':['Viewfinder','Attach to pathway/node/pin','Capture'],
    'v2-pin':['Pan / zoom map','Crosshair reticle','Snap to node','Drop pin','Photo or note'],
    'v2-note':['Existing comment','New comment','Voice','Attach photo'],
+   'qw-tasklist':['Type filter','Row layout','Type tag colors','"between levels" rename'],
+   'qw-legibility':['Done encoding','Needs-attention encoding','Legend'],
+   'qw-message':['Persistent banner','Dismiss X','Retry action'],
+   'qw-emptylevel':['Empty-level feedback','Level row'],
+   'qw-station':['Schedule version pick','Re-sync label'],
+   'qw-alignment':['Opacity slider placement','Rotation','Pin affordance','Layer options'],
+   'qw-tooltips':['Field hint','Save confirmation'],
+   'qw-back':['Repro steps','Expected behavior'],
    'v2-journeys':['Deferred banner','Decision-node framing','No-OTP note']
   };
   function esc(s){return (s||'').replace(/[&<>"]/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m];});}
@@ -903,24 +1242,51 @@
     else { sp.innerHTML=''; sp.style.display='none'; sph.style.display='none'; }
     fillElements(id); renderComments(id);
   }
-  var V2SCREENS={'v2-signage':1,'v2-photo':1,'v2-pin':1,'v2-note':1,'v2-journeys':1};
-  function setVer(v){
-    var t1=document.getElementById('vtab1'),t2=document.getElementById('vtab2'),
-        n1=document.getElementById('nav-v1'),n2=document.getElementById('nav-v2');
-    if(t1)t1.classList.toggle('on',v===1); if(t2)t2.classList.toggle('on',v===2);
-    if(n1)n1.style.display=(v===1?'':'none'); if(n2)n2.style.display=(v===2?'':'none');
+  // Each screen belongs to a top-line tab: 'v2' (Ship now), 'disc' (Discovery/Deferred), or 'v1'. Default 'v1'.
+  var SCREEN_MODE={
+    'v2-photo':'v2','v2-note':'v2','v2-pin':'v2',
+    'qw-tasklist':'v2','qw-legibility':'v2','qw-message':'v2','qw-emptylevel':'v2',
+    'qw-station':'v2','qw-alignment':'v2','qw-tooltips':'v2','qw-back':'v2',
+    'v2-signage':'disc','v2-journeys':'disc'
+  };
+  function modeOf(id){ return SCREEN_MODE[id]||'v1'; }
+  function setMode(m){
+    var tabs={v2:'tab-v2',disc:'tab-disc',v1:'tab-v1'}, navs={v2:'nav-v2',disc:'nav-disc',v1:'nav-v1'};
+    ['v2','disc','v1'].forEach(function(k){
+      var t=document.getElementById(tabs[k]); if(t)t.classList.toggle('on',k===m);
+      var n=document.getElementById(navs[k]); if(n)n.style.display=(k===m?'':'none');
+    });
   }
-  function goVer(v){ show(v===2?'v2-photo':'journeys'); }
+  function goMode(m){ if(m==='v2'){showQWList();} else if(m==='disc'){show('v2-signage');} else {show('journeys');} }
   function show(id){
-    document.body.classList.remove('deskmode');
+    document.body.classList.remove('deskmode','qwmode','qwview');
     document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
     var el=document.getElementById(id); if(el){el.classList.add('active'); el.querySelector('.scroll').scrollTop=0;}
-    setVer(V2SCREENS[id]?2:1);
+    setMode(modeOf(id));
     updateInfo(id);
     try{history.replaceState(null,'','#'+id);}catch(e){}
   }
-  function showDesk(){ document.body.classList.add('deskmode'); setVer(1); updateInfo('desk'); try{history.replaceState(null,'','#desk');}catch(e){} }
+  function showDesk(){ document.body.classList.remove('qwmode','qwview'); document.body.classList.add('deskmode'); setMode('v1'); updateInfo('desk'); try{history.replaceState(null,'','#desk');}catch(e){} }
   function showApp(){ document.body.classList.remove('deskmode'); show('photo-zone'); }
+  // Quick wins: clean list view (no phone frame)
+  function showQWList(){
+    document.body.classList.remove('deskmode','qwview');
+    document.body.classList.add('qwmode');
+    setMode('v2');
+    try{history.replaceState(null,'','#quickwins');}catch(e){}
+    window.scrollTo(0,0);
+  }
+  // Quick wins: open one example/spec in the phone frame, info box pushed below
+  function showQW(id){
+    document.body.classList.remove('deskmode','qwmode');
+    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+    var el=document.getElementById(id); if(el){el.classList.add('active'); el.querySelector('.scroll').scrollTop=0;}
+    document.body.classList.add('qwview');
+    setMode('v2');
+    updateInfo(id);
+    try{history.replaceState(null,'','#qwview='+id);}catch(e){}
+    window.scrollTo(0,0);
+  }
   function toggleNext(){
     document.body.classList.toggle('hide-next');
     var b=document.getElementById('nextBtn'), off=document.body.classList.contains('hide-next');
@@ -935,8 +1301,10 @@
   function applyHash(){
     var h=(location.hash||'').replace('#','');
     if(h==='desk'){ showDesk(); return; }
+    if(h==='quickwins'){ showQWList(); return; }
+    if(h.indexOf('qwview=')===0){ var qid=h.slice(7); if(document.getElementById(qid)){ showQW(qid); return; } }
     if(h && document.getElementById(h)){ show(h); return; }
-    updateInfo('journeys');
+    showQWList();  // default: Version 2 · Ship now → quick wins list
   }
   window.addEventListener('hashchange', applyHash);
   applyHash();
