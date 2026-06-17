@@ -80,11 +80,15 @@
   .note{background:#eef0ff;border:1px solid #d6d9ff;border-radius:10px;padding:10px 12px;
     font-size:11.5px;color:#2c2a6b;margin:6px 0 10px;}
 
-  /* annotation callouts (toggleable) */
-  .anno{display:none;background:#fffbe6;border:1px dashed #e0c200;border-radius:8px;
+  /* annotation callouts */
+  .anno{display:block;background:#fffbe6;border:1px dashed #e0c200;border-radius:8px;
     padding:8px 10px;font-size:11px;color:#6b5800;margin:8px 0;}
-  body.show-anno .anno{display:block;}
   .anno b{color:#8a6d00;}
+  /* Inside the phone, discussion notes are NOT shown inline — they become a left-rail card
+     connected to this spot. The element stays as an invisible flow anchor for the connector. */
+  .phone .anno{height:0;min-height:0;margin:0;padding:0;border:0;overflow:hidden;}
+  /* Status badges (Ship now, Discovery, etc.) are conveyed by the tab, not the shipped app UI. */
+  .phone .prio{display:none;}
 
   /* fake map / diagram */
   .diagram{background:#11131a;border-radius:12px;height:300px;position:relative;overflow:hidden;}
@@ -103,7 +107,7 @@
     display:grid;place-items:center;color:#5b6480;font-size:11px;font-weight:600;text-align:center;border:1px solid var(--surfaceDim);}
   .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
 
-  .scrnname{position:absolute;top:8px;right:14px;font-size:10px;color:#fff;opacity:.6;z-index:50;}
+  .scrnname{display:none;}  /* dev-only screen id labels, hidden so the frame reads as the real app */
 
   /* desktop (Pathways Studio) view */
   .desk{display:none;width:960px;max-width:96vw;background:var(--bg);border-radius:14px;
@@ -230,9 +234,22 @@
     background:#fff;color:var(--primary);padding:10px 16px;border-radius:10px;cursor:pointer;}
   body.qwview .desk,body.qwview .qwlist{display:none;}
   body.qwview #qwback{display:block;}
+
+  /* ===== Discussion notes: left rail of floating cards connected to the element ===== */
+  #noterail{position:relative;width:300px;flex:none;display:none;align-self:stretch;}
+  body.hasrail #noterail{display:block;}
+  #noteSvg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:6;overflow:visible;}
+  .notecard{position:absolute;right:6px;width:274px;background:#fffbe6;border:1px solid #e6cf3a;border-radius:10px;
+    padding:9px 11px;font-size:11.5px;line-height:1.45;color:#6b5800;box-shadow:0 4px 16px rgba(0,0,0,.08);transition:opacity .15s;}
+  .notecard b{color:#8a6d00;}
+  .notecard .nnum{display:inline-grid;place-items:center;width:16px;height:16px;border-radius:50%;background:#e0c200;
+    color:#3d3200;font-size:9.5px;font-weight:800;margin-right:6px;vertical-align:1px;}
+  .noteflag{position:absolute;width:15px;height:15px;border-radius:50%;background:#e0c200;border:2px solid #fff;
+    color:#3d3200;font-size:9px;font-weight:800;display:grid;place-items:center;z-index:7;
+    box-shadow:0 1px 3px rgba(0,0,0,.3);pointer-events:none;transition:opacity .15s;}
 </style>
 </head>
-<body class="show-anno">
+<body>
   <h1 class="title">Flyway · Companion App — concept wireframes</h1>
   <p class="sub"><b>Last updated <span id="build-date">June 16, 2026</span></b><br><span id="release" class="release">Companion App wireframes · v0.3</span></p>
   <div class="vertabs">
@@ -259,13 +276,10 @@
     <button onclick="show('photo-capture')">📷 Photo capture (zones)</button>
     <button onclick="showDesk()">🖥 Studio: desk view</button>
   </div>
-  <div class="toolbar">
-    <button id="nextBtn" class="on" onclick="toggleNext()">Walkthrough guide: on</button>
-    <button id="annoBtn" class="on" onclick="toggleAnno()">Discussion notes: on</button>
-  </div>
-
   <div id="qwback"><button onclick="showQWList()">‹ Back to quick wins list</button></div>
   <div class="stage">
+  <svg id="noteSvg" xmlns="http://www.w3.org/2000/svg"></svg>
+  <div id="noterail"></div>
   <div class="phone">
     <div class="notch"></div>
 
@@ -1258,33 +1272,85 @@
   function goMode(m){ if(m==='v2'){showQWList();} else if(m==='disc'){show('v2-signage');} else {show('journeys');} }
   function show(id){
     document.body.classList.remove('deskmode','qwmode','qwview');
+    document.body.classList.add('hasrail');
     document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
     var el=document.getElementById(id); if(el){el.classList.add('active'); el.querySelector('.scroll').scrollTop=0;}
     setMode(modeOf(id));
-    updateInfo(id);
+    updateInfo(id); buildNotes();
     try{history.replaceState(null,'','#'+id);}catch(e){}
   }
-  function showDesk(){ document.body.classList.remove('qwmode','qwview'); document.body.classList.add('deskmode'); setMode('v1'); updateInfo('desk'); try{history.replaceState(null,'','#desk');}catch(e){} }
+  function showDesk(){ document.body.classList.remove('qwmode','qwview','hasrail'); document.body.classList.add('deskmode'); setMode('v1'); updateInfo('desk'); buildNotes(); try{history.replaceState(null,'','#desk');}catch(e){} }
   function showApp(){ document.body.classList.remove('deskmode'); show('photo-zone'); }
   // Quick wins: clean list view (no phone frame)
   function showQWList(){
-    document.body.classList.remove('deskmode','qwview');
+    document.body.classList.remove('deskmode','qwview','hasrail');
     document.body.classList.add('qwmode');
-    setMode('v2');
+    setMode('v2'); buildNotes();
     try{history.replaceState(null,'','#quickwins');}catch(e){}
     window.scrollTo(0,0);
   }
-  // Quick wins: open one example/spec in the phone frame, info box pushed below
+  // Quick wins: open one example/spec in the phone frame (same side-by-side layout as other screens)
   function showQW(id){
     document.body.classList.remove('deskmode','qwmode');
+    document.body.classList.add('qwview','hasrail');
     document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
     var el=document.getElementById(id); if(el){el.classList.add('active'); el.querySelector('.scroll').scrollTop=0;}
-    document.body.classList.add('qwview');
     setMode('v2');
-    updateInfo(id);
+    updateInfo(id); buildNotes();
     try{history.replaceState(null,'','#qwview='+id);}catch(e){}
     window.scrollTo(0,0);
   }
+  // ===== Discussion notes: build left-rail cards + connector lines for the active screen =====
+  var NOTE_CARDS=[];
+  function buildNotes(){
+    var rail=document.getElementById('noterail'), svg=document.getElementById('noteSvg'), stage=document.querySelector('.stage');
+    NOTE_CARDS=[];
+    if(rail) rail.innerHTML=''; if(svg) svg.innerHTML='';
+    Array.prototype.forEach.call(document.querySelectorAll('.noteflag'),function(f){f.remove();});
+    if(!document.body.classList.contains('hasrail')) return;
+    var scr=document.querySelector('.screen.active'); if(!scr||!rail||!stage) return;
+    var annos=Array.prototype.slice.call(scr.querySelectorAll('.anno'));
+    annos.forEach(function(a,i){
+      if(!a.dataset.note) a.dataset.note=a.innerHTML;
+      var card=document.createElement('div'); card.className='notecard';
+      card.innerHTML='<span class="nnum">'+(i+1)+'</span>'+a.dataset.note;
+      rail.appendChild(card);
+      var flag=document.createElement('div'); flag.className='noteflag'; flag.textContent=(i+1);
+      stage.appendChild(flag);
+      NOTE_CARDS.push({a:a,card:card,flag:flag});
+    });
+    var sc=scr.querySelector('.scroll'); if(sc) sc.onscroll=positionNotes;
+    requestAnimationFrame(positionNotes);
+  }
+  function positionNotes(){
+    var stage=document.querySelector('.stage'), phone=document.querySelector('.phone'), svg=document.getElementById('noteSvg');
+    if(!svg) return; if(!NOTE_CARDS.length || !stage || !phone){ svg.innerHTML=''; return; }
+    var sr=stage.getBoundingClientRect(), pr=phone.getBoundingClientRect();
+    var phoneTop=pr.top-sr.top+16, phoneBot=pr.bottom-sr.top-16, endX=pr.left-sr.left-7;
+    var items=NOTE_CARDS.map(function(c){
+      var br=c.a.getBoundingClientRect(); var y=br.top-sr.top;
+      return {c:c, y:Math.max(phoneTop,Math.min(phoneBot,y)), on:(y>=phoneTop-4 && y<=phoneBot+6)};
+    });
+    items.sort(function(a,b){return a.y-b.y;});
+    var minTop=2, gap=10;
+    items.forEach(function(it){
+      var ch=it.c.card.offsetHeight||60;
+      var top=Math.max(it.y-14,minTop); minTop=top+ch+gap;
+      it.c.card.style.top=top+'px'; it.c.card.style.opacity=it.on?'1':'.38';
+      it.c.flag.style.left=(endX-7)+'px'; it.c.flag.style.top=(it.y-7)+'px'; it.c.flag.style.opacity=it.on?'1':'.38';
+    });
+    var ns='http://www.w3.org/2000/svg'; svg.innerHTML=''; svg.setAttribute('viewBox','0 0 '+sr.width+' '+sr.height);
+    items.forEach(function(it){
+      var cr=it.c.card.getBoundingClientRect();
+      var x1=cr.right-sr.left, y1=cr.top-sr.top+16, x2=endX, y2=it.y, mx=(x1+x2)/2;
+      var p=document.createElementNS(ns,'path');
+      p.setAttribute('d','M '+x1+' '+y1+' C '+mx+' '+y1+', '+mx+' '+y2+', '+x2+' '+y2);
+      p.setAttribute('stroke','#e0c200'); p.setAttribute('stroke-width','1.5'); p.setAttribute('fill','none');
+      p.setAttribute('opacity', it.on?'0.9':'0.3');
+      svg.appendChild(p);
+    });
+  }
+  window.addEventListener('resize', positionNotes);
   function toggleNext(){
     document.body.classList.toggle('hide-next');
     var b=document.getElementById('nextBtn'), off=document.body.classList.contains('hide-next');
@@ -1296,7 +1362,7 @@
     b.classList.toggle('on',on); b.textContent='Discussion notes: '+(on?'on':'off');
   }
   (function(){var n=localStorage.getItem('flyway_name');if(n)document.getElementById('cf-name').value=n;})();
-  var BUILD_DATE='June 16, 2026'; // @BUILD_DATE@ (stamped by deploy.sh)
+  var BUILD_DATE='June 16, 2026 · 9:55 PM EDT'; // @BUILD_DATE@ (stamped by deploy.sh)
   var RELEASE='v0.3';            // @RELEASE@
   (function(){var d=document.getElementById('build-date'); if(d)d.textContent=BUILD_DATE;
     var r=document.getElementById('release'); if(r)r.textContent='Companion App wireframes · '+RELEASE;})();
