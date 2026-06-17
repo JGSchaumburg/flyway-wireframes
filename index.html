@@ -1229,13 +1229,13 @@
 
 <script id="dev-data">window.DEV_PROGRESS={
  "repo": "JarvusInnovations/pathways-field-companion",
- "generatedAt": "2026-06-17T19:44:46Z",
+ "generatedAt": "2026-06-17T19:50:51Z",
  "wins": [
   {
    "label": "Graph traversal / Connected view",
    "bucket": "ship",
    "status": "shipped",
-   "note": "The headline session ask \u2014 pathway\u2194node\u2194pathway navigation.",
+   "note": "The headline Jun 9 session ask \u2014 shipped that sprint.",
    "started": "2026-06-10T00:06:48Z",
    "completed": "2026-06-10T00:34:20Z",
    "artifacts": [
@@ -1249,48 +1249,10 @@
    ]
   },
   {
-   "label": "Diagram on non-street levels",
-   "bucket": "ship",
-   "status": "in_progress",
-   "note": "Diagram-mode level map rendering + offline labels.",
-   "started": "2026-04-14T14:32:30Z",
-   "completed": null,
-   "artifacts": [
-    {
-     "type": "issue",
-     "n": 11,
-     "title": "Map overlay: implement diagram PNG rendering",
-     "state": "OPEN",
-     "url": "https://github.com/JarvusInnovations/pathways-field-companion/issues/11"
-    },
-    {
-     "type": "issue",
-     "n": 12,
-     "title": "Bundle download: fetch and cache diagram PNGs",
-     "state": "CLOSED",
-     "url": "https://github.com/JarvusInnovations/pathways-field-companion/issues/12"
-    },
-    {
-     "type": "issue",
-     "n": 58,
-     "title": "Diagram-mode level map: restore node labels (bundle glyphs offline)",
-     "state": "OPEN",
-     "url": "https://github.com/JarvusInnovations/pathways-field-companion/issues/58"
-    },
-    {
-     "type": "issue",
-     "n": 18,
-     "title": "Map overlay: pass level_id string instead of UUID as label",
-     "state": "OPEN",
-     "url": "https://github.com/JarvusInnovations/pathways-field-companion/issues/18"
-    }
-   ]
-  },
-  {
    "label": "Reverse pathway direction",
    "bucket": "ship",
    "status": "shipped",
-   "note": "Flip a unidirectional pathway in the field.",
+   "note": "Jun 9 ask; shipped Jun 10.",
    "started": "2026-06-10T14:51:46Z",
    "completed": "2026-06-10T17:53:08Z",
    "artifacts": [
@@ -1335,51 +1297,10 @@
    ]
   },
   {
-   "label": "Min-width validation (fare/exit gates)",
+   "label": "Back-nav overshoot fix",
    "bucket": "quickwin",
    "status": "shipped",
-   "note": "Require min_width before Mark Complete.",
-   "started": "2026-04-14T14:33:21Z",
-   "completed": "2026-05-15T05:16:58Z",
-   "artifacts": [
-    {
-     "type": "issue",
-     "n": 17,
-     "title": "Pathway form: validate required min_width on fare/exit gates before mark complete",
-     "state": "CLOSED",
-     "url": "https://github.com/JarvusInnovations/pathways-field-companion/issues/17"
-    },
-    {
-     "type": "issue",
-     "n": 28,
-     "title": "No min_width validation before Mark Complete on fare gates / exit gates (spec says required)",
-     "state": "CLOSED",
-     "url": "https://github.com/JarvusInnovations/pathways-field-companion/issues/28"
-    }
-   ]
-  },
-  {
-   "label": "Task list: dynamic header",
-   "bucket": "quickwin",
-   "status": "shipped",
-   "note": "Header updates after marking complete.",
-   "started": "2026-04-14T14:33:21Z",
-   "completed": "2026-05-15T05:16:59Z",
-   "artifacts": [
-    {
-     "type": "issue",
-     "n": 20,
-     "title": "Task list: dynamic header after marking a pathway complete",
-     "state": "CLOSED",
-     "url": "https://github.com/JarvusInnovations/pathways-field-companion/issues/20"
-    }
-   ]
-  },
-  {
-   "label": "Back-nav: replace-stack / map sheet",
-   "bucket": "quickwin",
-   "status": "shipped",
-   "note": "Back returns to the Level Map sheet, not the level list.",
+   "note": "Element\u2192form jump; shipped Jun 10.",
    "started": "2026-06-10T13:53:44Z",
    "completed": "2026-06-10T14:02:37Z",
    "artifacts": [
@@ -1393,50 +1314,19 @@
    ]
   },
   {
-   "label": "Level selector: help text + empty levels",
-   "bucket": "quickwin",
-   "status": "shipped",
-   "note": "Fade help; handle null-level / empty levels.",
-   "started": "2026-04-14T14:33:21Z",
-   "completed": "2026-05-15T05:16:59Z",
+   "label": "Diagram on non-street levels",
+   "bucket": "ship",
+   "status": "in_progress",
+   "note": "Core shipped in the sprint; offline node labels (#58) still open.",
+   "started": "2026-06-09T22:39:02Z",
+   "completed": null,
    "artifacts": [
     {
      "type": "issue",
-     "n": 16,
-     "title": "Level selector: help text should fade after first interaction",
-     "state": "CLOSED",
-     "url": "https://github.com/JarvusInnovations/pathways-field-companion/issues/16"
-    },
-    {
-     "type": "issue",
-     "n": 23,
-     "title": "Pathways touching null-level stops don't appear in task list or spanning list",
-     "state": "CLOSED",
-     "url": "https://github.com/JarvusInnovations/pathways-field-companion/issues/23"
-    }
-   ]
-  },
-  {
-   "label": "Station re-download: Sync First",
-   "bucket": "quickwin",
-   "status": "shipped",
-   "note": "Re-download waits for sync; tap cached stations.",
-   "started": "2026-04-14T14:33:21Z",
-   "completed": "2026-05-15T05:16:59Z",
-   "artifacts": [
-    {
-     "type": "issue",
-     "n": 19,
-     "title": "Station re-download: Sync First dialog doesn't wait for sync to finish",
-     "state": "CLOSED",
-     "url": "https://github.com/JarvusInnovations/pathways-field-companion/issues/19"
-    },
-    {
-     "type": "issue",
-     "n": 15,
-     "title": "Station selector: allow tapping cached stations while online",
-     "state": "CLOSED",
-     "url": "https://github.com/JarvusInnovations/pathways-field-companion/issues/15"
+     "n": 58,
+     "title": "Diagram-mode level map: restore node labels (bundle glyphs offline)",
+     "state": "OPEN",
+     "url": "https://github.com/JarvusInnovations/pathways-field-companion/issues/58"
     }
    ]
   },
@@ -1444,7 +1334,7 @@
    "label": "Sync conflict guard / status",
    "bucket": "ship",
    "status": "in_progress",
-   "note": "Optimistic concurrency on pathway updated_at + sync status.",
+   "note": "Optimistic concurrency on pathway updated_at.",
    "started": "2026-06-08T23:01:30Z",
    "completed": null,
    "artifacts": [
@@ -1458,105 +1348,91 @@
    ]
   },
   {
-   "label": "Floorplan transform module",
+   "label": "Signage field: scannable + multi-line",
    "bucket": "quickwin",
-   "status": "shipped",
-   "note": "Pure, fixture-tested geometry; self-heal on decode fail.",
-   "started": "2026-06-09T22:38:47Z",
-   "completed": "2026-06-10T17:53:09Z",
-   "artifacts": [
-    {
-     "type": "issue",
-     "n": 57,
-     "title": "Extract floorplan/diagram transforms into a pure, fixture-tested module",
-     "state": "CLOSED",
-     "url": "https://github.com/JarvusInnovations/pathways-field-companion/issues/57"
-    },
-    {
-     "type": "issue",
-     "n": 63,
-     "title": "Floorplan unrecoverable when download-time image decode fails (until next re-download)",
-     "state": "CLOSED",
-     "url": "https://github.com/JarvusInnovations/pathways-field-companion/issues/63"
-    },
-    {
-     "type": "pr",
-     "n": 68,
-     "title": "refactor(level-map): extract FloorplanGeometry \u2014 fixture-tested transforms (#57)",
-     "state": "MERGED",
-     "url": "https://github.com/JarvusInnovations/pathways-field-companion/pull/68"
-    }
-   ]
-  },
-  {
-   "label": "Accessibility semantics",
-   "bucket": "quickwin",
-   "status": "shipped",
-   "note": "Semantics labels across screens.",
-   "started": "2026-04-14T14:33:21Z",
-   "completed": "2026-05-15T05:17:00Z",
-   "artifacts": [
-    {
-     "type": "issue",
-     "n": 14,
-     "title": "Accessibility: add Semantics labels across all screens",
-     "state": "CLOSED",
-     "url": "https://github.com/JarvusInnovations/pathways-field-companion/issues/14"
-    }
-   ]
-  },
-  {
-   "label": "Debounce pathway-form writes",
-   "bucket": "quickwin",
-   "status": "shipped",
-   "note": "Stop writing all 15 fields per keystroke; fix API shape.",
-   "started": "2026-04-22T01:04:58Z",
-   "completed": "2026-05-15T05:17:00Z",
-   "artifacts": [
-    {
-     "type": "issue",
-     "n": 27,
-     "title": "Pathway form onChanged writes all 15 fields on every keystroke (no debounce, no diff)",
-     "state": "CLOSED",
-     "url": "https://github.com/JarvusInnovations/pathways-field-companion/issues/27"
-    },
-    {
-     "type": "issue",
-     "n": 26,
-     "title": "Station / Stop / Pathway fromJson factories are dead code and diverge from real API shape",
-     "state": "CLOSED",
-     "url": "https://github.com/JarvusInnovations/pathways-field-companion/issues/26"
-    },
-    {
-     "type": "issue",
-     "n": 25,
-     "title": "downloadBundle persists organizationId='' and reconstructs stopId='' on station read",
-     "state": "CLOSED",
-     "url": "https://github.com/JarvusInnovations/pathways-field-companion/issues/25"
-    },
-    {
-     "type": "issue",
-     "n": 24,
-     "title": "Storybook mock level_ids use short codes (B1/L1/L2) that don't match real API (32095_BUSWAY etc.)",
-     "state": "CLOSED",
-     "url": "https://github.com/JarvusInnovations/pathways-field-companion/issues/24"
-    }
-   ]
-  },
-  {
-   "label": "Photo capture + attach",
-   "bucket": "ship",
    "status": "not_started",
-   "note": "NEW from Jun 15 sync \u2014 no issue yet.",
+   "note": "Jun 15 quick-win backlog \u2014 no issue filed yet.",
    "started": null,
    "completed": null,
    "artifacts": []
   },
   {
-   "label": "Note / comment on node/pathway",
+   "label": "In-app stopwatch (traversal time)",
+   "bucket": "quickwin",
+   "status": "not_started",
+   "note": "Jun 15 quick-win backlog \u2014 no issue filed yet.",
+   "started": null,
+   "completed": null,
+   "artifacts": []
+  },
+  {
+   "label": "Task list: type filter + clearer rows",
+   "bucket": "quickwin",
+   "status": "not_started",
+   "note": "Jun 15 quick-win backlog \u2014 no issue filed yet.",
+   "started": null,
+   "completed": null,
+   "artifacts": []
+  },
+  {
+   "label": "Diagram legibility (colorblind-safe)",
+   "bucket": "quickwin",
+   "status": "not_started",
+   "note": "Jun 15 quick-win backlog \u2014 no issue filed yet.",
+   "started": null,
+   "completed": null,
+   "artifacts": []
+  },
+  {
+   "label": "Messages stay until dismissed",
+   "bucket": "quickwin",
+   "status": "not_started",
+   "note": "Jun 15 quick-win backlog \u2014 no issue filed yet.",
+   "started": null,
+   "completed": null,
+   "artifacts": []
+  },
+  {
+   "label": "Per-field hints + save confirmation",
+   "bucket": "quickwin",
+   "status": "not_started",
+   "note": "Jun 15 quick-win backlog \u2014 no issue filed yet.",
+   "started": null,
+   "completed": null,
+   "artifacts": []
+  },
+  {
+   "label": "Empty-level tap feedback",
+   "bucket": "quickwin",
+   "status": "not_started",
+   "note": "Jun 15 quick-win backlog \u2014 no issue filed yet.",
+   "started": null,
+   "completed": null,
+   "artifacts": []
+  },
+  {
+   "label": "Station version pick + re-sync label",
+   "bucket": "quickwin",
+   "status": "not_started",
+   "note": "Jun 15 quick-win backlog \u2014 no issue filed yet.",
+   "started": null,
+   "completed": null,
+   "artifacts": []
+  },
+  {
+   "label": "Photo capture + attach",
    "bucket": "ship",
    "status": "not_started",
-   "note": "NEW from Jun 15 sync \u2014 no issue yet.",
+   "note": "NEW Jun 15 sync \u2014 no issue filed yet.",
+   "started": null,
+   "completed": null,
+   "artifacts": []
+  },
+  {
+   "label": "Note / comment + captures roll-up",
+   "bucket": "ship",
+   "status": "not_started",
+   "note": "NEW Jun 15 sync \u2014 no issue filed yet.",
    "started": null,
    "completed": null,
    "artifacts": []
@@ -1565,10 +1441,67 @@
    "label": "Voice + AI signage (Discovery)",
    "bucket": "discovery",
    "status": "not_started",
-   "note": "NEW from Jun 15 sync \u2014 discovery, no issue yet.",
+   "note": "NEW Jun 15 sync \u2014 discovery, no issue filed yet.",
    "started": null,
    "completed": null,
    "artifacts": []
+  }
+ ],
+ "priorWork": [
+  {
+   "n": 14,
+   "title": "Accessibility: add Semantics labels across all screens",
+   "closedAt": "2026-05-15T05:17:00Z"
+  },
+  {
+   "n": 24,
+   "title": "Storybook mock level_ids use short codes (B1/L1/L2) that don't match real API (32095_BUSWAY etc.)",
+   "closedAt": "2026-05-15T05:17:00Z"
+  },
+  {
+   "n": 16,
+   "title": "Level selector: help text should fade after first interaction",
+   "closedAt": "2026-05-15T05:16:59Z"
+  },
+  {
+   "n": 20,
+   "title": "Task list: dynamic header after marking a pathway complete",
+   "closedAt": "2026-05-15T05:16:59Z"
+  },
+  {
+   "n": 19,
+   "title": "Station re-download: Sync First dialog doesn't wait for sync to finish",
+   "closedAt": "2026-05-15T05:16:58Z"
+  },
+  {
+   "n": 28,
+   "title": "No min_width validation before Mark Complete on fare gates / exit gates (spec says required)",
+   "closedAt": "2026-05-15T05:16:58Z"
+  },
+  {
+   "n": 23,
+   "title": "Pathways touching null-level stops don't appear in task list or spanning list",
+   "closedAt": "2026-05-15T05:16:57Z"
+  },
+  {
+   "n": 26,
+   "title": "Station / Stop / Pathway fromJson factories are dead code and diverge from real API shape",
+   "closedAt": "2026-05-15T05:16:57Z"
+  },
+  {
+   "n": 27,
+   "title": "Pathway form onChanged writes all 15 fields on every keystroke (no debounce, no diff)",
+   "closedAt": "2026-05-15T05:16:57Z"
+  },
+  {
+   "n": 25,
+   "title": "downloadBundle persists organizationId='' and reconstructs stopId='' on station read",
+   "closedAt": "2026-05-15T05:16:56Z"
+  },
+  {
+   "n": 17,
+   "title": "Pathway form: validate required min_width on fare/exit gates before mark complete",
+   "closedAt": "2026-05-15T05:02:23Z"
   }
  ],
  "releases": [
@@ -1737,18 +1670,6 @@
    "title": "Release: v0.6.1",
    "state": "MERGED",
    "mergedAt": "2026-06-10T14:03:52Z"
-  },
-  {
-   "n": 66,
-   "title": "fix(graph): replace-stack hops, map-sheet navigation, tap precedence",
-   "state": "MERGED",
-   "mergedAt": "2026-06-10T14:02:37Z"
-  },
-  {
-   "n": 64,
-   "title": "chore(plans): mark geo-transform-center-fix done (PR #55)",
-   "state": "MERGED",
-   "mergedAt": "2026-06-10T08:38:39Z"
   }
  ],
  "recentCommits": [
@@ -1801,16 +1722,6 @@
    "sha": "2a30179",
    "msg": "chore(plans): mark pathway-reverse done (PR #67)",
    "date": "2026-06-10T23:35:34Z"
-  },
-  {
-   "sha": "5d56e84",
-   "msg": "Merge pull request #70 from JarvusInnovations/feat/alignment-reference-layer",
-   "date": "2026-06-10T23:31:07Z"
-  },
-  {
-   "sha": "7679ee9",
-   "msg": "Merge branch 'feat/touch-alignment' into feat/alignment-reference-layer",
-   "date": "2026-06-10T23:30:39Z"
   }
  ]
 };</script>
@@ -2303,7 +2214,7 @@
     b.classList.toggle('on',on); b.textContent='Discussion notes: '+(on?'on':'off');
   }
   (function(){var n=localStorage.getItem('flyway_name');if(n)document.getElementById('cf-name').value=n;})();
-  var BUILD_DATE='June 17, 2026 · 3:46 PM EDT'; // @BUILD_DATE@ (stamped by deploy.sh)
+  var BUILD_DATE='June 17, 2026 · 3:50 PM EDT'; // @BUILD_DATE@ (stamped by deploy.sh)
   var RELEASE='v0.3';            // @RELEASE@
   (function(){var d=document.getElementById('build-date'); if(d)d.textContent=BUILD_DATE;
     var r=document.getElementById('release'); if(r)r.textContent='Companion App wireframes · '+RELEASE;})();
