@@ -318,7 +318,8 @@
       <button onclick="show('v2-photo')">📷 Photo capture</button>
       <button onclick="show('v2-note')">🗒 Note / comment</button>
       <button onclick="show('v2-pin')">📍 Pin placement (maybe)</button>
-      <button onclick="show('v2-captures')">📂 Captures</button></div>
+      <button onclick="show('v2-captures')">📂 Captures</button>
+      <button onclick="show('v2-nav')">🗺 How it connects</button></div>
   </div>
   <div id="nav-disc" style="display:none">
     <div class="toolbar"><span class="navlabel discovery">Discovery</span>
@@ -850,6 +851,7 @@
         <div class="anno"><b>How you get here:</b> opened from the node or pathway you are on ("Add note"). That element is the target, carried in, with no separate picker.</div>
         <!-- state: compose -->
         <div class="statepane" id="note-s0">
+          <div class="card" style="cursor:default;border-color:#bfe4d8;background:#f3faf7;margin-bottom:8px"><div class="meta">On <b>Fare gate · Unpaid → Paid</b> &mdash; carried in from where you opened this; not re-selected</div></div>
           <div class="editField"><div class="ta">Actual gate is ~3m east of where it's modeled — flag to fix at desk.<span style="color:var(--secondary)">▏</span></div></div>
           <div class="seg"><button class="on">🎤 Voice</button><button onclick="qwSeg(this)">📷 Attach photo</button></div>
           <button class="btn primary next" onclick="qwSetState('v2-note',1)">Post comment</button>
@@ -1175,6 +1177,30 @@
           </svg></div>
           <div class="cmt" style="border-left-color:#F97900">Same pathway, other end: <b>Stair S2 bottom</b> on the platform. The two ends stay linked as one pathway.</div>
         </div>
+      </div>
+    </section>
+
+    <!-- ===== V2 NAV MAP: where each surface is hooked in + what carries ===== -->
+    <section class="screen" id="v2-nav">
+      <span class="scrnname">v2-nav</span>
+      <div class="appbar"><div class="t">How it connects<small>Entry screens → capture surfaces</small></div></div>
+      <div class="scroll">
+        <div class="anno">Where each new surface is hooked into the existing app, and what the entry screen carries in as the target. <b>Existing screens</b> on top of each card, <b>what carries</b> in the middle, <b>new surface</b> below.</div>
+        <div class="card" style="cursor:default"><div style="font-weight:600;font-size:13px">🗺 Level map (diagram) <span class="meta">· existing</span></div>
+          <div class="meta" style="margin:4px 0">drop a pin → carries the <b>level + diagram coordinate</b> ↓</div>
+          <div style="color:var(--primary);font-weight:600;font-size:12.5px">📍 Pin placement → 📷 / 🗒 attach to the pin</div></div>
+        <div class="card" style="cursor:default"><div style="font-weight:600;font-size:13px">🗺 Level map → tap a pathway → Pathway form <span class="meta">· existing</span></div>
+          <div class="meta" style="margin:4px 0">carries <b>this pathway</b> as the target ↓</div>
+          <div style="color:var(--primary);font-weight:600;font-size:12.5px">📷 Capture · 🗒 Note · ⏱ Stopwatch</div></div>
+        <div class="card" style="cursor:default"><div style="font-weight:600;font-size:13px">🗺 Level map → tap a node → Node detail <span class="meta">· existing</span></div>
+          <div class="meta" style="margin:4px 0">carries <b>this node</b> as the target ↓</div>
+          <div style="color:var(--primary);font-weight:600;font-size:12.5px">📷 Capture · 🗒 Note</div></div>
+        <div class="card" style="cursor:default"><div style="font-weight:600;font-size:13px">Level header "Captures · N" <span class="meta">· new entry</span></div>
+          <div class="meta" style="margin:4px 0">carries <b>the whole level</b> ↓</div>
+          <div style="color:var(--primary);font-weight:600;font-size:12.5px">📂 Captures roll-up (no target picker; target-less entry)</div></div>
+        <div class="card" style="cursor:default;border-color:#bfe4d8;background:#f3faf7"><div style="font-weight:600;font-size:13px">⇅ Sync → 🖥 Pathways Studio (desk) <span class="meta">· existing</span></div>
+          <div class="meta" style="margin:4px 0">every capture syncs up and is correlated to a pathway/node at the desk</div></div>
+        <div class="anno"><b>Selection rule:</b> the attach target is inherited from the entry screen — the Pathway/Node/Pin picker only appears for target-less entry (the Captures view).</div>
       </div>
     </section>
 
@@ -1994,6 +2020,10 @@
      build:`Ensure Back from the Pathway form (reached by tapping an element on the Level Map sheet) returns to the Level Map sheet in one step, not the level list — use replace-stack semantics on the element→form jump. NOTE: PR #66 (merged) "replace-stack hops, map-sheet navigation, tap precedence" likely already covers this — verify this exact case before re-implementing.`,
      from:`<div class="ip-prov">Findings doc "Status and navigation"; 6/15 backlog P2.</div>
        <div class="ip-quote">Fix Back overshooting two screens after an element-to-diagram jump (Navigation: Level Map sheet to Pathway Form).<span class="ip-attr">Findings doc, suggested changes</span></div>`},
+   'v2-nav':{scr:'Version 2 · navigation',title:'How it connects (entry points + carried data)',
+     what:'A map of where each new capture surface is hooked into the existing app (Level map, Pathway form, Node detail, Studio) and what target the entry screen carries in.',
+     why:'The hard part is navigation hierarchy + selection, not the capture UI. The target is inherited from the entry screen; a free Pathway/Node/Pin picker only appears for target-less entry (Captures view).',
+     from:`<div class="ip-prov">Chris feedback, Jun 17: show how you reach these screens and what data carries in.</div>`},
    'v2-captures':{scr:'Version 2 · edge cases',title:'Captures roll-up (photos + notes)',
      what:'Every photo and note left on the level, in one place — filterable to photos-only or notes-only, and viewable per pathway, per node, or per diagram pin. Answers "where did all the notes go?"',
      why:'Captures attach to three different targets (pathway, node, pin) and pile up fast; without a roll-up, a note left on a node is invisible to someone looking at the pathway list.',
@@ -2105,7 +2135,7 @@
   }
   // Each screen belongs to a top-line tab: 'v2' (Ship now), 'disc' (Discovery/Deferred), or 'v1'. Default 'v1'.
   var SCREEN_MODE={
-    'v2-photo':'v2','v2-note':'v2','v2-pin':'v2','v2-captures':'v2',
+    'v2-photo':'v2','v2-note':'v2','v2-pin':'v2','v2-captures':'v2','v2-nav':'v2',
     'qw-tasklist':'v2','qw-legibility':'v2','qw-message':'v2','qw-emptylevel':'v2',
     'qw-station':'v2','qw-alignment':'v2','qw-tooltips':'v2','qw-back':'v2',
     'v2-signage':'disc','v2-journeys':'disc'
@@ -2343,7 +2373,7 @@
     b.classList.toggle('on',on); b.textContent='Discussion notes: '+(on?'on':'off');
   }
   (function(){var n=localStorage.getItem('flyway_name');if(n)document.getElementById('cf-name').value=n;})();
-  var BUILD_DATE='June 17, 2026 · 6:10 PM EDT'; // @BUILD_DATE@ (stamped by deploy.sh)
+  var BUILD_DATE='June 17, 2026 · 6:13 PM EDT'; // @BUILD_DATE@ (stamped by deploy.sh)
   var RELEASE='v0.3';            // @RELEASE@
   (function(){var d=document.getElementById('build-date'); if(d)d.textContent=BUILD_DATE;
     var r=document.getElementById('release'); if(r)r.textContent='Companion App wireframes · '+RELEASE;})();
