@@ -468,17 +468,17 @@
     <!-- ================= PATHWAY FORM (existing, signage-first) ================= -->
     <section class="screen" id="pathway-form">
       <span class="scrnname">pathway-form</span>
-      <div class="appbar"><div class="back" onclick="show('journey-overview')">‹</div>
+      <div class="appbar"><div class="back" onclick="qwBack()">‹</div>
         <div class="t">Fare gate<small>Segment 3 of 7</small></div><div class="chip">Saved ✓</div></div>
       <div class="scroll">
         <div class="title2" style="margin:2px 0 8px">Unpaid area → Paid area</div>
         <div class="anno"><b>Decided:</b> signage at the top, measurements locked at the bottom, so capture follows the physical sequence.</div>
 
         <div class="sect">Signage — unpaid → paid</div>
-        <div class="field" style="cursor:pointer" onclick="show('signage-edit')"><label>SIGNPOSTED AS</label>
+        <div class="field"><label>SIGNPOSTED AS</label>
           <div class="val">L1 Eastbound &amp; Westbound | T Eastbound</div>
-          <div class="hint">Tap to edit (expands to multi-line), or 📷 to capture the sign instead of typing.</div></div>
-        <button class="btn ghost next" style="margin-bottom:6px" onclick="show('photo-capture')">📷 Capture sign photo</button>
+          <div class="hint">Locked, scannable; a pencil expands to a multi-line editor, or 📷 captures the sign instead of typing.</div></div>
+        <button class="btn ghost" style="margin-bottom:6px">📷 Capture sign photo</button>
 
         <div class="sect">Signage — paid → unpaid</div>
         <div class="field"><label>REVERSED SIGNPOSTED AS</label><div class="val">Exit | 15th St &amp; Market St</div></div>
@@ -487,11 +487,11 @@
         <div class="field"><label>MIN WIDTH (M) · required for gates</label><div class="val">0.92</div>
           <div class="hint">Measured at narrowest point of gate opening.</div></div>
         <div class="field"><label>TRAVERSAL TIME (S)</label><div class="val" style="color:var(--muted)">— tap ⏱ to time it</div></div>
-        <button class="btn ghost" style="margin-bottom:6px" onclick="show('stopwatch')">⏱ Start stopwatch</button>
+        <button class="btn ghost" style="margin-bottom:6px">⏱ Start stopwatch</button>
 
         <div class="anno"><b>Quick wins:</b> longer/stacked signage field, one-tap “|” + common elements keyboard, in-app stopwatch, visible save confirmation.</div>
       </div>
-      <div class="fab-bar"><button class="btn primary" onclick="show('journey-overview')">✓ Mark done → next segment</button></div>
+      <div class="fab-bar"><button class="btn primary" onclick="qwBack()">✓ Mark done</button></div>
     </section>
 
     <!-- ================= PHOTO CAPTURE ================= -->
@@ -557,7 +557,7 @@
     <!-- ================= SIGNAGE FIELD: edit vs view ================= -->
     <section class="screen" id="signage-edit">
       <span class="scrnname">signage-edit</span>
-      <div class="appbar"><div class="back" onclick="show('pathway-form')">‹</div>
+      <div class="appbar"><div class="back" onclick="showQWList()">‹</div>
         <div class="t">Signage<small>unpaid → paid</small></div><div class="chip">Saved ✓</div></div>
       <div class="scroll">
         <div class="anno"><b>Decided:</b> long signage shows as locked, scannable text; a pencil opens a multi-line editor, then locks back.</div>
@@ -568,14 +568,14 @@
         <div class="stateLabel">Common elements (optional, one tap)</div>
         <div class="seg"><button class="on">| separator</button><button>Westbound</button><button>Eastbound</button></div>
         <div class="anno"><b>Backlog (Chris: hard):</b> autocomplete keyboard from expected values. Easy to make worse than the native keyboard, so it waits behind the photo + locked-field wins.</div>
-        <button class="btn primary" onclick="show('pathway-form')">Done</button>
+        <button class="btn primary" onclick="showQWList()">Done</button>
       </div>
     </section>
 
     <!-- ================= STOPWATCH ================= -->
     <section class="screen" id="stopwatch">
       <span class="scrnname">stopwatch</span>
-      <div class="appbar"><div class="back" onclick="show('pathway-form')">‹</div>
+      <div class="appbar"><div class="back" onclick="showQWList()">‹</div>
         <div class="t">Traversal time<small>Elevator EL1 · door-open to door-open</small></div></div>
       <div class="scroll">
         <div class="anno"><b>Cuts a trip out of the station:</b> time it in-app instead of pulling out a separate stopwatch. Record multiple runs, drop bad ones, use the average.</div>
@@ -587,7 +587,7 @@
         <div class="runrow"><span>Run 3</span><span style="color:var(--muted)">0:43</span><span class="del">✕</span></div>
         <div class="avgbox">Average of 3 runs <b>0:43</b></div>
         <div class="field"><label>FIELD HINT</label><div class="hint" style="margin-top:0">Per-field tip shows the measurement method, e.g. "door-open to door-open" for elevators.</div></div>
-        <button class="btn primary" onclick="show('pathway-form')">Use 0:43 as traversal time</button>
+        <button class="btn primary" onclick="showQWList()">Use 0:43 as traversal time</button>
       </div>
     </section>
 
@@ -598,8 +598,7 @@
     <!-- ===== V2 VOICE + AI (Discovery): the pathway form's signage field, by voice ===== -->
     <section class="screen" id="v2-signage">
       <span class="scrnname">v2-signage</span>
-      <div class="appbar"><div class="back" onclick="show('v2-photo')">‹</div>
-        <div class="t">Fare gate<small>Signage by voice</small></div></div>
+      <div class="appbar"><div class="t">Fare gate<small>Signage by voice</small></div></div>
       <div class="scroll">
         <div class="prio discovery">Discovery · prove out first</div>
         <div class="field"><label>SIGNPOSTED AS</label><div class="val">L1 Eastbound &amp; Westbound | T Eastbound</div></div>
@@ -610,7 +609,7 @@
         <div class="stateLabel">AI cleanup at the desk</div>
         <div class="avgbox">"Transit Centre" looks like a typo of "Center" <b>fix</b></div>
         <div class="anno">Photo and voice both feed AI text extraction. Voice saves typing; the worry was typos, not keystrokes.</div>
-        <button class="btn primary" onclick="show('v2-photo')">Use value</button>
+        <button class="btn primary">Use value</button>
       </div>
     </section>
 
@@ -629,7 +628,7 @@
             <div class="shutter" onclick="qwSetState('v2-photo',1)"></div>
           </div>
           <div class="sect">Attach to</div>
-          <div class="seg"><button class="on">Pathway</button><button onclick="qwSeg(this)">Node</button><button onclick="show('v2-pin')">Pin on diagram</button></div>
+          <div class="seg"><button class="on">Pathway</button><button onclick="qwSeg(this)">Node</button><button onclick="qwSeg(this)">Pin on diagram</button></div>
           <button class="btn primary" onclick="qwSetState('v2-photo',1)">📷 Capture</button>
         </div>
         <!-- state: photo saved & attached -->
@@ -640,7 +639,7 @@
           <div class="grid3" style="grid-template-columns:1fr 1fr"><div class="thumb" style="background-image:var(--photo-sign);background-size:cover;background-position:center;color:#fff;align-items:end;justify-items:start;padding:6px;text-shadow:0 1px 3px #000;font-size:9.5px">L Westbound</div><div class="thumb">＋ add another</div></div>
           <div class="card" style="cursor:default"><div class="meta">Attached to <b>Pathway · Fare gate (unpaid → paid)</b></div></div>
           <div class="cmt" style="border-left-color:var(--complete)">Saved ✓ — the photo travels to Studio for text extraction at the desk.<span class="cmt-meta">just now</span></div>
-          <div class="seg" style="margin-top:8px"><button class="on" onclick="qwSetState('v2-photo',0)">📷 Capture another</button><button onclick="show('v2-note')">🗒 Add a note instead</button></div>
+          <div class="seg" style="margin-top:8px"><button class="on" onclick="qwSetState('v2-photo',0)">📷 Capture another</button><button onclick="qwSetState('v2-photo',0)">✓ Done</button></div>
         </div>
       </div>
     </section>
@@ -648,7 +647,7 @@
     <!-- ===== V2 PIN DROP on the diagram ===== -->
     <section class="screen" id="v2-pin">
       <span class="scrnname">v2-pin</span>
-      <div class="appbar"><div class="back" onclick="show('v2-photo')">‹</div><div class="t">Drop a pin<small>L1 Mezzanine West · 15th St &amp; Market St</small></div></div>
+      <div class="appbar"><div class="t">Drop a pin<small>L1 Mezzanine West · 15th St &amp; Market St</small></div></div>
       <div class="scroll">
         <div class="anno">Agreed model, but may slip past the first cut. Confirm with Chris.</div>
         <div class="anno">Zoom to where you are, line up the crosshair, drop the pin. The crosshair stays centered and the map moves under it (the Maps / Uber pattern).</div>
@@ -732,7 +731,7 @@
     <!-- ===== V2 NOTE / COMMENT ===== -->
     <section class="screen" id="v2-note">
       <span class="scrnname">v2-note</span>
-      <div class="appbar"><div class="back" onclick="show('v2-pin')">‹</div><div class="t">Add a note<small>Fare gate (unpaid → paid)</small></div></div>
+      <div class="appbar"><div class="t">Add a note<small>Fare gate (unpaid → paid)</small></div></div>
       <div class="scroll">
         <div class="anno">A timestamped, authored comment on a node or pathway (like Miro), not a free-text blob. Voice works here too.</div>
         <!-- state: compose -->
@@ -747,7 +746,7 @@
           <div class="cmt" style="border-left-color:var(--complete)">Actual gate is ~3m east of where it's modeled — flag to fix at desk.<span class="cmt-meta">You · 🎤 dictated · just now</span></div>
           <div class="cmt" style="border-left-color:var(--accent)">Confirmed the unpaid-side sign reads "To Trains".<span class="cmt-meta">Christopher · earlier today</span></div>
           <div class="cmt" style="border-left-color:var(--complete)">Saved ✓ — the comment syncs to Studio attached to this pathway.<span class="cmt-meta">just now</span></div>
-          <div class="seg" style="margin-top:8px"><button class="on" onclick="qwSetState('v2-note',0)">🗒 Add another note</button><button onclick="show('v2-photo')">📷 Add a photo instead</button></div>
+          <div class="seg" style="margin-top:8px"><button class="on" onclick="qwSetState('v2-note',0)">🗒 Add another note</button><button onclick="qwSetState('v2-note',0)">✓ Done</button></div>
         </div>
       </div>
     </section>
@@ -924,7 +923,7 @@
         <div class="t">Field hints + save confirmation<small>Small, but high-trust</small></div></div>
       <div class="scroll">
         <div class="anno"><b>Fixes:</b> a per-field hint stating the measurement method, and a visible "saved" confirmation on fields that save silently today (signage especially), so people know their input stuck. <i>Tap the ⓘ to see the hint.</i></div>
-        <div class="anno"><b>Reference screens:</b> see the field hint in the <a href="#" onclick="showQW('stopwatch');return false;">stopwatch</a>, and the <a href="#" onclick="showQW('signage-edit');return false;">signage field</a>.</div>
+        <div class="anno"><b>Related:</b> the same measurement-method hint appears on the in-app stopwatch, and the save confirmation appears on the signage field — both their own quick wins in this list.</div>
         <div class="field"><label>TRAVERSAL TIME (S)</label><div class="val">43 &nbsp;<span style="cursor:pointer;color:var(--primary);font-weight:700" onclick="qwTip(this)">ⓘ</span></div>
           <div id="qw-tip-pop" style="display:none;margin-top:7px;background:#eef0ff;border:1px solid #d6d9ff;border-radius:8px;padding:8px 10px;font-size:11.5px;color:#2c2a6b">Measured door-open to door-open. Use the in-app stopwatch to capture it.</div></div>
         <div class="field" style="border-color:#bfe4d8;background:#f3faf7"><label>SIGNPOSTED AS</label><div class="val">L1 Eastbound &amp; Westbound | T Eastbound</div>
@@ -941,7 +940,7 @@
         <div class="anno"><b>Behavior fix, not a new screen.</b> Back from the Pathway form should return to the Level Map sheet you came from — in one step.</div>
         <div class="anno"><b>Problem:</b> after tapping an element on the Level Map to open the Pathway form, Back overshoots two screens and lands on the level list, losing your place. Likely a duplicate route push on the element→form jump.</div>
         <div class="anno"><b>Repro:</b> Open a level → Level Map sheet → tap an element → Pathway form → press Back → ❌ lands on the level list (expected: the Level Map sheet).</div>
-        <div class="anno"><b>Reference screens:</b> <a href="#" onclick="showQW('qw-tasklist');return false;">Level Map / task list</a> · <a href="#" onclick="showQW('pathway-form');return false;">Pathway form</a>.</div>
+        <div class="anno"><b>Where it happens:</b> the jump is from a Level Map element into the Pathway form; Back should land on the Level Map sheet, not the level list.</div>
         <div class="sect">Expected back path</div>
         <div class="card" style="cursor:default"><div class="meta" style="line-height:2">Level list<br>&nbsp;&nbsp;↳ Level Map sheet &nbsp;<span class="pill" style="background:#eef7f4;border-color:#bfe4d8;color:#00795c">‹ Back returns here</span><br>&nbsp;&nbsp;&nbsp;&nbsp;↳ Pathway form &nbsp;<span class="pill" style="background:#fde8ef;border-color:#f6bcd0;color:#b00045">you are here</span></div></div>
       </div>
@@ -1350,6 +1349,8 @@
   }
   function showDesk(){ document.body.classList.remove('qwmode','qwview','hasrail'); document.body.classList.add('deskmode'); setMode('v1'); updateInfo('desk'); renderStateBar(); buildNotes(); try{history.replaceState(null,'','#desk');}catch(e){} }
   function showApp(){ document.body.classList.remove('deskmode'); show('photo-zone'); }
+  // context-aware back: if a screen was opened as a quick-win snapshot, return to the quick-wins list; otherwise the V1 parent
+  function qwBack(){ if(document.body.classList.contains('qwview')) showQWList(); else show('journey-overview'); }
   // Quick wins: clean list view (no phone frame)
   function showQWList(){
     document.body.classList.remove('deskmode','qwview','hasrail');
@@ -1483,7 +1484,7 @@
     b.classList.toggle('on',on); b.textContent='Discussion notes: '+(on?'on':'off');
   }
   (function(){var n=localStorage.getItem('flyway_name');if(n)document.getElementById('cf-name').value=n;})();
-  var BUILD_DATE='June 17, 2026 · 2:15 AM EDT'; // @BUILD_DATE@ (stamped by deploy.sh)
+  var BUILD_DATE='June 17, 2026 · 2:29 AM EDT'; // @BUILD_DATE@ (stamped by deploy.sh)
   var RELEASE='v0.3';            // @RELEASE@
   (function(){var d=document.getElementById('build-date'); if(d)d.textContent=BUILD_DATE;
     var r=document.getElementById('release'); if(r)r.textContent='Companion App wireframes · '+RELEASE;})();
