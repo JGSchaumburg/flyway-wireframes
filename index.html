@@ -1309,7 +1309,7 @@
 
 <script id="dev-data">window.DEV_PROGRESS={
  "repo": "JarvusInnovations/pathways-field-companion",
- "generatedAt": "2026-06-17T20:40:59Z",
+ "generatedAt": "2026-06-17T20:41:36Z",
  "wins": [
   {
    "label": "Graph traversal / Connected view",
@@ -1432,7 +1432,7 @@
    "bucket": "quickwin",
    "status": "not_started",
    "note": "Jun 15 quick-win backlog \u2014 no issue filed yet.",
-   "started": "2026-06-15T00:00:00Z",
+   "started": "2026-06-15T12:00:00Z",
    "completed": null,
    "artifacts": []
   },
@@ -1441,7 +1441,7 @@
    "bucket": "quickwin",
    "status": "not_started",
    "note": "Jun 15 quick-win backlog \u2014 no issue filed yet.",
-   "started": "2026-06-15T00:00:00Z",
+   "started": "2026-06-15T12:00:00Z",
    "completed": null,
    "artifacts": []
   },
@@ -1450,7 +1450,7 @@
    "bucket": "quickwin",
    "status": "not_started",
    "note": "Jun 15 quick-win backlog \u2014 no issue filed yet.",
-   "started": "2026-06-15T00:00:00Z",
+   "started": "2026-06-15T12:00:00Z",
    "completed": null,
    "artifacts": []
   },
@@ -1459,7 +1459,7 @@
    "bucket": "quickwin",
    "status": "not_started",
    "note": "Jun 15 quick-win backlog \u2014 no issue filed yet.",
-   "started": "2026-06-15T00:00:00Z",
+   "started": "2026-06-15T12:00:00Z",
    "completed": null,
    "artifacts": []
   },
@@ -1468,7 +1468,7 @@
    "bucket": "quickwin",
    "status": "not_started",
    "note": "Jun 15 quick-win backlog \u2014 no issue filed yet.",
-   "started": "2026-06-15T00:00:00Z",
+   "started": "2026-06-15T12:00:00Z",
    "completed": null,
    "artifacts": []
   },
@@ -1477,7 +1477,7 @@
    "bucket": "quickwin",
    "status": "not_started",
    "note": "Jun 15 quick-win backlog \u2014 no issue filed yet.",
-   "started": "2026-06-15T00:00:00Z",
+   "started": "2026-06-15T12:00:00Z",
    "completed": null,
    "artifacts": []
   },
@@ -1486,7 +1486,7 @@
    "bucket": "quickwin",
    "status": "not_started",
    "note": "Jun 15 quick-win backlog \u2014 no issue filed yet.",
-   "started": "2026-06-15T00:00:00Z",
+   "started": "2026-06-15T12:00:00Z",
    "completed": null,
    "artifacts": []
   },
@@ -1495,7 +1495,7 @@
    "bucket": "quickwin",
    "status": "not_started",
    "note": "Jun 15 quick-win backlog \u2014 no issue filed yet.",
-   "started": "2026-06-15T00:00:00Z",
+   "started": "2026-06-15T12:00:00Z",
    "completed": null,
    "artifacts": []
   },
@@ -1504,7 +1504,7 @@
    "bucket": "ship",
    "status": "not_started",
    "note": "NEW Jun 15 sync \u2014 no issue filed yet.",
-   "started": "2026-06-15T00:00:00Z",
+   "started": "2026-06-15T12:00:00Z",
    "completed": null,
    "artifacts": []
   },
@@ -1513,7 +1513,7 @@
    "bucket": "ship",
    "status": "not_started",
    "note": "NEW Jun 15 sync \u2014 no issue filed yet.",
-   "started": "2026-06-15T00:00:00Z",
+   "started": "2026-06-15T12:00:00Z",
    "completed": null,
    "artifacts": []
   },
@@ -1522,7 +1522,7 @@
    "bucket": "discovery",
    "status": "not_started",
    "note": "NEW Jun 15 sync \u2014 discovery, no issue filed yet.",
-   "started": "2026-06-15T00:00:00Z",
+   "started": "2026-06-15T12:00:00Z",
    "completed": null,
    "artifacts": []
   }
@@ -2136,7 +2136,7 @@
       h+='<div class="dev-group">'+bname[b]+'</div>';
       ws.forEach(function(w){
         var arts=(w.artifacts||[]).map(function(a){var done=(a.state==='MERGED'||a.state==='CLOSED');return '<a href="'+a.url+'" target="_blank" class="dev-art '+(done?'done':'open')+'">'+(a.type==='pr'?'PR #':'#')+a.n+'</a>';}).join(' ');
-        h+='<div class="dev-row dev-'+w.status+'"><div class="dev-ic">'+icon[w.status]+'</div><div class="dev-main"><div class="dev-label">'+w.label+'</div><div class="dev-note">'+w.note+'</div>'+(arts?'<div class="dev-arts">'+arts+'</div>':noIssueHtml(w))+'</div><div class="dev-meta"><div>'+sname[w.status]+'</div><div class="dev-dates">'+(w.status==='not_started'?('asked '+fmtDT(w.started)):(fmtDT(w.started)+(w.completed?' \u2192 '+fmtDT(w.completed):'')))+'</div></div></div>';
+        h+='<div class="dev-row dev-'+w.status+'"><div class="dev-ic">'+icon[w.status]+'</div><div class="dev-main"><div class="dev-label">'+w.label+'</div><div class="dev-note">'+w.note+'</div>'+(arts?'<div class="dev-arts">'+arts+'</div>':noIssueHtml(w))+'</div><div class="dev-meta"><div>'+sname[w.status]+'</div><div class="dev-dates">'+(w.status==='not_started'?('asked '+fmt(w.started)):(fmtDT(w.started)+(w.completed?' \u2192 '+fmtDT(w.completed):'')))+'</div></div></div>';
       });
     });
     if(d.priorWork&&d.priorWork.length){h+='<div class="dev-group">Prior related work &mdash; closed before the June sessions</div><div class="dev-prior">'+d.priorWork.map(function(x){return '<a class="dev-prioritem" target="_blank" href="https://github.com/'+d.repo+'/issues/'+x.n+'">#'+x.n+' '+x.title+' <span>'+fmtDT(x.closedAt)+'</span></a>';}).join('')+'</div>';}
