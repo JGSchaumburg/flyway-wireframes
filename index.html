@@ -763,34 +763,38 @@
       <div class="scroll">
         <div class="anno"><b>Fixes shown:</b> filter by pathway type, split the two endpoints onto their own lines, color-code the type tags, clarify the row expander, and rename "spanning" → "between levels".</div>
         <div class="field" style="padding:8px 12px"><div class="val" style="color:var(--muted)">🔍 Search pathways</div></div>
-        <div class="stateLabel">Filter by type</div>
         <div class="seg" style="flex-wrap:wrap">
-          <button class="on">All</button><button>Walkway</button><button>Stairs</button><button>Elevator</button><button>Fare gate</button>
+          <button class="on" onclick="qwFilter(this,'all')">All</button><button onclick="qwFilter(this,'walkway')">Walkway</button><button onclick="qwFilter(this,'stairs')">Stairs</button><button onclick="qwFilter(this,'elevator')">Elevator</button><button onclick="qwFilter(this,'fare gate')">Fare gate</button>
         </div>
         <div class="sect">Pathways · 12</div>
-        <div class="card">
+        <div id="qw-task-rows">
+        <div class="card" data-type="walkway">
           <div class="row"><div class="dot todo">○</div>
             <div style="flex:1"><div class="title2">Entrance A</div>
               <div class="meta" style="margin:1px 0 1px">↓ to</div>
               <div class="title2">Mezzanine landing</div>
               <div style="margin-top:6px"><span class="pill" style="background:#eef0ff;border-color:#c9cdf7;color:#0E06AA">Walkway</span> 2 of 3 fields</div></div>
-            <span class="chev" title="Expand details">⌄</span></div>
+            <span class="chev" style="cursor:pointer" onclick="qwExpand(this,'qwd1')">⌄</span></div>
+          <div id="qwd1" style="display:none;margin-top:8px;border-top:1px solid var(--surfaceDim);padding-top:8px"><div class="meta">Signposted as: <b>To Trains | 69th St TC</b> · Width: <b>1.4 m</b> · Traversal: <b>—</b></div></div>
         </div>
-        <div class="card">
+        <div class="card" data-type="stairs">
           <div class="row"><div class="dot todo">○</div>
             <div style="flex:1"><div class="title2">Concourse</div>
               <div class="meta" style="margin:1px 0 1px">↓ to</div>
               <div class="title2">Westbound platform</div>
               <div style="margin-top:6px"><span class="pill" style="background:#fff1e6;border-color:#ffd2ab;color:#a65200">Stairs</span><span class="pill" style="background:#eef7f4;border-color:#bfe4d8;color:#00795c">between levels</span> step count, signage</div></div>
-            <span class="chev" title="Expand details">⌄</span></div>
+            <span class="chev" style="cursor:pointer" onclick="qwExpand(this,'qwd2')">⌄</span></div>
+          <div id="qwd2" style="display:none;margin-top:8px;border-top:1px solid var(--surfaceDim);padding-top:8px"><div class="meta">Steps: <b>—</b> · Signposted as: <b>To Platforms ↓</b> · Reverse: <b>To Concourse ↑</b></div></div>
         </div>
-        <div class="card">
+        <div class="card" data-type="fare gate">
           <div class="row"><div class="dot now">●</div>
             <div style="flex:1"><div class="title2">Unpaid area</div>
               <div class="meta" style="margin:1px 0 1px">↔ to</div>
               <div class="title2">Paid area</div>
               <div style="margin-top:6px"><span class="pill" style="background:#fde8ef;border-color:#f6bcd0;color:#b00045">Fare gate</span> min width req'd</div></div>
-            <span class="chev" title="Expand details">⌄</span></div>
+            <span class="chev" style="cursor:pointer" onclick="qwExpand(this,'qwd3')">⌄</span></div>
+          <div id="qwd3" style="display:none;margin-top:8px;border-top:1px solid var(--surfaceDim);padding-top:8px"><div class="meta">Min width: <b>0.92 m</b> · Signposted as: <b>To Trains</b> · Reverse: <b>To Street | Exit</b></div></div>
+        </div>
         </div>
         <div class="anno"><b>Today:</b> one cramped line per row, all the same gray tag, endpoints run together ("these names all blend together" — Adam), and no quick way to see only fare gates.</div>
       </div>
@@ -803,21 +807,9 @@
         <div class="t">Diagram status<small>Reads when zoomed out · colorblind-safe</small></div></div>
       <div class="scroll">
         <div class="anno"><b>Fix:</b> encode done vs needs-attention with shape + line style + color, not green vs blue alone, so status reads at the default zoom without zooming in.</div>
-        <div class="stateLabel">Today — color only (hard to read zoomed out)</div>
-        <div class="diagram" style="height:140px">
-          <svg viewBox="0 0 360 140">
-            <g stroke-width="5" fill="none" stroke-linecap="round">
-              <line x1="30" y1="70" x2="130" y2="40" stroke="#2E7D32"/>
-              <line x1="130" y1="40" x2="230" y2="70" stroke="#1565C0"/>
-              <line x1="230" y1="70" x2="330" y2="50" stroke="#2E7D32"/>
-              <line x1="130" y1="40" x2="160" y2="115" stroke="#1565C0"/>
-            </g>
-            <g fill="#2E7D32"><circle cx="30" cy="70" r="6"/><circle cx="330" cy="50" r="6"/></g>
-            <g fill="#1565C0"><circle cx="130" cy="40" r="6"/><circle cx="230" cy="70" r="6"/><circle cx="160" cy="115" r="6"/></g>
-          </svg>
-        </div>
-        <div class="stateLabel">Proposed — shape + dashes + color (redundant cues)</div>
-        <div class="diagram" style="height:160px">
+        <div class="anno"><b>Today:</b> done (green) and to-do (blue) look alike zoomed out — you have to already know status to read it. ("the blue and the green, it is hard to tell the difference... zoomed out" — Julia)</div>
+        <div class="sect">Station diagram (zoomed out)</div>
+        <div class="diagram" style="height:200px">
           <svg viewBox="0 0 360 160">
             <g stroke-width="5" fill="none" stroke-linecap="round">
               <line x1="30" y1="80" x2="130" y2="45" stroke="#2E7D32"/>
@@ -846,16 +838,15 @@
         <div class="t">Messages<small>Stay until you dismiss them</small></div></div>
       <div class="scroll">
         <div class="anno"><b>Fix:</b> keep important messages on screen with an X to dismiss, instead of a toast that auto-closes before you can read it. First hit was the alignment save error.</div>
-        <div class="stateLabel">Proposed — persistent, dismissible</div>
-        <div style="background:#fde8ee;border:1px solid #f4b6c6;border-radius:12px;padding:12px 14px;display:flex;gap:11px;align-items:flex-start">
+        <div class="anno"><b>Today:</b> a ~2-second toast at the bottom that's gone before you've read what failed or what to do about it. <i>Tap the ✕ or Retry below to try it.</i></div>
+        <div id="qw-msg-banner" style="background:#fde8ee;border:1px solid #f4b6c6;border-radius:12px;padding:12px 14px;display:flex;gap:11px;align-items:flex-start">
           <div style="font-size:18px;line-height:1.2">⚠️</div>
           <div style="flex:1"><div style="font-weight:700;color:#b00020;font-size:13.5px">Couldn't save alignment</div>
             <div class="meta" style="margin-top:3px">The alignment save endpoint isn't responding. Your work is kept on the phone and will retry on the next sync.</div>
-            <div style="margin-top:8px"><span class="pill" style="background:#fff;border-color:#f4b6c6;color:#b00020">↻ Retry now</span></div></div>
-          <div style="font-size:16px;color:#b00020;cursor:pointer">✕</div>
+            <div style="margin-top:8px"><span class="pill" style="background:#fff;border-color:#f4b6c6;color:#b00020;cursor:pointer" onclick="qwRetry(this)">↻ Retry now</span></div></div>
+          <div style="font-size:16px;color:#b00020;cursor:pointer" onclick="qwDismiss()">✕</div>
         </div>
-        <div class="stateLabel">Today — flashes and disappears</div>
-        <div class="note">A ~2-second toast at the bottom that's gone before you've read what failed or what to do about it.</div>
+        <div id="qw-msg-clear" style="display:none;align-items:center;justify-content:center;gap:8px;color:var(--muted);padding:22px;font-size:13px;border:1px dashed var(--surfaceDim);border-radius:12px">✓ Dismissed — and it stayed put until you chose to close it.</div>
       </div>
     </section>
 
@@ -865,12 +856,11 @@
       <div class="appbar"><div class="back" onclick="showQWList()">‹</div>
         <div class="t">Select a level<small>15th St / City Hall</small></div></div>
       <div class="scroll">
-        <div class="anno"><b>Fix:</b> tapping a level with no modeled pathways gives clear feedback, instead of doing nothing and feeling broken.</div>
+        <div class="anno"><b>Fix:</b> tapping a level with no modeled pathways gives clear feedback (inline message + a subtle shake), instead of doing nothing and feeling broken. <i>Tap "Upper Mezzanine" to try it.</i></div>
         <div class="card"><div class="row"><div style="flex:1"><div class="title2">L1 Mezzanine</div><div class="meta">12 pathways</div></div><span class="chev">›</span></div></div>
         <div class="card"><div class="row"><div style="flex:1"><div class="title2">Concourse</div><div class="meta">8 pathways</div></div><span class="chev">›</span></div></div>
-        <div class="card" style="border-color:#ffd2ab;background:#fff8f0"><div class="row"><div style="flex:1"><div class="title2">Upper Mezzanine</div>
-          <div class="meta" style="color:#a65200;font-weight:600">No pathways modeled on this level yet</div></div></div></div>
-        <div class="note">Tapping the empty level shows this inline message (plus a subtle shake), so it's obvious the tap registered and why nothing opened.</div>
+        <div class="card" id="qw-empty-row" style="cursor:pointer" onclick="qwTapEmpty(this)"><div class="row"><div style="flex:1"><div class="title2">Upper Mezzanine</div><div class="meta">Tap to open</div></div><span class="chev">›</span></div>
+          <div id="qw-empty-feedback" style="display:none;margin-top:8px;border-top:1px solid #ffd2ab;padding-top:8px;color:#a65200;font-weight:600;font-size:12px">No pathways modeled on this level yet — nothing to open.</div></div>
       </div>
     </section>
 
@@ -884,8 +874,8 @@
         <div class="field"><label>STATION</label><div class="val">15th St / City Hall ▾</div></div>
         <div class="field"><label>SCHEDULE VERSION (GTFS)</label><div class="val">Spring 2026 · published Apr 2 ▾</div>
           <div class="hint">Pick the schedule version your fieldwork is checked against. The most recent is selected for you by default.</div></div>
-        <div class="stateLabel">Sync</div>
-        <button class="btn outline" style="margin-bottom:6px">↻ Re-download station data</button>
+        <div class="sect">Sync</div>
+        <button class="btn outline" style="margin-bottom:6px" onclick="qwResync(this)">↻ Re-download station data</button>
         <div class="hint">Replaces your local copy with the latest from the server. Any unsynced field edits upload first, so nothing is lost.</div>
       </div>
     </section>
@@ -896,14 +886,14 @@
       <div class="appbar"><div class="back" onclick="showQWList()">‹</div>
         <div class="t">Diagram ⇄ map alignment<small>v0.8.x polish</small></div></div>
       <div class="scroll">
-        <div class="anno"><b>Fixes (v0.8.x):</b> calmer zoom, opacity slider moved out of the bottom swipe zone, base-map rotation, a clearly-labeled pin control, and dropping the empty "None" layer.</div>
-        <div class="field"><label>BASE MAP OPACITY · 45%</label>
-          <div class="progress" style="height:8px;background:var(--surfaceDim)"><i style="width:45%;background:var(--primary)"></i></div>
-          <div class="hint">Moved up here, off the bottom edge, so adjusting it no longer fights the home-swipe gesture.</div></div>
+        <div class="anno"><b>Fixes (v0.8.x):</b> calmer zoom, opacity slider moved out of the bottom swipe zone, base-map rotation, a clearly-labeled pin control, and dropping the empty "None" layer. <i>The slider, layer toggle, and rotate are live below.</i></div>
+        <div class="anno"><b>Pin affordance:</b> a labeled "Place alignment point" button replaces the stray 3-dots icon that landed semi-randomly and didn't look tappable. The "None" base layer was also removed — it only showed a blank canvas.</div>
+        <div class="field"><label>BASE MAP OPACITY · <span id="qw-op-val">45%</span></label>
+          <input type="range" min="0" max="100" value="45" oninput="qwOpacity(this.value)" style="width:100%;accent-color:var(--primary)"></div>
         <div class="diagram" style="height:190px">
           <svg viewBox="0 0 360 190">
             <rect x="0" y="0" width="360" height="190" fill="#1b2740"/>
-            <g stroke="#2e6df0" stroke-width="3" fill="none" opacity=".7" transform="rotate(-8 180 95)">
+            <g id="qw-align-graph" data-rot="-8" stroke="#2e6df0" stroke-width="3" fill="none" opacity="0.45" transform="rotate(-8 180 95)">
               <line x1="60" y1="70" x2="180" y2="70"/><line x1="180" y1="70" x2="180" y2="140"/><line x1="180" y1="140" x2="300" y2="140"/>
             </g>
             <circle cx="180" cy="70" r="9" fill="#E70750" stroke="#fff" stroke-width="2.5"/>
@@ -911,10 +901,9 @@
             <text x="196" y="66" fill="#cfe0ff" font-size="11" font-weight="700">alignment pin</text>
           </svg>
         </div>
-        <div class="seg"><button class="on">Street map</button><button>Satellite</button></div>
-        <div class="meta" style="margin:2px 2px 10px">The "None" layer was removed — it only ever showed a blank canvas.</div>
-        <button class="btn ghost" style="margin-bottom:6px">⟲ Rotate base map</button>
-        <div class="anno"><b>Pin affordance:</b> a labeled "📍 Place alignment point" button replaces the stray 3-dots icon that landed semi-randomly and didn't look tappable.</div>
+        <div class="seg"><button class="on" onclick="qwSeg(this)">Street map</button><button onclick="qwSeg(this)">Satellite</button></div>
+        <button class="btn ghost" style="margin:8px 0 6px" onclick="qwRotate()">⟲ Rotate base map</button>
+        <button class="btn outline" onclick="event.preventDefault()">📍 Place alignment point</button>
       </div>
     </section>
 
@@ -924,17 +913,12 @@
       <div class="appbar"><div class="back" onclick="showQWList()">‹</div>
         <div class="t">Field hints + save confirmation<small>Small, but high-trust</small></div></div>
       <div class="scroll">
-        <div class="anno"><b>Fixes:</b> a per-field hint stating the measurement method, and a visible "saved" confirmation on fields that currently save silently (signage especially).</div>
-        <div class="stateLabel">Per-field hint</div>
-        <div class="field"><label>TRAVERSAL TIME (S)</label><div class="val">43</div>
-          <div class="hint">ⓘ Measured door-open to door-open. Use the in-app stopwatch to capture it.</div></div>
-        <div class="stateLabel">Save confirmation</div>
-        <div class="lockedField" style="border-color:#bfe4d8;background:#f3faf7"><div class="txt">To Trains | 69th St TC | Sharon Hill</div>
-          <div class="pencil" style="color:#00795c;font-weight:700;font-size:12px">Saved ✓</div></div>
-        <div class="note">Today signage saves with no confirmation, unlike the rest of the app, so people aren't sure their input stuck.</div>
-        <div class="sect">Reference screens</div>
-        <button class="btn ghost" style="margin-bottom:6px" onclick="showQW('stopwatch')">↗ Stopwatch (field hint in context)</button>
-        <button class="btn ghost" onclick="showQW('signage-edit')">↗ Signage field</button>
+        <div class="anno"><b>Fixes:</b> a per-field hint stating the measurement method, and a visible "saved" confirmation on fields that save silently today (signage especially), so people know their input stuck. <i>Tap the ⓘ to see the hint.</i></div>
+        <div class="anno"><b>Reference screens:</b> see the field hint in the <a href="#" onclick="showQW('stopwatch');return false;">stopwatch</a>, and the <a href="#" onclick="showQW('signage-edit');return false;">signage field</a>.</div>
+        <div class="field"><label>TRAVERSAL TIME (S)</label><div class="val">43 &nbsp;<span style="cursor:pointer;color:var(--primary);font-weight:700" onclick="qwTip(this)">ⓘ</span></div>
+          <div id="qw-tip-pop" style="display:none;margin-top:7px;background:#eef0ff;border:1px solid #d6d9ff;border-radius:8px;padding:8px 10px;font-size:11.5px;color:#2c2a6b">Measured door-open to door-open. Use the in-app stopwatch to capture it.</div></div>
+        <div class="field" style="border-color:#bfe4d8;background:#f3faf7"><label>SIGNPOSTED AS</label><div class="val">To Trains | 69th St TC | Sharon Hill</div>
+          <div class="hint" style="color:#00795c;font-weight:600">Saved ✓</div></div>
       </div>
     </section>
 
@@ -944,16 +928,12 @@
       <div class="appbar"><div class="back" onclick="showQWList()">‹</div>
         <div class="t">Back navigation fix<small>Behavior change · no new UI</small></div></div>
       <div class="scroll">
-        <div class="anno"><b>Behavior fix, not a screen.</b> Everything needed to implement it is here; the source quote is in the panel below.</div>
-        <div class="sect">Problem</div>
-        <div class="note">After tapping an element on the Level Map to jump into the Pathway form, pressing Back skips two screens: it overshoots the Level Map sheet and lands on the level list, so you lose your place.</div>
-        <div class="sect">Steps to reproduce</div>
-        <div class="card" style="cursor:default"><div class="meta">1. Open a level → 2. Level Map sheet → 3. tap an element → Pathway form → 4. press Back → ❌ lands on the level list (expected: the Level Map sheet).</div></div>
-        <div class="sect">Expected</div>
-        <div class="note">Back returns to the Level Map sheet you came from in one step, preserving scroll and the open element. Likely a duplicate route push on the element→form jump.</div>
-        <div class="sect">Reference screens</div>
-        <button class="btn ghost" style="margin-bottom:6px" onclick="showQW('qw-tasklist')">↗ Level Map / task list</button>
-        <button class="btn ghost" onclick="showQW('pathway-form')">↗ Pathway form (the jump target)</button>
+        <div class="anno"><b>Behavior fix, not a new screen.</b> Back from the Pathway form should return to the Level Map sheet you came from — in one step.</div>
+        <div class="anno"><b>Problem:</b> after tapping an element on the Level Map to open the Pathway form, Back overshoots two screens and lands on the level list, losing your place. Likely a duplicate route push on the element→form jump.</div>
+        <div class="anno"><b>Repro:</b> Open a level → Level Map sheet → tap an element → Pathway form → press Back → ❌ lands on the level list (expected: the Level Map sheet).</div>
+        <div class="anno"><b>Reference screens:</b> <a href="#" onclick="showQW('qw-tasklist');return false;">Level Map / task list</a> · <a href="#" onclick="showQW('pathway-form');return false;">Pathway form</a>.</div>
+        <div class="sect">Expected back path</div>
+        <div class="card" style="cursor:default"><div class="meta" style="line-height:2">Level list<br>&nbsp;&nbsp;↳ Level Map sheet &nbsp;<span class="pill" style="background:#eef7f4;border-color:#bfe4d8;color:#00795c">‹ Back returns here</span><br>&nbsp;&nbsp;&nbsp;&nbsp;↳ Pathway form &nbsp;<span class="pill" style="background:#fde8ef;border-color:#f6bcd0;color:#b00045">you are here</span></div></div>
       </div>
     </section>
 
@@ -1485,7 +1465,7 @@
     b.classList.toggle('on',on); b.textContent='Discussion notes: '+(on?'on':'off');
   }
   (function(){var n=localStorage.getItem('flyway_name');if(n)document.getElementById('cf-name').value=n;})();
-  var BUILD_DATE='June 16, 2026 · 10:08 PM EDT'; // @BUILD_DATE@ (stamped by deploy.sh)
+  var BUILD_DATE='June 16, 2026 · 10:11 PM EDT'; // @BUILD_DATE@ (stamped by deploy.sh)
   var RELEASE='v0.3';            // @RELEASE@
   (function(){var d=document.getElementById('build-date'); if(d)d.textContent=BUILD_DATE;
     var r=document.getElementById('release'); if(r)r.textContent='Companion App wireframes · '+RELEASE;})();
