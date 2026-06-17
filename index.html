@@ -224,19 +224,17 @@
   .qwitem .qwtag{flex:none;font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--muted);
     background:var(--surface);border:1px solid var(--surfaceDim);border-radius:8px;padding:7px 10px;white-space:nowrap;}
 
-  /* ===== Quick win detail: prototype on top, info box pushed below ===== */
-  #qwback{display:none;width:390px;max-width:96vw;margin-bottom:6px;}
+  /* ===== Quick win detail: same side-by-side layout as other screens, reached via the list ===== */
+  #qwback{display:none;width:100%;max-width:1180px;margin:0 0 12px;}
   #qwback button{font-family:inherit;font-size:13px;font-weight:600;border:1px solid var(--surfaceDim);
-    background:#fff;color:var(--primary);padding:10px 14px;border-radius:10px;cursor:pointer;width:100%;}
-  body.qwview .stage{flex-direction:column;align-items:center;}
-  body.qwview #infopanel{width:390px;max-width:96vw;margin-top:10px;}
+    background:#fff;color:var(--primary);padding:10px 16px;border-radius:10px;cursor:pointer;}
   body.qwview .desk,body.qwview .qwlist{display:none;}
   body.qwview #qwback{display:block;}
 </style>
 </head>
 <body class="show-anno">
   <h1 class="title">Flyway · Companion App — concept wireframes</h1>
-  <p class="sub">Three cuts of the companion-app concept. <b>Version 2 · Ship now</b> (the default) is what we build this task order: photo + note capture, a batch of small usability quick wins, and pin placement (a maybe). <b>In discovery / deferred</b> holds what we're proving out first (voice-to-text + AI signage cleanup) and what's parked for a later task order (guided journeys). <b>Version 1 · Jun 12</b> is the original cut that led with guided-journey routing and zone-based photo capture. Switch with the tabs; yellow notes carry the reasoning.</p>
+  <p class="sub"><b>Last updated <span id="build-date">June 16, 2026</span></b><br><span id="release" class="release">Companion App wireframes · v0.3</span></p>
   <div class="vertabs">
     <button id="tab-v2" class="on" onclick="goMode('v2')">Version 2 · Ship now</button>
     <button id="tab-disc" onclick="goMode('disc')">In discovery / deferred</button>
@@ -266,8 +264,8 @@
     <button id="annoBtn" class="on" onclick="toggleAnno()">Discussion notes: on</button>
   </div>
 
-  <div class="stage">
   <div id="qwback"><button onclick="showQWList()">‹ Back to quick wins list</button></div>
+  <div class="stage">
   <div class="phone">
     <div class="notch"></div>
 
@@ -1298,6 +1296,10 @@
     b.classList.toggle('on',on); b.textContent='Discussion notes: '+(on?'on':'off');
   }
   (function(){var n=localStorage.getItem('flyway_name');if(n)document.getElementById('cf-name').value=n;})();
+  var BUILD_DATE='June 16, 2026'; // @BUILD_DATE@ (stamped by deploy.sh)
+  var RELEASE='v0.3';            // @RELEASE@
+  (function(){var d=document.getElementById('build-date'); if(d)d.textContent=BUILD_DATE;
+    var r=document.getElementById('release'); if(r)r.textContent='Companion App wireframes · '+RELEASE;})();
   function applyHash(){
     var h=(location.hash||'').replace('#','');
     if(h==='desk'){ showDesk(); return; }
