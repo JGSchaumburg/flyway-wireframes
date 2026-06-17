@@ -627,10 +627,12 @@
         <div class="timer">0:00</div>
         <button class="btn primary">▶ Start</button>
         <div class="stateLabel">Recorded runs</div>
-        <div class="runrow"><span>Run 1</span><span style="color:var(--muted)">0:42</span><span class="del">✕</span></div>
-        <div class="runrow"><span>Run 2</span><span style="color:var(--muted)">0:45</span><span class="del">✕</span></div>
-        <div class="runrow"><span>Run 3</span><span style="color:var(--muted)">0:43</span><span class="del">✕</span></div>
-        <div class="avgbox">Average of 3 runs <b>0:43</b></div>
+        <div id="sw-runs">
+        <div class="runrow" data-sec="42"><span>Run 1</span><span style="color:var(--muted)">0:42</span><span class="del next" style="cursor:pointer" onclick="qwSwDrop(this)">✕</span></div>
+        <div class="runrow" data-sec="45"><span>Run 2</span><span style="color:var(--muted)">0:45</span><span class="del" style="cursor:pointer" onclick="qwSwDrop(this)">✕</span></div>
+        <div class="runrow" data-sec="43"><span>Run 3</span><span style="color:var(--muted)">0:43</span><span class="del" style="cursor:pointer" onclick="qwSwDrop(this)">✕</span></div>
+        </div>
+        <div class="avgbox">Average of <span id="sw-n">3</span> runs <b id="sw-avg">0:43</b></div>
         <div class="field"><label>FIELD HINT</label><div class="hint" style="margin-top:0">Per-field tip shows the measurement method, e.g. "door-open to door-open" for elevators.</div></div>
         <button class="btn primary" onclick="showQWList()">Use 0:43 as traversal time</button>
       </div>
@@ -681,7 +683,7 @@
           <div class="field" style="border-color:#bfe4d8;background:#f3faf7"><label>SIGNPOSTED AS</label><div class="val">L1 Eastbound &amp; Westbound | T Eastbound</div>
             <div class="hint" style="color:#00795c">✓ filled from the photo</div></div>
           <div class="sect">Photo</div>
-          <div class="grid3"><div class="thumb" style="background-image:var(--photo-sign);background-size:cover;background-position:center;color:#fff;align-items:end;justify-items:start;padding:5px;text-shadow:0 1px 3px #000;font-size:9px">L/T sign</div><div class="thumb" style="background-image:var(--photo-stair);background-size:cover;background-position:center top;color:#fff;align-items:end;justify-items:start;padding:5px;text-shadow:0 1px 3px #000;font-size:9px">stair head</div><div class="thumb" style="background-image:var(--photo-corridor);background-size:cover;background-position:center;color:#fff;align-items:end;justify-items:start;padding:5px;text-shadow:0 1px 3px #000;font-size:9px">close-up</div><div class="thumb">＋ add</div></div>
+          <div class="grid3"><div class="thumb" style="background-image:var(--photo-sign);background-size:cover;background-position:center;color:#fff;align-items:end;justify-items:start;padding:5px;text-shadow:0 1px 3px #000;font-size:9px;position:relative"><span class="del next" style="position:absolute;top:3px;right:3px;background:rgba(0,0,0,.55);color:#fff;width:16px;height:16px;border-radius:50%;display:grid;place-items:center;font-size:9px;cursor:pointer" onclick="qwRm(this)">✕</span>L/T sign</div><div class="thumb" style="background-image:var(--photo-stair);background-size:cover;background-position:center;color:#fff;align-items:end;justify-items:start;padding:5px;text-shadow:0 1px 3px #000;font-size:9px;position:relative"><span class="del" style="position:absolute;top:3px;right:3px;background:rgba(0,0,0,.55);color:#fff;width:16px;height:16px;border-radius:50%;display:grid;place-items:center;font-size:9px;cursor:pointer" onclick="qwRm(this)">✕</span>stair head</div><div class="thumb" style="background-image:var(--photo-corridor);background-size:cover;background-position:center;color:#fff;align-items:end;justify-items:start;padding:5px;text-shadow:0 1px 3px #000;font-size:9px;position:relative"><span class="del" style="position:absolute;top:3px;right:3px;background:rgba(0,0,0,.55);color:#fff;width:16px;height:16px;border-radius:50%;display:grid;place-items:center;font-size:9px;cursor:pointer" onclick="qwRm(this)">✕</span>close-up</div><div class="thumb">＋ add</div></div>
           <div class="card" style="cursor:default"><div class="meta">Attached to <b>Pathway · Fare gate (unpaid → paid)</b></div></div>
           <div class="cmt" style="border-left-color:var(--complete)">Saved ✓ — the photo travels to Studio for text extraction at the desk.<span class="cmt-meta">just now</span></div>
           <div class="seg" style="margin-top:8px"><button class="on" onclick="qwSetState('v2-photo',0)">📷 Capture another</button><button onclick="qwSetState('v2-photo',0)">✓ Done</button></div>
@@ -2155,6 +2157,14 @@
     if(e){ e.style.display=n?'none':''; e.textContent='No '+type+' pathways modeled on this level.'; }
     requestAnimationFrame(positionNotes);
   }
+  function qwRm(x){var t=x.closest('.thumb'); if(t)t.remove(); requestAnimationFrame(positionNotes);}
+  function qwSwDrop(x){var r=x.closest('.runrow'); if(r)r.remove();
+    var rows=document.querySelectorAll('#sw-runs .runrow'); var n=rows.length, tot=0;
+    rows.forEach(function(e){tot+=parseInt(e.getAttribute('data-sec'),10);});
+    var avg=n?Math.round(tot/n):0; var mm=Math.floor(avg/60), ss=String(avg%60).padStart(2,'0');
+    var ne=document.getElementById('sw-n'); if(ne)ne.textContent=n;
+    var ae=document.getElementById('sw-avg'); if(ae)ae.textContent=n?(mm+':'+ss):'—';
+    requestAnimationFrame(positionNotes);}
   function qwCapFilter(btn,t){Array.prototype.forEach.call(btn.parentNode.children,function(b){b.classList.toggle('on',b===btn);});Array.prototype.forEach.call(document.querySelectorAll('#cap-feed [data-cap]'),function(r){r.style.display=(t==='all'||r.getAttribute('data-cap')===t)?'':'none';});}
   function qwSync(color,chip,detail){
     var c=document.getElementById('qw-sync-chip'); if(c){c.textContent=chip;c.style.background=color;c.style.color='#06231a';}
@@ -2241,7 +2251,7 @@
     b.classList.toggle('on',on); b.textContent='Discussion notes: '+(on?'on':'off');
   }
   (function(){var n=localStorage.getItem('flyway_name');if(n)document.getElementById('cf-name').value=n;})();
-  var BUILD_DATE='June 17, 2026 · 4:02 PM EDT'; // @BUILD_DATE@ (stamped by deploy.sh)
+  var BUILD_DATE='June 17, 2026 · 4:04 PM EDT'; // @BUILD_DATE@ (stamped by deploy.sh)
   var RELEASE='v0.3';            // @RELEASE@
   (function(){var d=document.getElementById('build-date'); if(d)d.textContent=BUILD_DATE;
     var r=document.getElementById('release'); if(r)r.textContent='Companion App wireframes · '+RELEASE;})();
