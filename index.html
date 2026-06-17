@@ -681,18 +681,32 @@
       <span class="scrnname">v2-photo</span>
       <div class="appbar"><div class="t">Fare gate<small>Signage · unpaid → paid</small></div></div>
       <div class="scroll">
-        <div class="anno">Signage is the photo's main job: snap the sign instead of typing it. (Voice is the other way in, under Discovery.)</div>
-        <div class="anno">"Pin on diagram" replaces the old "zones" idea.</div>
-        <!-- state: capture -->
-        <div class="statepane" id="photo-s0">
+        <div class="anno">Signage is the photo's main job: snap the sign instead of typing it.</div>
+        <div class="anno"><b>Where it is hooked in + what is carried:</b> capture is always launched from an existing screen (a pathway, a node, or a pin). That screen sets the attach target, so it is not re-picked here. The "How you get here" state shows the three entry points.</div>
+        <div class="statepane" id="photo-entry">
+          <div class="sect">3 ways in &mdash; the entry screen sets the target</div>
+          <div class="card next" style="cursor:pointer" onclick="qwSetState('v2-photo',1)"><div class="title2">From the Pathway form</div>
+            <div style="background:var(--surface);border:1px solid var(--surfaceDim);border-radius:8px;padding:8px;margin:6px 0">
+              <div style="font-weight:600;font-size:12px">Fare gate · Unpaid → Paid</div><div class="meta">Signage — Signposted As…</div>
+              <div style="margin-top:6px"><span class="pill" style="background:var(--primary);color:#fff;border-color:var(--primary)">📷 Capture sign</span></div></div>
+            <div class="meta">carries → <b>this pathway</b> as the attach target ›</div></div>
+          <div class="card" style="cursor:pointer" onclick="qwSetState('v2-photo',1)"><div class="title2">From a Node detail</div>
+            <div style="background:var(--surface);border:1px solid var(--surfaceDim);border-radius:8px;padding:8px;margin:6px 0;font-size:12px"><b>Mezzanine landing</b> <span class="pill" style="background:#eef0ff;border-color:#c9cdf7;color:#0E06AA;font-size:9px">node</span> &nbsp;<span class="pill" style="background:var(--primary);color:#fff;border-color:var(--primary)">📷 Add photo</span></div>
+            <div class="meta">carries → <b>this node</b> ›</div></div>
+          <div class="card" style="cursor:pointer" onclick="show('v2-pin')"><div class="title2">From the Level map (drop a pin)</div>
+            <div style="background:var(--surface);border:1px solid var(--surfaceDim);border-radius:8px;padding:8px;margin:6px 0;font-size:12px">Level diagram → 📍 drop pin → 📷 / 🗒</div>
+            <div class="meta">carries → <b>a pin coordinate</b> (opens Pin placement) ›</div></div>
+        </div>
+        <div class="statepane" id="photo-s0" style="display:none">
           <div class="field"><label>SIGNPOSTED AS</label><div class="val">L1 Eastbound &amp; Westbound | T Eastbound</div></div>
           <div class="viewfinder" style="background-image:var(--photo-sign);background-size:cover;background-position:center 32%">
             <div style="position:absolute;bottom:74px;left:0;right:0;text-align:center;color:#fff;font-size:10.5px;font-weight:600;text-shadow:0 1px 4px #000;letter-spacing:.3px">point at the sign, tap to capture</div>
-            <div class="shutter" onclick="qwSetState('v2-photo',1)"></div>
+            <div class="shutter" onclick="qwSetState('v2-photo',2)"></div>
           </div>
-          <div class="sect">Attach to</div>
-          <div class="seg"><button class="on">Pathway</button><button onclick="qwSeg(this)">Node</button><button onclick="qwSeg(this)">Pin on diagram</button></div>
-          <button class="btn primary next" onclick="qwSetState('v2-photo',1)">📷 Capture</button>
+          <div class="sect">Attaching to</div>
+          <div class="card" style="cursor:default;border-color:#bfe4d8;background:#f3faf7"><div class="row"><div style="flex:1"><b>Fare gate · Unpaid → Paid</b><div class="meta">carried in from the pathway you opened this from, not re-selected here</div></div><span class="pill" style="cursor:pointer" onclick="qwSeg(this)">Change ▾</span></div></div>
+          <div class="anno">No target picker here by default; it is inherited. The Pathway / Node / Pin chooser appears only if you open the camera <i>without</i> a target (e.g. from the level Captures view).</div>
+          <button class="btn primary next" onclick="qwSetState('v2-photo',2)">📷 Capture</button>
         </div>
         <!-- state: photo saved & attached -->
         <div class="statepane" id="photo-s1" style="display:none">
@@ -702,7 +716,7 @@
           <div class="grid3"><div class="thumb" style="background-image:var(--photo-sign);background-size:cover;background-position:center;color:#fff;align-items:end;justify-items:start;padding:5px;text-shadow:0 1px 3px #000;font-size:9px;position:relative"><span class="del next" style="position:absolute;top:3px;right:3px;background:rgba(0,0,0,.55);color:#fff;width:16px;height:16px;border-radius:50%;display:grid;place-items:center;font-size:9px;cursor:pointer" onclick="qwRm(this)">✕</span>L/T sign</div><div class="thumb" style="background-image:var(--photo-stair);background-size:cover;background-position:center;color:#fff;align-items:end;justify-items:start;padding:5px;text-shadow:0 1px 3px #000;font-size:9px;position:relative"><span class="del" style="position:absolute;top:3px;right:3px;background:rgba(0,0,0,.55);color:#fff;width:16px;height:16px;border-radius:50%;display:grid;place-items:center;font-size:9px;cursor:pointer" onclick="qwRm(this)">✕</span>stair head</div><div class="thumb" style="background-image:var(--photo-corridor);background-size:cover;background-position:center;color:#fff;align-items:end;justify-items:start;padding:5px;text-shadow:0 1px 3px #000;font-size:9px;position:relative"><span class="del" style="position:absolute;top:3px;right:3px;background:rgba(0,0,0,.55);color:#fff;width:16px;height:16px;border-radius:50%;display:grid;place-items:center;font-size:9px;cursor:pointer" onclick="qwRm(this)">✕</span>close-up</div><div class="thumb">＋ add</div></div>
           <div class="card" style="cursor:default"><div class="meta">Attached to <b>Pathway · Fare gate (unpaid → paid)</b></div></div>
           <div class="cmt" style="border-left-color:var(--complete)">Saved ✓ — the photo travels to Studio for text extraction at the desk.<span class="cmt-meta">just now</span></div>
-          <div class="seg" style="margin-top:8px"><button class="on" onclick="qwSetState('v2-photo',0)">📷 Capture another</button><button onclick="qwSetState('v2-photo',0)">✓ Done</button></div>
+          <div class="seg" style="margin-top:8px"><button class="on" onclick="qwSetState('v2-photo',1)">📷 Capture another</button><button onclick="qwSetState('v2-photo',1)">✓ Done</button></div>
         </div>
         <!-- state: upload failed / pending (offline is the norm underground) -->
         <div class="statepane" id="photo-s2" style="display:none">
@@ -725,6 +739,7 @@
       <div class="appbar"><div class="t">Drop a pin<small>L1 Mezzanine West · 15th St &amp; Market St</small></div></div>
       <div class="scroll">
         <div class="anno">Agreed model, but may slip past the first cut. Confirm with Chris.</div>
+        <div class="anno"><b>How you get here:</b> launched from the Level map ("Place on diagram"). It carries the level + the exact diagram coordinate where you drop.</div>
         <div class="anno">Zoom to where you are, line up the crosshair, drop the pin. The crosshair stays centered and the map moves under it (the Maps / Uber pattern).</div>
         <!-- state 0: live empty map -->
         <div class="statepane" id="pin-s0">
@@ -832,6 +847,7 @@
       <div class="appbar"><div class="t">Add a note<small>Fare gate (unpaid → paid)</small></div></div>
       <div class="scroll">
         <div class="anno">A timestamped, authored comment on a node or pathway (like Miro), not a free-text blob. Voice works here too.</div>
+        <div class="anno"><b>How you get here:</b> opened from the node or pathway you are on ("Add note"). That element is the target, carried in, with no separate picker.</div>
         <!-- state: compose -->
         <div class="statepane" id="note-s0">
           <div class="editField"><div class="ta">Actual gate is ~3m east of where it's modeled — flag to fix at desk.<span style="color:var(--secondary)">▏</span></div></div>
@@ -2285,7 +2301,7 @@
   }
   var STATES={
    'v2-pin':[{l:'Empty diagram',p:'pin-s0'},{l:'1 pin placed',p:'pin-s1'},{l:'Many · clustered',p:'pin-s2'},{l:'Saved · photo + note',p:'pin-s3'},{l:'Cluster opened',p:'pin-s4'}],
-   'v2-photo':[{l:'Capture',p:'photo-s0'},{l:'Photo saved',p:'photo-s1'},{l:'Pending / failed',p:'photo-s2'}],
+   'v2-photo':[{l:'How you get here',p:'photo-entry'},{l:'Capture',p:'photo-s0'},{l:'Photo saved',p:'photo-s1'},{l:'Pending / failed',p:'photo-s2'}],
    'v2-note':[{l:'Compose',p:'note-s0'},{l:'Note saved',p:'note-s1'},{l:'Resolved at desk',p:'note-s2'}],
    'v2-signage':[{l:'Listening',p:'sig-s0'},{l:'Transcribed',p:'sig-s1'},{l:'AI cleanup',p:'sig-s2'}],
    'v2-captures':[{l:'All on level',p:'cap-all'},{l:'Photos only',p:'cap-photos'},{l:'Notes only',p:'cap-notes'},{l:'On a pathway',p:'cap-pathway'},{l:'On a node',p:'cap-node'},{l:'None yet',p:'cap-empty'}],
@@ -2327,7 +2343,7 @@
     b.classList.toggle('on',on); b.textContent='Discussion notes: '+(on?'on':'off');
   }
   (function(){var n=localStorage.getItem('flyway_name');if(n)document.getElementById('cf-name').value=n;})();
-  var BUILD_DATE='June 17, 2026 · 5:58 PM EDT'; // @BUILD_DATE@ (stamped by deploy.sh)
+  var BUILD_DATE='June 17, 2026 · 6:10 PM EDT'; // @BUILD_DATE@ (stamped by deploy.sh)
   var RELEASE='v0.3';            // @RELEASE@
   (function(){var d=document.getElementById('build-date'); if(d)d.textContent=BUILD_DATE;
     var r=document.getElementById('release'); if(r)r.textContent='Companion App wireframes · '+RELEASE;})();
