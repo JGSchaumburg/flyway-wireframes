@@ -607,7 +607,7 @@
         <div class="editField"><div class="ta">L1 eastbound and westbound bar separator T eastbound<span style="color:var(--secondary)">▏</span></div></div>
         <button class="btn primary">🎤 Stop &amp; transcribe</button>
         <div class="stateLabel">AI cleanup at the desk</div>
-        <div class="avgbox">"Transit Centre" looks like a typo of "Center" <b>fix</b></div>
+        <div class="avgbox" id="qw-ai-sug">"Transit Centre" looks like a typo of "Center"<span style="margin-left:auto;display:flex;gap:6px"><span class="pill" style="cursor:pointer;background:#e3f5ef;border-color:#bfe4d8;color:#00795c" onclick="qwAi(true)">✓ accept</span><span class="pill" style="cursor:pointer" onclick="qwAi(false)">✕ keep</span></span></div>
         <div class="anno">Photo and voice both feed AI text extraction. Voice saves typing; the worry was typos, not keystrokes.</div>
         <button class="btn primary">Use value</button>
       </div>
@@ -629,14 +629,14 @@
           </div>
           <div class="sect">Attach to</div>
           <div class="seg"><button class="on">Pathway</button><button onclick="qwSeg(this)">Node</button><button onclick="qwSeg(this)">Pin on diagram</button></div>
-          <button class="btn primary" onclick="qwSetState('v2-photo',1)">📷 Capture</button>
+          <button class="btn primary next" onclick="qwSetState('v2-photo',1)">📷 Capture</button>
         </div>
         <!-- state: photo saved & attached -->
         <div class="statepane" id="photo-s1" style="display:none">
           <div class="field" style="border-color:#bfe4d8;background:#f3faf7"><label>SIGNPOSTED AS</label><div class="val">L1 Eastbound &amp; Westbound | T Eastbound</div>
             <div class="hint" style="color:#00795c">✓ filled from the photo</div></div>
           <div class="sect">Photo</div>
-          <div class="grid3" style="grid-template-columns:1fr 1fr"><div class="thumb" style="background-image:var(--photo-sign);background-size:cover;background-position:center;color:#fff;align-items:end;justify-items:start;padding:6px;text-shadow:0 1px 3px #000;font-size:9.5px">L Westbound</div><div class="thumb">＋ add another</div></div>
+          <div class="grid3"><div class="thumb" style="background-image:var(--photo-sign);background-size:cover;background-position:center;color:#fff;align-items:end;justify-items:start;padding:5px;text-shadow:0 1px 3px #000;font-size:9px">L/T sign</div><div class="thumb" style="background-image:var(--photo-stair);background-size:cover;background-position:center top;color:#fff;align-items:end;justify-items:start;padding:5px;text-shadow:0 1px 3px #000;font-size:9px">stair head</div><div class="thumb" style="background-image:var(--photo-corridor);background-size:cover;background-position:center;color:#fff;align-items:end;justify-items:start;padding:5px;text-shadow:0 1px 3px #000;font-size:9px">close-up</div><div class="thumb">＋ add</div></div>
           <div class="card" style="cursor:default"><div class="meta">Attached to <b>Pathway · Fare gate (unpaid → paid)</b></div></div>
           <div class="cmt" style="border-left-color:var(--complete)">Saved ✓ — the photo travels to Studio for text extraction at the desk.<span class="cmt-meta">just now</span></div>
           <div class="seg" style="margin-top:8px"><button class="on" onclick="qwSetState('v2-photo',0)">📷 Capture another</button><button onclick="qwSetState('v2-photo',0)">✓ Done</button></div>
@@ -668,7 +668,7 @@
           <div class="zoomctl"><button id="zin" type="button">+</button><button id="zout" type="button">−</button><button id="zreset" type="button" title="recenter">⌖</button></div>
         </div>
         <div class="maplegend"><span><i style="background:#1565C0"></i>to do</span><span><i style="background:#2E7D32"></i>validated</span><span>drag = pan · scroll / pinch = zoom · ⌖ recenter</span></div>
-        <button class="btn primary" id="dropBtn" type="button">📍 Drop pin here</button>
+        <button class="btn primary next" id="dropBtn" type="button">📍 Drop pin here</button>
         <div class="hint" id="dropMsg" style="margin:4px 2px 8px">Snaps to a nearby node or pathway so the desk can correlate it; otherwise drops a free grid point. (Use the state switcher below to see a placed pin, multiple pins, and a saved pin.)</div>
         </div><!-- /pin-s0 -->
 
@@ -687,7 +687,7 @@
           <div class="sect">On this pin</div>
           <div class="seg"><button class="on">📷 Photo</button><button class="on">🗒 Note</button></div>
           <div class="hint">A pin can hold a photo, a note, or both. Add them, then save.</div>
-          <button class="btn primary" onclick="qwSetState('v2-pin',3)">Save pin</button>
+          <button class="btn primary next" onclick="qwSetState('v2-pin',3)">Save pin</button>
         </div>
 
         <!-- state 2: multiple pins on the level -->
@@ -743,7 +743,7 @@
         <div class="statepane" id="note-s0">
           <div class="editField"><div class="ta">Actual gate is ~3m east of where it's modeled — flag to fix at desk.<span style="color:var(--secondary)">▏</span></div></div>
           <div class="seg"><button class="on">🎤 Voice</button><button onclick="qwSeg(this)">📷 Attach photo</button></div>
-          <button class="btn primary" onclick="qwSetState('v2-note',1)">Post comment</button>
+          <button class="btn primary next" onclick="qwSetState('v2-note',1)">Post comment</button>
         </div>
         <!-- state: note saved (threaded, authored, timestamped) -->
         <div class="statepane" id="note-s1" style="display:none">
@@ -752,6 +752,14 @@
           <div class="cmt" style="border-left-color:var(--accent)">Confirmed the unpaid-side sign reads "To Trains".<span class="cmt-meta">Christopher · earlier today</span></div>
           <div class="cmt" style="border-left-color:var(--complete)">Saved ✓ — the comment syncs to Studio attached to this pathway.<span class="cmt-meta">just now</span></div>
           <div class="seg" style="margin-top:8px"><button class="on" onclick="qwSetState('v2-note',0)">🗒 Add another note</button><button onclick="qwSetState('v2-note',0)">✓ Done</button></div>
+        </div>
+        <!-- state: note resolved at the desk (closes the field→desk loop) -->
+        <div class="statepane" id="note-s2" style="display:none">
+          <div class="sect">Comments on this pathway</div>
+          <div class="cmt" style="border-left-color:var(--complete)">Actual gate is ~3m east of where it's modeled — flag to fix at desk.<span class="cmt-meta">You · 🎤 dictated · earlier</span>
+            <span style="display:inline-block;margin-top:6px;font-size:10px;font-weight:700;color:#00795c;background:#e3f5ef;border:1px solid #bfe4d8;border-radius:6px;padding:2px 8px">✓ Resolved at desk · model updated by Christopher</span></div>
+          <div class="note">Resolving at the desk closes the loop: the field flag is cleared once the pathway is corrected, so the next collector doesn't re-flag it.</div>
+          <div class="seg" style="margin-top:8px"><button class="on" onclick="qwSetState('v2-note',1)">↩ Reopen</button><button onclick="qwSetState('v2-note',0)">🗒 Add another note</button></div>
         </div>
       </div>
     </section>
@@ -769,7 +777,7 @@
         <div class="anno"><b>Fixes shown:</b> filter by pathway type, split the two endpoints onto their own lines, color-code the type tags, clarify the row expander, and rename "spanning" → "between levels".</div>
         <div class="field" style="padding:8px 12px"><div class="val" style="color:var(--muted)">🔍 Search pathways</div></div>
         <div class="seg" style="flex-wrap:wrap">
-          <button class="on" onclick="qwFilter(this,'all')">All</button><button onclick="qwFilter(this,'walkway')">Walkway</button><button onclick="qwFilter(this,'stairs')">Stairs</button><button onclick="qwFilter(this,'elevator')">Elevator</button><button onclick="qwFilter(this,'fare gate')">Fare gate</button>
+          <button class="on" onclick="qwFilter(this,'all')">All</button><button onclick="qwFilter(this,'walkway')">Walkway</button><button onclick="qwFilter(this,'stairs')">Stairs</button><button onclick="qwFilter(this,'elevator')">Elevator</button><button onclick="qwFilter(this,'fare gate')">Fare gate</button><button onclick="qwFilter(this,'escalator')">Escalator</button>
         </div>
         <div class="sect">Pathways · 12</div>
         <div id="qw-task-rows">
@@ -779,7 +787,7 @@
               <div class="meta" style="margin:1px 0 1px">↓ to</div>
               <div class="title2">Mezzanine landing</div>
               <div style="margin-top:6px"><span class="pill" style="background:#eef0ff;border-color:#c9cdf7;color:#0E06AA">Walkway</span> 2 of 3 fields</div></div>
-            <span class="chev" style="cursor:pointer" onclick="qwExpand(this,'qwd1')">⌄</span></div>
+            <span class="chev next" style="cursor:pointer" onclick="qwExpand(this,'qwd1')">⌄</span></div>
           <div id="qwd1" style="display:none;margin-top:8px;border-top:1px solid var(--surfaceDim);padding-top:8px"><div class="meta">Signposted as: <b>L1 Westbound | 69th St Transit Center</b> · Width: <b>1.4 m</b> · Traversal: <b>—</b></div></div>
         </div>
         <div class="card" data-type="stairs">
@@ -810,7 +818,8 @@
           <div id="qwd4" style="display:none;margin-top:8px;border-top:1px solid var(--surfaceDim);padding-top:8px"><div class="meta">Traversal: <b>0:43</b> (door-open to door-open) · Signposted as: <b>L1 Eastbound · Frankford</b></div></div>
         </div>
         </div>
-        <div class="anno"><b>Today:</b> one cramped line per row, all the same gray tag, endpoints run together ("these names all blend together" — Adam), and no quick way to see only fare gates.</div>
+        <div id="qw-task-empty" style="display:none;color:var(--muted);text-align:center;padding:20px 10px;font-size:12.5px">No pathways of this type modeled on this level.</div>
+        <div class="anno"><b>Empty state:</b> a filter with no matches says so plainly (try "Escalator") instead of showing a blank list. <b>Today:</b> one cramped line per row, all the same gray tag, endpoints run together ("these names all blend together" — Adam), and no quick way to see only fare gates.</div>
       </div>
     </section>
 
@@ -858,7 +867,7 @@
           <div style="flex:1"><div style="font-weight:700;color:#b00020;font-size:13.5px">Couldn't save alignment</div>
             <div class="meta" style="margin-top:3px">The alignment save endpoint isn't responding. Your work is kept on the phone and will retry on the next sync.</div>
             <div style="margin-top:8px"><span class="pill" style="background:#fff;border-color:#f4b6c6;color:#b00020;cursor:pointer" onclick="qwRetry(this)">↻ Retry now</span></div></div>
-          <div style="font-size:16px;color:#b00020;cursor:pointer" onclick="qwDismiss()">✕</div>
+          <div class="next" style="font-size:16px;color:#b00020;cursor:pointer" onclick="qwDismiss()">✕</div>
         </div>
         <div id="qw-msg-clear" style="display:none;align-items:center;justify-content:center;gap:8px;color:var(--muted);padding:22px;font-size:13px;border:1px dashed var(--surfaceDim);border-radius:12px">✓ Dismissed — and it stayed put until you chose to close it.</div>
       </div>
@@ -873,7 +882,7 @@
         <div class="anno"><b>Fix:</b> tapping a level with no modeled pathways gives clear feedback (inline message + a subtle shake), instead of doing nothing and feeling broken. <i>Tap "Upper Mezzanine" to try it.</i></div>
         <div class="card"><div class="row"><div style="flex:1"><div class="title2">L1 Mezzanine</div><div class="meta">12 pathways</div></div><span class="chev">›</span></div></div>
         <div class="card"><div class="row"><div style="flex:1"><div class="title2">Concourse</div><div class="meta">8 pathways</div></div><span class="chev">›</span></div></div>
-        <div class="card" id="qw-empty-row" style="cursor:pointer" onclick="qwTapEmpty(this)"><div class="row"><div style="flex:1"><div class="title2">Upper Mezzanine</div><div class="meta">Tap to open</div></div><span class="chev">›</span></div>
+        <div class="card next" id="qw-empty-row" style="cursor:pointer" onclick="qwTapEmpty(this)"><div class="row"><div style="flex:1"><div class="title2">Upper Mezzanine</div><div class="meta">Tap to open</div></div><span class="chev">›</span></div>
           <div id="qw-empty-feedback" style="display:none;margin-top:8px;border-top:1px solid #ffd2ab;padding-top:8px;color:#a65200;font-weight:600;font-size:12px">No pathways modeled on this level yet — nothing to open.</div></div>
       </div>
     </section>
@@ -889,7 +898,7 @@
         <div class="field"><label>SCHEDULE VERSION (GTFS)</label><div class="val">Spring 2026 · published Apr 2 ▾</div>
           <div class="hint">Pick the schedule version your fieldwork is checked against. The most recent is selected for you by default.</div></div>
         <div class="sect">Sync</div>
-        <button class="btn outline" id="qw-resync" style="margin-bottom:6px" onclick="qwResync(this)">↻ Re-download station data</button>
+        <button class="btn outline next" id="qw-resync" style="margin-bottom:6px" onclick="qwResync(this)">↻ Re-download station data</button>
         <div class="hint">Replaces your local copy with the latest from the server. Any unsynced field edits upload first, so nothing is lost.</div>
       </div>
     </section>
@@ -916,7 +925,7 @@
           </svg>
         </div>
         <div class="seg"><button class="on" onclick="qwSeg(this)">Street map</button><button onclick="qwSeg(this)">Satellite</button></div>
-        <button class="btn ghost" style="margin:8px 0 6px" onclick="qwRotate()">⟲ Rotate base map</button>
+        <button class="btn ghost next" style="margin:8px 0 6px" onclick="qwRotate()">⟲ Rotate base map</button>
         <button class="btn outline" onclick="event.preventDefault()">📍 Place alignment point</button>
       </div>
     </section>
@@ -929,7 +938,7 @@
       <div class="scroll">
         <div class="anno"><b>Fixes:</b> a per-field hint stating the measurement method, and a visible "saved" confirmation on fields that save silently today (signage especially), so people know their input stuck. <i>Tap the ⓘ to see the hint.</i></div>
         <div class="anno"><b>Related:</b> the same measurement-method hint appears on the in-app stopwatch, and the save confirmation appears on the signage field — both their own quick wins in this list.</div>
-        <div class="field"><label>TRAVERSAL TIME (S)</label><div class="val">43 &nbsp;<span style="cursor:pointer;color:var(--primary);font-weight:700" onclick="qwTip(this)">ⓘ</span></div>
+        <div class="field"><label>TRAVERSAL TIME (S)</label><div class="val">43 &nbsp;<span class="next" style="cursor:pointer;color:var(--primary);font-weight:700;display:inline-block" onclick="qwTip(this)">ⓘ</span></div>
           <div id="qw-tip-pop" style="display:none;margin-top:7px;background:#eef0ff;border:1px solid #d6d9ff;border-radius:8px;padding:8px 10px;font-size:11.5px;color:#2c2a6b">Measured door-open to door-open. Use the in-app stopwatch to capture it.</div></div>
         <div class="field" style="border-color:#bfe4d8;background:#f3faf7"><label>SIGNPOSTED AS</label><div class="val">L1 Eastbound &amp; Westbound | T Eastbound</div>
           <div class="hint" style="color:#00795c;font-weight:600">Saved ✓</div></div>
@@ -948,6 +957,21 @@
         <div class="anno"><b>Where it happens:</b> the jump is from a Level Map element into the Pathway form; Back should land on the Level Map sheet, not the level list.</div>
         <div class="sect">Expected back path</div>
         <div class="card" style="cursor:default"><div class="meta" style="line-height:2">Level list<br>&nbsp;&nbsp;↳ Level Map sheet &nbsp;<span class="pill" style="background:#eef7f4;border-color:#bfe4d8;color:#00795c">‹ Back returns here</span><br>&nbsp;&nbsp;&nbsp;&nbsp;↳ Pathway form &nbsp;<span class="pill" style="background:#fde8ef;border-color:#f6bcd0;color:#b00045">you are here</span></div></div>
+      </div>
+    </section>
+
+    <!-- qw: sync & offline status -->
+    <section class="screen" id="qw-sync">
+      <span class="scrnname">qw · sync</span>
+      <div class="appbar"><div class="back" onclick="showQWList()">‹</div>
+        <div class="t">Sync &amp; offline<small>Field data is local-first</small></div>
+        <div class="chip" id="qw-sync-chip" style="background:#7BE0BE;color:#06231a">✓ Synced</div></div>
+      <div class="scroll">
+        <div class="anno"><b>Why it matters:</b> collectors work underground with no signal for most of a session. Edits save to the device immediately and upload when a connection returns — the chip in the app bar always says where your data stands. This is the P0 data-persistence finding made visible.</div>
+        <div id="qw-sync-detail"><div class="meta">All field edits are saved to the server. Nothing pending.</div></div>
+        <div class="sect">What each state means</div>
+        <div class="note">✓ <b>Synced</b> — everything is on the server.<br>⟳ <b>N pending</b> — saved on the device, will upload on reconnect.<br>⚠ <b>Offline</b> — no signal; keep working, edits are safe locally and sync automatically.</div>
+        <div class="anno"><b>Use the state switcher below</b> to see the app-bar chip in each state.</div>
       </div>
     </section>
 
@@ -1059,6 +1083,9 @@
     <div class="qwitem"><div class="qwtxt"><div class="qwtitle">Rename "spanning" → "between levels"</div>
       <div class="qwdesc">Plain language in the task list + level selector.</div></div>
       <button class="qwbtn" onclick="showQW('qw-tasklist')">View →</button></div>
+    <div class="qwitem"><div class="qwtxt"><div class="qwtitle">Sync &amp; offline status</div>
+      <div class="qwdesc">A persistent app-bar chip: synced / N pending / offline — so a collector underground always knows their data is safe. (P0 data persistence, made visible.)</div></div>
+      <button class="qwbtn" onclick="showQW('qw-sync')">View →</button></div>
 
     <div class="qwgroup">Alignment workspace polish (v0.8.x)</div>
     <div class="qwitem"><div class="qwtxt"><div class="qwtitle">Alignment workspace, still rough</div>
@@ -1208,6 +1235,11 @@
      why:'A dead tap reads as a broken app; clear feedback tells the user the tap registered and why nothing opened.',
      from:`<div class="ip-prov">Findings doc "Status and navigation"; 6/15 backlog P2.</div>
        <div class="ip-quote">Give empty levels tap feedback (level selector).<span class="ip-attr">Findings doc, suggested changes</span></div>`},
+   'qw-sync':{scr:'Quick win',title:'Sync & offline status',
+     what:'A persistent app-bar chip showing whether field data is synced, pending upload, or offline. Edits are saved on the device immediately and upload automatically when a connection returns.',
+     why:'Collectors are underground without signal for most of a session. The P0 finding was that edits save locally but it was unclear whether they synced; a visible status removes that doubt.',
+     from:`<div class="ip-prov">Findings doc P0 (data persistence and sync); Jun 9 session note that the "saved" indicator was local-only.</div>
+       <div class="ip-quote">Data persistence is the most critical need to make the app useful... it needs to actually be a live data collection tool, not just a local scratchpad.<span class="ip-attr">Findings doc, Jun 9-11 sessions</span></div>`},
    'qw-station':{scr:'Quick win',title:'Station selector + data version',
      what:'Guide the first GTFS schedule-version pick (most recent selected by default, with an explanation), and rename the vague "update" action to "re-download station data" with a note on what it does.',
      why:'First-run users had no guidance on which version to pick, and the sync label did not say what syncing would change.',
@@ -1268,6 +1300,7 @@
    'qw-message':['Persistent banner','Dismiss X','Retry action'],
    'qw-emptylevel':['Empty-level feedback','Level row'],
    'qw-station':['Schedule version pick','Re-sync label'],
+   'qw-sync':['Sync chip','State meanings'],
    'qw-alignment':['Opacity slider placement','Rotation','Pin affordance','Layer options'],
    'qw-tooltips':['Field hint','Save confirmation'],
    'qw-back':['Repro steps','Expected behavior'],
@@ -1430,10 +1463,18 @@
   // ===== Quick-win prototype interactions (clickable, show desired states) =====
   function qwFilter(btn,type){
     Array.prototype.forEach.call(btn.parentNode.children,function(b){b.classList.toggle('on',b===btn);});
+    var n=0;
     Array.prototype.forEach.call(document.querySelectorAll('#qw-task-rows [data-type]'),function(r){
-      r.style.display=(type==='all'||r.getAttribute('data-type')===type)?'':'none';});
+      var m=(type==='all'||r.getAttribute('data-type')===type); r.style.display=m?'':'none'; if(m)n++;});
+    var e=document.getElementById('qw-task-empty');
+    if(e){ e.style.display=n?'none':''; e.textContent='No '+type+' pathways modeled on this level.'; }
     requestAnimationFrame(positionNotes);
   }
+  function qwSync(color,chip,detail){
+    var c=document.getElementById('qw-sync-chip'); if(c){c.textContent=chip;c.style.background=color;c.style.color='#06231a';}
+    var d=document.getElementById('qw-sync-detail'); if(d)d.innerHTML='<div class="meta">'+detail+'</div>';
+  }
+  function qwAi(accept){var b=document.getElementById('qw-ai-sug'); if(b)b.innerHTML=accept?'✓ Applied the fix — "69th St Transit Center"':'✓ Kept the original transcription';}
   function qwExpand(chev,id){var p=document.getElementById(id);if(!p)return;var open=p.style.display==='block';
     p.style.display=open?'none':'block';chev.textContent=open?'⌄':'⌃';requestAnimationFrame(positionNotes);}
   function qwDismiss(){var b=document.getElementById('qw-msg-banner');if(b)b.style.display='none';
@@ -1452,7 +1493,8 @@
   var STATES={
    'v2-pin':[{l:'Empty diagram',p:'pin-s0'},{l:'1 pin placed',p:'pin-s1'},{l:'Many · clustered',p:'pin-s2'},{l:'Saved · photo + note',p:'pin-s3'}],
    'v2-photo':[{l:'Capture',p:'photo-s0'},{l:'Photo saved',p:'photo-s1'}],
-   'v2-note':[{l:'Compose',p:'note-s0'},{l:'Note saved',p:'note-s1'}],
+   'v2-note':[{l:'Compose',p:'note-s0'},{l:'Note saved',p:'note-s1'},{l:'Resolved at desk',p:'note-s2'}],
+   'qw-sync':[{l:'Synced',run:"qwSync('#7BE0BE','✓ Synced','All field edits are saved to the server. Nothing pending.')"},{l:'3 pending',run:"qwSync('#FFD466','⟳ 3 pending','3 edits are saved on this device, waiting to upload when you reconnect.')"},{l:'Offline',run:"qwSync('#F4A6A6','⚠ Offline','No connection. Keep working — edits are saved on the device and sync automatically when signal returns.')"}],
    'qw-tasklist':[{l:'All pathways',run:"qwFilter(document.querySelector('#qw-tasklist .seg button'),'all')"},{l:'Filter: fare gates',run:"var b=document.querySelectorAll('#qw-tasklist .seg button');qwFilter(b[4],'fare gate')"},{l:'Row expanded',run:"qwFilter(document.querySelector('#qw-tasklist .seg button'),'all');var p=document.getElementById('qwd1');if(p)p.style.display='block'"}],
    'qw-message':[{l:'Error shown',run:"var b=document.getElementById('qw-msg-banner'),c=document.getElementById('qw-msg-clear');if(b)b.style.display='';if(c)c.style.display='none'"},{l:'Dismissed',run:"qwDismiss()"}],
    'qw-emptylevel':[{l:'Before tap',run:"var f=document.getElementById('qw-empty-feedback');if(f)f.style.display='none'"},{l:'Tapped · feedback',run:"qwTapEmpty(document.getElementById('qw-empty-row'))"}],
@@ -1489,7 +1531,7 @@
     b.classList.toggle('on',on); b.textContent='Discussion notes: '+(on?'on':'off');
   }
   (function(){var n=localStorage.getItem('flyway_name');if(n)document.getElementById('cf-name').value=n;})();
-  var BUILD_DATE='June 17, 2026 · 5:33 AM EDT'; // @BUILD_DATE@ (stamped by deploy.sh)
+  var BUILD_DATE='June 17, 2026 · 2:49 PM EDT'; // @BUILD_DATE@ (stamped by deploy.sh)
   var RELEASE='v0.3';            // @RELEASE@
   (function(){var d=document.getElementById('build-date'); if(d)d.textContent=BUILD_DATE;
     var r=document.getElementById('release'); if(r)r.textContent='Companion App wireframes · '+RELEASE;})();
