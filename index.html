@@ -308,7 +308,8 @@
       <button onclick="showQWList()">⚡ Quick wins</button>
       <button onclick="show('v2-photo')">📷 Photo capture</button>
       <button onclick="show('v2-note')">🗒 Note / comment</button>
-      <button onclick="show('v2-pin')">📍 Pin placement (maybe)</button></div>
+      <button onclick="show('v2-pin')">📍 Pin placement (maybe)</button>
+      <button onclick="show('v2-captures')">📂 Captures</button></div>
   </div>
   <div id="nav-disc" style="display:none">
     <div class="toolbar"><span class="navlabel discovery">Discovery</span>
@@ -1009,6 +1010,55 @@
         <div class="sect">What each state means</div>
         <div class="note">✓ <b>Synced</b> — everything is on the server.<br>⟳ <b>N pending</b> — saved on the device, will upload on reconnect.<br>⚠ <b>Offline</b> — no signal; keep working, edits are safe locally and sync automatically.</div>
         <div class="anno"><b>Use the state switcher below</b> to see the app-bar chip in each state.</div>
+      </div>
+    </section>
+
+
+    <!-- ===== V2 CAPTURES: roll-up of photos + notes by target / quantity ===== -->
+    <section class="screen" id="v2-captures">
+      <span class="scrnname">v2-captures</span>
+      <div class="appbar"><div class="t">Captures<small>L1 Mezzanine West · 15th St &amp; Market St</small></div></div>
+      <div class="scroll">
+        <div class="anno">Photos and notes can hang off a <b>pathway</b>, a <b>node</b>, or a <b>pin on the diagram</b>. This rolls them all up so nothing is lost. The state switcher below walks each case: the full roll-up, photos-only, notes-only, and what one pathway / one node looks like.</div>
+        <div class="statepane" id="cap-all">
+          <div class="sect">All captures · L1 Mezzanine · 12 (7 photos · 5 notes)</div>
+          <div class="seg"><button class="on" onclick="qwCapFilter(this,'all')">All</button><button onclick="qwCapFilter(this,'photo')">📷 Photos</button><button onclick="qwCapFilter(this,'note')">🗒 Notes</button></div>
+          <div id="cap-feed">
+            <div class="card" data-cap="photo" style="cursor:default"><div class="row"><div style="width:40px;height:40px;border-radius:8px;background-image:var(--photo-sign);background-size:cover;background-position:center;flex:none"></div><div class="meta">📷 <b>Fare gate (unpaid→paid)</b> <span class="pill" style="background:#fde8ef;border-color:#f6bcd0;color:#b00045;font-size:9px">pathway</span><br>You · 9:14</div></div></div>
+            <div class="card" data-cap="note" style="cursor:default"><div class="row"><div style="width:40px;height:40px;border-radius:8px;background:#e3f5ef;border:1px solid #bfe4d8;display:grid;place-items:center;flex:none;font-size:16px">🗒</div><div class="meta">"Gate ~3m east of the model" <span class="pill" style="background:#fde8ef;border-color:#f6bcd0;color:#b00045;font-size:9px">pathway</span><br>on Fare gate · Christopher · 9:15</div></div></div>
+            <div class="card" data-cap="photo" style="cursor:default"><div class="row"><div style="width:40px;height:40px;border-radius:8px;background-image:var(--photo-stair);background-size:cover;background-position:center;flex:none"></div><div class="meta">📷 <b>Stair S2 head</b> <span class="pill" style="background:#fde8ef;border-color:#f6bcd0;color:#b00045;font-size:9px">pathway</span><br>You · 9:22</div></div></div>
+            <div class="card" data-cap="note" style="cursor:default"><div class="row"><div style="width:40px;height:40px;border-radius:8px;background:#e3f5ef;border:1px solid #bfe4d8;display:grid;place-items:center;flex:none;font-size:16px">🗒</div><div class="meta">"Sign points to Platform, stair is left" <span class="pill" style="background:#f3e9ff;border-color:#dcc8f0;color:#7a3aa0;font-size:9px">diagram</span><br>on Mezz Center · Christopher · 9:25</div></div></div>
+            <div class="card" data-cap="photo" style="cursor:default"><div class="row"><div style="width:40px;height:40px;border-radius:8px;background-image:var(--photo-pylon);background-size:cover;background-position:center;flex:none"></div><div class="meta">📷 <b>Entrance A</b> <span class="pill" style="background:#eef0ff;border-color:#c9cdf7;color:#0E06AA;font-size:9px">node</span><br>You · 9:31</div></div></div>
+            <div class="card" data-cap="note" style="cursor:default"><div class="row"><div style="width:40px;height:40px;border-radius:8px;background:#e3f5ef;border:1px solid #bfe4d8;display:grid;place-items:center;flex:none;font-size:16px">🗒</div><div class="meta">"Tactile warning strip missing" <span class="pill" style="background:#eef0ff;border-color:#c9cdf7;color:#0E06AA;font-size:9px">node</span><br>on Platform edge · Noah · 9:40</div></div></div>
+            <div class="card" data-cap="photo" style="cursor:default"><div class="row"><div style="width:40px;height:40px;border-radius:8px;background-image:var(--photo-corridor);background-size:cover;background-position:center;flex:none"></div><div class="meta">📷 <b>Concourse</b> <span class="pill" style="background:#f3e9ff;border-color:#dcc8f0;color:#7a3aa0;font-size:9px">diagram</span><br>You · 9:42</div></div></div>
+            <div class="card" data-cap="note" style="cursor:default"><div class="row"><div style="width:40px;height:40px;border-radius:8px;background:#e3f5ef;border:1px solid #bfe4d8;display:grid;place-items:center;flex:none;font-size:16px">🗒</div><div class="meta">"Re-check after repaint next week" <span class="pill" style="background:#fde8ef;border-color:#f6bcd0;color:#b00045;font-size:9px">pathway</span><br>on Fare gate · You · 9:45</div></div></div>
+          </div>
+        </div>
+        <div class="statepane" id="cap-photos" style="display:none">
+          <div class="sect">Photos on this level · 7</div>
+          <div class="grid3"><div class="thumb" style="background-image:var(--photo-sign);background-size:cover;background-position:center"></div><div class="thumb" style="background-image:var(--photo-stair);background-size:cover;background-position:center"></div><div class="thumb" style="background-image:var(--photo-pylon);background-size:cover;background-position:center"></div><div class="thumb" style="background-image:var(--photo-corridor);background-size:cover;background-position:center"></div><div class="thumb" style="background-image:var(--photo-sign);background-size:cover;background-position:center"></div><div class="thumb" style="background-image:var(--photo-corridor);background-size:cover;background-position:center"></div><div class="thumb" style="background-image:var(--photo-stair);background-size:cover;background-position:center"></div></div>
+        </div>
+        <div class="statepane" id="cap-notes" style="display:none">
+          <div class="sect">Notes on this level · 5</div>
+          <div class="cmt" style="border-left-color:var(--accent)">Gate ~3m east of the model — flag to fix.<span class="cmt-meta">Christopher · Fare gate (pathway) · 9:15</span></div>
+          <div class="cmt" style="border-left-color:var(--accent)">Sign points to Platform but the stair is behind the column.<span class="cmt-meta">Christopher · Mezz Center (pin) · 9:25</span></div>
+          <div class="cmt" style="border-left-color:var(--accent)">Tactile warning strip missing at the platform edge.<span class="cmt-meta">Noah · Platform edge (node) · 9:40</span></div>
+          <div class="cmt" style="border-left-color:var(--complete)">Re-check after the repaint next week.<span class="cmt-meta">You · Fare gate (pathway) · 9:45</span></div>
+          <div class="cmt" style="border-left-color:var(--complete)">Confirmed the unpaid-side sign reads "To Trains".<span class="cmt-meta">You · Fare gate (pathway) · 9:12</span></div>
+        </div>
+        <div class="statepane" id="cap-pathway" style="display:none">
+          <div class="title2" style="margin-bottom:6px">Fare gate · Unpaid → Paid <span class="pill" style="background:#fde8ef;border-color:#f6bcd0;color:#b00045;font-size:9px">pathway</span></div>
+          <div class="sect">Captures on this pathway · 3</div>
+          <div class="grid3" style="grid-template-columns:1fr 1fr"><div class="thumb" style="background-image:var(--photo-sign);background-size:cover"></div><div class="thumb" style="background-image:var(--photo-corridor);background-size:cover"></div></div>
+          <div class="cmt" style="border-left-color:var(--accent);margin-top:8px">Gate is ~3m east of the model — flag to fix.<span class="cmt-meta">Christopher · 🎤 · 9:15</span></div>
+        </div>
+        <div class="statepane" id="cap-node" style="display:none">
+          <div class="title2" style="margin-bottom:6px">Mezzanine landing <span class="pill" style="background:#eef0ff;border-color:#c9cdf7;color:#0E06AA;font-size:9px">node</span></div>
+          <div class="sect">Captures on this node · 3</div>
+          <div class="grid3" style="grid-template-columns:1fr 1fr"><div class="thumb" style="background-image:var(--photo-pylon);background-size:cover"></div><div class="thumb">＋ add</div></div>
+          <div class="cmt" style="border-left-color:var(--accent);margin-top:8px">Tactile warning strip missing at the platform edge.<span class="cmt-meta">Noah · 9:40</span></div>
+          <div class="cmt" style="border-left-color:var(--complete)">Re-check after the repaint next week.<span class="cmt-meta">You · 9:45</span></div>
+        </div>
       </div>
     </section>
 
@@ -1899,6 +1949,11 @@
      build:`Ensure Back from the Pathway form (reached by tapping an element on the Level Map sheet) returns to the Level Map sheet in one step, not the level list — use replace-stack semantics on the element→form jump. NOTE: PR #66 (merged) "replace-stack hops, map-sheet navigation, tap precedence" likely already covers this — verify this exact case before re-implementing.`,
      from:`<div class="ip-prov">Findings doc "Status and navigation"; 6/15 backlog P2.</div>
        <div class="ip-quote">Fix Back overshooting two screens after an element-to-diagram jump (Navigation: Level Map sheet to Pathway Form).<span class="ip-attr">Findings doc, suggested changes</span></div>`},
+   'v2-captures':{scr:'Version 2 · edge cases',title:'Captures roll-up (photos + notes)',
+     what:'Every photo and note left on the level, in one place — filterable to photos-only or notes-only, and viewable per pathway, per node, or per diagram pin. Answers "where did all the notes go?"',
+     why:'Captures attach to three different targets (pathway, node, pin) and pile up fast; without a roll-up, a note left on a node is invisible to someone looking at the pathway list.',
+     build:`Add a level-scoped Captures view (reachable from the level header, e.g. "Captures · 12") that unions photos + notes across pathways, nodes, and diagram pins, newest first, with a photo/note filter. Each entry links to its target. Per-target detail screens (pathway / node) show their own captures section. Backed by the same local store + sync as individual captures.`,
+     from:`<div class="ip-prov">Edge-case pass, Jun 17. Extends the Jun 15 photo/note/pin decisions.</div>`},
    'v2-journeys':{scr:'Version 2 · Jun 15',title:'Guided journeys (deferred)',
      what:'The guided-journey routing view, parked for now. It is the bigger build and the feature SEPTA most wants, so it is a strong candidate to anchor a future task order.',
      why:'A whole new user flow that needs several test rounds; not enough time in the ~2 weeks left. Two refinements landed: journeys break at decision nodes (not entrance-to-platform), and no OTP is needed.',
@@ -1933,6 +1988,7 @@
    'v2-photo':['Viewfinder','Attach to pathway/node/pin','Capture'],
    'v2-pin':['Pan / zoom map','Crosshair reticle','Snap to node','Drop pin','Photo or note'],
    'v2-note':['Existing comment','New comment','Voice','Attach photo'],
+   'v2-captures':['Feed row','Photo/Note filter','Pathway captures','Node captures'],
    'qw-tasklist':['Type filter','Row layout','Type tag colors','"between levels" rename'],
    'qw-legibility':['Done encoding','Needs-attention encoding','Legend'],
    'qw-message':['Persistent banner','Dismiss X','Retry action'],
@@ -2003,7 +2059,7 @@
   }
   // Each screen belongs to a top-line tab: 'v2' (Ship now), 'disc' (Discovery/Deferred), or 'v1'. Default 'v1'.
   var SCREEN_MODE={
-    'v2-photo':'v2','v2-note':'v2','v2-pin':'v2',
+    'v2-photo':'v2','v2-note':'v2','v2-pin':'v2','v2-captures':'v2',
     'qw-tasklist':'v2','qw-legibility':'v2','qw-message':'v2','qw-emptylevel':'v2',
     'qw-station':'v2','qw-alignment':'v2','qw-tooltips':'v2','qw-back':'v2',
     'v2-signage':'disc','v2-journeys':'disc'
@@ -2138,6 +2194,7 @@
     if(e){ e.style.display=n?'none':''; e.textContent='No '+type+' pathways modeled on this level.'; }
     requestAnimationFrame(positionNotes);
   }
+  function qwCapFilter(btn,t){Array.prototype.forEach.call(btn.parentNode.children,function(b){b.classList.toggle('on',b===btn);});Array.prototype.forEach.call(document.querySelectorAll('#cap-feed [data-cap]'),function(r){r.style.display=(t==='all'||r.getAttribute('data-cap')===t)?'':'none';});}
   function qwSync(color,chip,detail){
     var c=document.getElementById('qw-sync-chip'); if(c){c.textContent=chip;c.style.background=color;c.style.color='#06231a';}
     var d=document.getElementById('qw-sync-detail'); if(d)d.innerHTML='<div class="meta">'+detail+'</div>';
@@ -2184,6 +2241,7 @@
    'v2-pin':[{l:'Empty diagram',p:'pin-s0'},{l:'1 pin placed',p:'pin-s1'},{l:'Many · clustered',p:'pin-s2'},{l:'Saved · photo + note',p:'pin-s3'}],
    'v2-photo':[{l:'Capture',p:'photo-s0'},{l:'Photo saved',p:'photo-s1'}],
    'v2-note':[{l:'Compose',p:'note-s0'},{l:'Note saved',p:'note-s1'},{l:'Resolved at desk',p:'note-s2'}],
+   'v2-captures':[{l:'All on level',p:'cap-all'},{l:'Photos only',p:'cap-photos'},{l:'Notes only',p:'cap-notes'},{l:'On a pathway',p:'cap-pathway'},{l:'On a node',p:'cap-node'}],
    'qw-sync':[{l:'Synced',run:"qwSync('#7BE0BE','✓ Synced','All field edits are saved to the server. Nothing pending.')"},{l:'3 pending',run:"qwSync('#FFD466','⟳ 3 pending','3 edits are saved on this device, waiting to upload when you reconnect.')"},{l:'Offline',run:"qwSync('#F4A6A6','⚠ Offline','No connection. Keep working — edits are saved on the device and sync automatically when signal returns.')"}],
    'qw-tasklist':[{l:'All pathways',run:"qwFilter(document.querySelector('#qw-tasklist .seg button'),'all')"},{l:'Filter: fare gates',run:"var b=document.querySelectorAll('#qw-tasklist .seg button');qwFilter(b[4],'fare gate')"},{l:'Row expanded',run:"qwFilter(document.querySelector('#qw-tasklist .seg button'),'all');var p=document.getElementById('qwd1');if(p)p.style.display='block'"}],
    'qw-message':[{l:'Error shown',run:"var b=document.getElementById('qw-msg-banner'),c=document.getElementById('qw-msg-clear');if(b)b.style.display='';if(c)c.style.display='none'"},{l:'Dismissed',run:"qwDismiss()"}],
@@ -2221,7 +2279,7 @@
     b.classList.toggle('on',on); b.textContent='Discussion notes: '+(on?'on':'off');
   }
   (function(){var n=localStorage.getItem('flyway_name');if(n)document.getElementById('cf-name').value=n;})();
-  var BUILD_DATE='June 17, 2026 · 3:36 PM EDT'; // @BUILD_DATE@ (stamped by deploy.sh)
+  var BUILD_DATE='June 17, 2026 · 3:39 PM EDT'; // @BUILD_DATE@ (stamped by deploy.sh)
   var RELEASE='v0.3';            // @RELEASE@
   (function(){var d=document.getElementById('build-date'); if(d)d.textContent=BUILD_DATE;
     var r=document.getElementById('release'); if(r)r.textContent='Companion App wireframes · '+RELEASE;})();
