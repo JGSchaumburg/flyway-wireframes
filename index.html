@@ -1308,7 +1308,7 @@
 
 <script id="dev-data">window.DEV_PROGRESS={
  "repo": "JarvusInnovations/pathways-field-companion",
- "generatedAt": "2026-06-17T20:34:06Z",
+ "generatedAt": "2026-06-17T20:34:30Z",
  "wins": [
   {
    "label": "Graph traversal / Connected view",
@@ -2134,7 +2134,7 @@
         h+='<div class="dev-row dev-'+w.status+'"><div class="dev-ic">'+icon[w.status]+'</div><div class="dev-main"><div class="dev-label">'+w.label+'</div><div class="dev-note">'+w.note+'</div>'+(arts?'<div class="dev-arts">'+arts+'</div>':'<div class="dev-arts" style="color:#b06a6a;font-size:11px">no issue / PR yet</div>')+'</div><div class="dev-meta"><div>'+sname[w.status]+'</div><div class="dev-dates">'+fmtDT(w.started)+(w.completed?' \u2192 '+fmtDT(w.completed):'')+'</div></div></div>';
       });
     });
-    if(d.priorWork&&d.priorWork.length){h+='<div class="dev-group">Prior related work &mdash; closed before the June sessions</div><div class="dev-prior">'+d.priorWork.map(function(x){return '<a class="dev-prioritem" target="_blank" href="https://github.com/'+d.repo+'/issues/'+x.n+'">#'+x.n+' '+x.title+' <span>'+fmt(x.closedAt)+'</span></a>';}).join('')+'</div>';}
+    if(d.priorWork&&d.priorWork.length){h+='<div class="dev-group">Prior related work &mdash; closed before the June sessions</div><div class="dev-prior">'+d.priorWork.map(function(x){return '<a class="dev-prioritem" target="_blank" href="https://github.com/'+d.repo+'/issues/'+x.n+'">#'+x.n+' '+x.title+' <span>'+fmtDT(x.closedAt)+'</span></a>';}).join('')+'</div>';}
     h+='<div class="dev-group">Release / PR / commit log <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--muted)">(snapshot as of '+fmtDT(d.generatedAt)+', refreshed 3&times;/day)</span></div><div class="dev-log">';
     h+='<div class="dev-logcol"><h4>Releases</h4>'+d.releases.slice(0,10).map(function(r){return '<div class="dev-logline"><b>'+r.tag+'</b><span class="dev-when">'+fmtDT(r.date)+'</span></div>';}).join('')+'</div>';
     h+='<div class="dev-logcol"><h4>Recent PRs</h4>'+d.recentPRs.map(function(x){return '<div class="dev-logline"><span class="dev-prstate '+(x.state==='MERGED'?'m':'o')+'">'+(x.state==='MERGED'?'merged':x.state.toLowerCase())+'</span>#'+x.n+' '+x.title+'<span class="dev-when">'+(x.mergedAt?'merged ':'opened ')+fmtDT(x.mergedAt||x.createdAt)+'</span></div>';}).join('')+'</div>';
