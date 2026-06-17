@@ -880,6 +880,7 @@
     </section>
 
     <!-- ===== V2 NOTE / COMMENT ===== -->
+    <!-- v2-note-flow-build: entry->there->next parity with photo -->
     <section class="screen" id="v2-note">
       <span class="scrnname">v2-note</span>
       <div class="appbar"><div class="t">Add a note<small>Fare gate (unpaid → paid)</small></div></div>
@@ -890,10 +891,18 @@
         <!-- state: compose -->
 
         <div class="statepane" id="note-entry">
-          <div class="sect">How you get here — the entry sets the target</div>
-          <div class="card next" style="cursor:pointer" onclick="qwSetState('v2-note','note-s0')"><div class="title2">From a Pathway form</div><div style="background:var(--surface);border:1px solid var(--surfaceDim);border-radius:8px;padding:7px;margin:6px 0;font-size:12px"><b>Fare gate · Unpaid → Paid</b> &nbsp;<span class="pill" style="background:var(--primary);color:#fff;border-color:var(--primary)">🗒 Add note</span></div><div class="meta">carries → this pathway as the target ›</div></div>
-          <div class="card" style="cursor:pointer" onclick="qwSetState('v2-note','note-s0')"><div class="title2">From a Node detail</div><div class="meta">tap Add note → carries this node ›</div></div>
-          <div class="card" style="cursor:pointer" onclick="show('v2-pin')"><div class="title2">From a pin on the diagram</div><div class="meta">carries the pin ›</div></div>
+          <div class="sect">3 ways in &mdash; the entry screen sets the target</div>
+          <div class="card next" style="cursor:pointer" onclick="qwSetState('v2-note','note-s0')"><div class="title2">From a Pathway form</div>
+            <div style="background:var(--surface);border:1px solid var(--surfaceDim);border-radius:8px;padding:8px;margin:6px 0">
+              <div style="font-weight:600;font-size:12px">Fare gate · Unpaid → Paid</div><div class="meta">Signage — Signposted As…</div>
+              <div style="margin-top:6px"><span class="pill" style="background:var(--primary);color:#fff;border-color:var(--primary)">🗒 Add note</span></div></div>
+            <div class="meta">carries → <b>this pathway</b> as the target ›</div></div>
+          <div class="card" style="cursor:pointer" onclick="qwSetState('v2-note','note-s0')"><div class="title2">From a Node detail</div>
+            <div style="background:var(--surface);border:1px solid var(--surfaceDim);border-radius:8px;padding:8px;margin:6px 0;font-size:12px"><b>Mezzanine landing</b> <span class="pill" style="background:#eef0ff;border-color:#c9cdf7;color:#0E06AA;font-size:9px">node</span> &nbsp;<span class="pill" style="background:var(--primary);color:#fff;border-color:var(--primary)">🗒 Add note</span></div>
+            <div class="meta">carries → <b>this node</b> ›</div></div>
+          <div class="card" style="cursor:pointer" onclick="show('v2-pin')"><div class="title2">From a pin on the diagram</div>
+            <div style="background:var(--surface);border:1px solid var(--surfaceDim);border-radius:8px;padding:8px;margin:6px 0;font-size:12px">Level diagram → 📍 drop pin → 📷 / 🗒</div>
+            <div class="meta">carries → <b>a pin coordinate</b> (opens Pin placement) ›</div></div>
         </div>
         <div class="statepane" id="note-s0" style="display:none">
           <div class="card" style="cursor:default;border-color:#bfe4d8;background:#f3faf7;margin-bottom:8px"><div class="meta">On <b>Fare gate · Unpaid → Paid</b> &mdash; carried in from where you opened this; not re-selected</div></div>
@@ -903,10 +912,14 @@
         </div>
         <!-- state: note saved (threaded, authored, timestamped) -->
         <div class="statepane" id="note-s1" style="display:none">
+          <div class="sect">Back on the Pathway form &mdash; comment posted to its thread</div>
+          <div class="card" style="cursor:default;border-color:#bfe4d8;background:#f3faf7"><div class="title2">Fare gate · Unpaid → Paid</div>
+            <div style="margin-top:7px"><span class="pill" style="background:#e6f7f1;border-color:#bfe4d8;color:#00795c">🗒 1 comment</span> <span class="pill">⟳ pending sync</span></div></div>
           <div class="sect">Comments on this pathway</div>
           <div class="cmt" style="border-left-color:var(--complete)">Actual gate is ~3m east of where it's modeled — flag to fix at desk.<span style="float:right;cursor:pointer;color:var(--muted);font-size:11px" onclick="this.closest('.cmt').remove();requestAnimationFrame(positionNotes)" title="delete your comment">✕</span><span class="cmt-meta">You · 🎤 dictated · just now</span></div>
           <div class="cmt" style="border-left-color:var(--accent)">Confirmed the unpaid-side sign reads "To Trains".<span class="cmt-meta">Christopher · earlier today</span></div>
           <div class="cmt" style="border-left-color:var(--complete)">Saved ✓ — the comment syncs to Studio attached to this pathway.<span class="cmt-meta">just now</span></div>
+          <div class="anno">Posting drops you back on the pathway you came from — your note now lives in its thread, authored and timestamped. Keep filling fields, add another note, or move on.</div>
           <div class="seg" style="margin-top:8px"><button class="on" onclick="qwSetState('v2-note','note-s0')">🗒 Add another note</button><button onclick="qwSetState('v2-note','note-s0')">✓ Done</button></div>
         </div>
         <!-- state: note resolved at the desk (closes the field→desk loop) -->
@@ -2458,7 +2471,7 @@
     b.classList.toggle('on',on); b.textContent='Discussion notes: '+(on?'on':'off');
   }
   (function(){var n=localStorage.getItem('flyway_name');if(n)document.getElementById('cf-name').value=n;})();
-  var BUILD_DATE='June 17, 2026 · 7:08 PM EDT'; // @BUILD_DATE@ (stamped by deploy.sh)
+  var BUILD_DATE='June 17, 2026 · 7:10 PM EDT'; // @BUILD_DATE@ (stamped by deploy.sh)
   var RELEASE='v0.3';            // @RELEASE@
   (function(){var d=document.getElementById('build-date'); if(d)d.textContent=BUILD_DATE;
     var r=document.getElementById('release'); if(r)r.textContent='Companion App wireframes · '+RELEASE;})();
