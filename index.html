@@ -250,7 +250,7 @@
 
   /* ===== phone + state switcher beneath it (dev control, outside the app frame) ===== */
   .phonecol{display:flex;flex-direction:column;align-items:center;flex:none;}
-  #statebar{display:none;margin-top:10px;width:412px;max-width:96vw;flex-wrap:wrap;gap:6px;
+  #statebar{display:none;margin-bottom:10px;width:412px;max-width:96vw;flex-wrap:wrap;gap:6px;
     justify-content:center;align-items:center;background:#fff;border:1px solid var(--surfaceDim);
     border-radius:12px;padding:9px 10px;box-shadow:0 4px 14px rgba(0,0,0,.06);}
   #statebar .sb-label{font-size:10px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);margin-right:2px;}
@@ -344,6 +344,7 @@
   <div id="noterail"></div>
   <div id="qw-current"></div>
   <div class="phonecol">
+  <div id="statebar"></div>
   <div id="qw-revised-cap" class="colcap proposed">Proposed · ships to the app</div>
   <div class="phone">
     <div class="notch"></div>
@@ -1567,7 +1568,6 @@
     </section>
 
   </div><!-- /phone -->
-  <div id="statebar"></div>
   <div id="qw-revised-note" class="qwr-note"></div>
   </div><!-- /phonecol -->
 
@@ -2723,7 +2723,7 @@
     b.classList.toggle('on',on); b.textContent='Discussion notes: '+(on?'on':'off');
   }
   (function(){var n=localStorage.getItem('flyway_name');if(n)document.getElementById('cf-name').value=n;})();
-  var BUILD_DATE='June 19, 2026 · 5:02 PM EDT'; // @BUILD_DATE@ (stamped by deploy.sh)
+  var BUILD_DATE='June 19, 2026 · 6:01 PM EDT'; // @BUILD_DATE@ (stamped by deploy.sh)
   var RELEASE='v0.3';            // @RELEASE@
   (function(){var d=document.getElementById('build-date'); if(d)d.textContent=BUILD_DATE;
     var r=document.getElementById('release'); if(r)r.textContent='Companion App wireframes · '+RELEASE;})();
