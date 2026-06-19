@@ -988,6 +988,11 @@
           <div class="note">Resolving at the desk closes the loop: the field flag is cleared once the pathway is corrected, so the next collector doesn't re-flag it.</div>
           <div class="seg" style="margin-top:8px"><button class="on" onclick="qwSetState('v2-note','note-s1')">↩ Reopen</button><button onclick="qwSetState('v2-note','note-s0')">🗒 Add another note</button></div>
         </div>
+      
+        <div class="statepane" id="note-back" style="display:none">
+          <div class="sect">④ Back in the app</div>
+          <div class="card" style="cursor:default"><div class="meta" style="font-size:12px;line-height:1.55">↩ Back on the Pathway form — the comment is posted to its thread, authored + timestamped, and syncs to Studio. Continue the form or tap the next pathway.</div></div>
+        </div>
       </div>
     </section>
 
@@ -2651,10 +2656,9 @@
    'stopwatch':[{l:'① Get here',p:'stopwatch-get'},{l:'② Engage',p:'stopwatch-engage'},{l:'③ End state',p:'stopwatch-end'},{l:'④ Back in app',p:'stopwatch-back'}],
    'v2-pin':[{l:'How you get here',p:'pin-entry'},{l:'Empty diagram',p:'pin-s0'},{l:'1 pin placed',p:'pin-s1'},{l:'Many · clustered',p:'pin-s2'},{l:'Saved · photo + note',p:'pin-s3'},{l:'Cluster opened',p:'pin-s4'},{l:'④ Back in app',p:'pin-back'}],
    'v2-photo':[{l:'How you get here',p:'photo-entry'},{l:'Capture',p:'photo-s0'},{l:'Photo saved',p:'photo-s1'},{l:'Done → pathway',p:'photo-done'},{l:'Pending / failed',p:'photo-s2'}],
-   'v2-note':[{l:'How you get here',p:'note-entry'},{l:'Compose',p:'note-s0'},{l:'Note saved',p:'note-s1'},{l:'Resolved at desk',p:'note-s2'}],
+   'v2-note':[{l:'How you get here',p:'note-entry'},{l:'Compose',p:'note-s0'},{l:'Note saved',p:'note-s1'},{l:'Resolved at desk',p:'note-s2'},{l:'④ Back in app',p:'note-back'}],
    'v2-signage':[{l:'How you get here',p:'sig-entry'},{l:'Listening',p:'sig-s0'},{l:'Transcribed',p:'sig-s1'},{l:'AI cleanup',p:'sig-s2'},{l:'④ Back in app',p:'sig-back'}],
    'v2-captures':[{l:'How you get here',p:'cap-entry'},{l:'All on level',p:'cap-all'},{l:'Photos only',p:'cap-photos'},{l:'Notes only',p:'cap-notes'},{l:'On a pathway',p:'cap-pathway'},{l:'On a node',p:'cap-node'},{l:'None yet',p:'cap-empty'},{l:'④ Back in app',p:'cap-back'}],
-   'qw-alignment':[{l:'Street map',run:"qwSeg(document.querySelectorAll('#qw-alignment .seg button')[0])"},{l:'Satellite',run:"qwSeg(document.querySelectorAll('#qw-alignment .seg button')[1])"},{l:'Rotated',run:"qwRotate()"}]
   };
   function renderStateBar(id){
     var bar=document.getElementById('statebar'); if(!bar) return;
@@ -2688,7 +2692,7 @@
     b.classList.toggle('on',on); b.textContent='Discussion notes: '+(on?'on':'off');
   }
   (function(){var n=localStorage.getItem('flyway_name');if(n)document.getElementById('cf-name').value=n;})();
-  var BUILD_DATE='June 19, 2026 · 2:20 PM EDT'; // @BUILD_DATE@ (stamped by deploy.sh)
+  var BUILD_DATE='June 19, 2026 · 2:21 PM EDT'; // @BUILD_DATE@ (stamped by deploy.sh)
   var RELEASE='v0.3';            // @RELEASE@
   (function(){var d=document.getElementById('build-date'); if(d)d.textContent=BUILD_DATE;
     var r=document.getElementById('release'); if(r)r.textContent='Companion App wireframes · '+RELEASE;})();
