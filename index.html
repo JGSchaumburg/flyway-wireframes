@@ -525,8 +525,12 @@
         <div class="t">Fare gate<small>Segment 3 of 7</small></div><div class="chip">Saved ✓</div></div>
       <div class="scroll">
         <div class="iacrumb">Level map → tap pathway ▸ <b style="color:var(--primary)">Pathway form</b></div>
-        <div class="qwflow"><button onclick="qwFlow('pathway-form','get',this)">① How you get here</button><button class="on" onclick="qwFlow('pathway-form','fix',this)">② The fix</button><button onclick="qwFlow('pathway-form','next',this)">③ What is next</button></div>
-        <div class="qwflowbox" id="pathway-form-flow" style="display:none"></div>
+        
+        <div class="statepane" id="pathway-form-get">
+          <div class="sect">① Where the user gets here from</div>
+          <div class="card next" style="cursor:pointer" onclick="qwSetState('pathway-form','pathway-form-engage')"><div class="meta" style="font-size:12px;line-height:1.55">Level map → tap a pathway (or a journey segment).</div><div style="margin-top:7px;color:var(--primary);font-weight:600;font-size:12px">tap to engage the fix ›</div></div>
+        </div>
+        <div class="statepane" id="pathway-form-engage">
         <div class="title2" style="margin:2px 0 8px">Unpaid area → Paid area</div>
         <div class="anno"><b>Decided:</b> signage at the top, measurements locked at the bottom, so capture follows the physical sequence.</div>
 
@@ -547,7 +551,19 @@
 
         <div class="anno"><b>Quick wins:</b> longer/stacked signage field, one-tap “|” + common elements keyboard, in-app stopwatch, visible save confirmation.</div>
       </div>
-      <div class="fab-bar"><button class="btn primary" onclick="qwBack()">✓ Mark done</button></div>
+      <div class="fab-bar"><button class="btn primary" onclick="qwBack()">✓ Mark done</button>
+        </div>
+        <div class="statepane" id="pathway-form-end" style="display:none">
+          <div class="sect">③ End state</div>
+          <div class="card" style="cursor:default;border-color:#bfe4d8;background:#f3faf7"><div class="meta" style="font-size:12px;line-height:1.55">✓ Signage captured first, distance locked at the bottom; the pathway is marked complete.</div></div>
+          <button class="btn primary next" style="margin-top:8px" onclick="qwSetState('pathway-form','pathway-form-back')">Continue ›</button>
+        </div>
+        <div class="statepane" id="pathway-form-back" style="display:none">
+          <div class="sect">④ Back in the app</div>
+          <div class="card" style="cursor:default"><div class="meta" style="font-size:12px;line-height:1.55">↩ Mark done → the next pathway, or back to the level.</div></div>
+          <button class="btn outline next" style="margin-top:8px" onclick="qwSetState('pathway-form','pathway-form-get')">↺ Replay flow</button>
+        </div>
+      </div>
     </section>
 
     <!-- ================= PHOTO CAPTURE ================= -->
@@ -617,8 +633,12 @@
         <div class="t">Signage<small>unpaid → paid</small></div><div class="chip">Saved ✓</div></div>
       <div class="scroll">
         <div class="iacrumb">Pathway form ▸ <b style="color:var(--primary)">Signage field</b></div>
-        <div class="qwflow"><button onclick="qwFlow('signage-edit','get',this)">① How you get here</button><button class="on" onclick="qwFlow('signage-edit','fix',this)">② The fix</button><button onclick="qwFlow('signage-edit','next',this)">③ What is next</button></div>
-        <div class="qwflowbox" id="signage-edit-flow" style="display:none"></div>
+        
+        <div class="statepane" id="signage-edit-get">
+          <div class="sect">① Where the user gets here from</div>
+          <div class="card next" style="cursor:pointer" onclick="qwSetState('signage-edit','signage-edit-engage')"><div class="meta" style="font-size:12px;line-height:1.55">Pathway form → tap the Signposted As field.</div><div style="margin-top:7px;color:var(--primary);font-weight:600;font-size:12px">tap to engage the fix ›</div></div>
+        </div>
+        <div class="statepane" id="signage-edit-engage">
         <div class="anno"><b>Decided:</b> long signage shows as locked, scannable text; a pencil opens a multi-line editor, then locks back.</div>
         <div class="stateLabel">Locked — full value visible, dense</div>
         <div class="lockedField"><div class="txt">L1 Eastbound &amp; Westbound | T Eastbound | Exit 15th St &amp; Market St</div><div class="pencil">✎</div></div>
@@ -628,6 +648,18 @@
         <div class="seg"><button class="on">| separator</button><button>Westbound</button><button>Eastbound</button></div>
         <div class="anno"><b>Backlog (Chris: hard):</b> autocomplete keyboard from expected values. Easy to make worse than the native keyboard, so it waits behind the photo + locked-field wins.</div>
         <button class="btn primary" onclick="showQWList()">Done</button>
+      
+        </div>
+        <div class="statepane" id="signage-edit-end" style="display:none">
+          <div class="sect">③ End state</div>
+          <div class="card" style="cursor:default;border-color:#bfe4d8;background:#f3faf7"><div class="meta" style="font-size:12px;line-height:1.55">✓ The long multi-sign value is fully readable; saved and locked back to the scannable view.</div></div>
+          <button class="btn primary next" style="margin-top:8px" onclick="qwSetState('signage-edit','signage-edit-back')">Continue ›</button>
+        </div>
+        <div class="statepane" id="signage-edit-back" style="display:none">
+          <div class="sect">④ Back in the app</div>
+          <div class="card" style="cursor:default"><div class="meta" style="font-size:12px;line-height:1.55">↩ Back → the Pathway form, signage now filled and scannable.</div></div>
+          <button class="btn outline next" style="margin-top:8px" onclick="qwSetState('signage-edit','signage-edit-get')">↺ Replay flow</button>
+        </div>
       </div>
     </section>
 
@@ -638,8 +670,12 @@
         <div class="t">Traversal time<small>Elevator EL1 · door-open to door-open</small></div></div>
       <div class="scroll">
         <div class="iacrumb">Pathway form ▸ <b style="color:var(--primary)">Traversal time stopwatch</b></div>
-        <div class="qwflow"><button onclick="qwFlow('stopwatch','get',this)">① How you get here</button><button class="on" onclick="qwFlow('stopwatch','fix',this)">② The fix</button><button onclick="qwFlow('stopwatch','next',this)">③ What is next</button></div>
-        <div class="qwflowbox" id="stopwatch-flow" style="display:none"></div>
+        
+        <div class="statepane" id="stopwatch-get">
+          <div class="sect">① Where the user gets here from</div>
+          <div class="card next" style="cursor:pointer" onclick="qwSetState('stopwatch','stopwatch-engage')"><div class="meta" style="font-size:12px;line-height:1.55">Pathway form → Traversal time → tap the in-app stopwatch.</div><div style="margin-top:7px;color:var(--primary);font-weight:600;font-size:12px">tap to engage the fix ›</div></div>
+        </div>
+        <div class="statepane" id="stopwatch-engage">
         <div class="anno"><b>Cuts a trip out of the station:</b> time it in-app instead of pulling out a separate stopwatch. Record multiple runs, drop bad ones, use the average.</div>
         <div class="timer">0:00</div>
         <button class="btn primary">▶ Start</button>
@@ -652,6 +688,18 @@
         <div class="avgbox">Average of <span id="sw-n">3</span> runs <b id="sw-avg">0:43</b></div>
         <div class="field"><label>FIELD HINT</label><div class="hint" style="margin-top:0">Per-field tip shows the measurement method, e.g. "door-open to door-open" for elevators.</div></div>
         <button class="btn primary" onclick="showQWList()">Use 0:43 as traversal time</button>
+      
+        </div>
+        <div class="statepane" id="stopwatch-end" style="display:none">
+          <div class="sect">③ End state</div>
+          <div class="card" style="cursor:default;border-color:#bfe4d8;background:#f3faf7"><div class="meta" style="font-size:12px;line-height:1.55">✓ Best run / average chosen and written to the traversal-time field, no transcription.</div></div>
+          <button class="btn primary next" style="margin-top:8px" onclick="qwSetState('stopwatch','stopwatch-back')">Continue ›</button>
+        </div>
+        <div class="statepane" id="stopwatch-back" style="display:none">
+          <div class="sect">④ Back in the app</div>
+          <div class="card" style="cursor:default"><div class="meta" style="font-size:12px;line-height:1.55">↩ Use value → back on the Pathway form, traversal time filled.</div></div>
+          <button class="btn outline next" style="margin-top:8px" onclick="qwSetState('stopwatch','stopwatch-get')">↺ Replay flow</button>
+        </div>
       </div>
     </section>
 
@@ -693,6 +741,11 @@
           <div class="field"><label>SIGNPOSTED AS</label><div class="val">L1 Eastbound &amp; Westbound | T Eastbound</div></div>
           <div class="avgbox" id="qw-ai-sug">"Transit Centre" looks like a typo of "Center"<span style="margin-left:auto;display:flex;gap:6px"><span class="pill next" style="cursor:pointer;background:#e3f5ef;border-color:#bfe4d8;color:#00795c" onclick="qwAi(true)">✓ accept</span><span class="pill" style="cursor:pointer" onclick="qwAi(false)">✕ keep</span></span></div>
           <button class="btn primary" onclick="qwSetState('v2-signage','sig-s1')">Use value</button>
+        </div>
+      
+        <div class="statepane" id="sig-back" style="display:none">
+          <div class="sect">④ Back in the app</div>
+          <div class="card" style="cursor:default"><div class="meta" style="font-size:12px;line-height:1.55">↩ Use value → back on the Pathway form, the signage field now filled.</div></div>
         </div>
       </div>
     </section>
@@ -876,6 +929,11 @@
           <div class="card" style="cursor:default"><div class="row"><div style="width:40px;height:40px;border-radius:8px;background-image:var(--photo-stair);background-size:cover;flex:none"></div><div class="meta">📷 <b>Pin</b> · stair head · 9:22</div></div></div>
           <div class="meta" style="text-align:center;color:var(--muted);padding:6px">+ 6 more</div>
         </div>
+      
+        <div class="statepane" id="pin-back" style="display:none">
+          <div class="sect">④ Back in the app</div>
+          <div class="card" style="cursor:default"><div class="meta" style="font-size:12px;line-height:1.55">↩ Back on the Level map — the pin now sits on the diagram with its photo/note; tap it any time to review.</div></div>
+        </div>
       </div>
     </section>
 
@@ -944,8 +1002,12 @@
         <div class="t">L1 Mezzanine<small>Filter + clearer rows</small></div></div>
       <div class="scroll">
         <div class="iacrumb">Station ▸ Level map ▸ <b style="color:var(--primary)">Task list</b></div>
-        <div class="qwflow"><button onclick="qwFlow('qw-tasklist','get',this)">① How you get here</button><button class="on" onclick="qwFlow('qw-tasklist','fix',this)">② The fix</button><button onclick="qwFlow('qw-tasklist','next',this)">③ What is next</button></div>
-        <div class="qwflowbox" id="qw-tasklist-flow" style="display:none"></div>
+        
+        <div class="statepane" id="qw-tasklist-get">
+          <div class="sect">① Where the user gets here from</div>
+          <div class="card next" style="cursor:pointer" onclick="qwSetState('qw-tasklist','qw-tasklist-engage')"><div class="meta" style="font-size:12px;line-height:1.55">From the Level map, tap a level — the task list opens for that level.</div><div style="margin-top:7px;color:var(--primary);font-weight:600;font-size:12px">tap to engage the fix ›</div></div>
+        </div>
+        <div class="statepane" id="qw-tasklist-engage">
         <div class="anno"><b>Fixes shown:</b> filter by pathway type, split the two endpoints onto their own lines, color-code the type tags, clarify the row expander, and rename "spanning" → "between levels".</div>
         <div class="field" style="padding:8px 12px"><div class="val" style="color:var(--muted)">🔍 Search pathways</div></div>
         <div class="seg" style="flex-wrap:wrap">
@@ -992,6 +1054,18 @@
         </div>
         <div id="qw-task-empty" style="display:none;color:var(--muted);text-align:center;padding:20px 10px;font-size:12.5px">No pathways of this type modeled on this level.</div>
         <div class="anno"><b>Empty state:</b> a filter with no matches says so plainly (try "Escalator") instead of showing a blank list. <b>Today:</b> one cramped line per row, all the same gray tag, endpoints run together ("these names all blend together" — Adam), and no quick way to see only fare gates.</div>
+      
+        </div>
+        <div class="statepane" id="qw-tasklist-end" style="display:none">
+          <div class="sect">③ End state</div>
+          <div class="card" style="cursor:default;border-color:#bfe4d8;background:#f3faf7"><div class="meta" style="font-size:12px;line-height:1.55">✓ Filtered to one pathway type; rows split the endpoints and color-code the tag, so the right one is obvious.</div></div>
+          <button class="btn primary next" style="margin-top:8px" onclick="qwSetState('qw-tasklist','qw-tasklist-back')">Continue ›</button>
+        </div>
+        <div class="statepane" id="qw-tasklist-back" style="display:none">
+          <div class="sect">④ Back in the app</div>
+          <div class="card" style="cursor:default"><div class="meta" style="font-size:12px;line-height:1.55">↩ Tap a pathway row → its Pathway form (that pathway carried in). Back → the Level map.</div></div>
+          <button class="btn outline next" style="margin-top:8px" onclick="qwSetState('qw-tasklist','qw-tasklist-get')">↺ Replay flow</button>
+        </div>
       </div>
     </section>
 
@@ -1002,8 +1076,12 @@
         <div class="t">Diagram status<small>Reads when zoomed out · colorblind-safe</small></div></div>
       <div class="scroll">
         <div class="iacrumb">Station ▸ Level map ▸ <b style="color:var(--primary)">Diagram status</b></div>
-        <div class="qwflow"><button onclick="qwFlow('qw-legibility','get',this)">① How you get here</button><button class="on" onclick="qwFlow('qw-legibility','fix',this)">② The fix</button><button onclick="qwFlow('qw-legibility','next',this)">③ What is next</button></div>
-        <div class="qwflowbox" id="qw-legibility-flow" style="display:none"></div>
+        
+        <div class="statepane" id="qw-legibility-get">
+          <div class="sect">① Where the user gets here from</div>
+          <div class="card next" style="cursor:pointer" onclick="qwSetState('qw-legibility','qw-legibility-engage')"><div class="meta" style="font-size:12px;line-height:1.55">It is the level diagram on the Level map — same screen, just clearer status encoding.</div><div style="margin-top:7px;color:var(--primary);font-weight:600;font-size:12px">tap to engage the fix ›</div></div>
+        </div>
+        <div class="statepane" id="qw-legibility-engage">
         <div class="anno"><b>Fix:</b> encode done vs needs-attention with shape + line style + color, not green vs blue alone, so status reads at the default zoom without zooming in.</div>
         <div class="anno"><b>Today:</b> done (green) and to-do (blue) look alike zoomed out — you have to already know status to read it. ("the blue and the green, it is hard to tell the difference... zoomed out" — Julia)</div>
         <div class="sect">Station diagram (zoomed out)</div>
@@ -1026,6 +1104,18 @@
           <span><i style="background:#2E7D32"></i>Done — solid line, ✓ filled node</span>
           <span><i style="background:#F97900"></i>Needs attention — dashed line, ! hollow node</span>
         </div>
+      
+        </div>
+        <div class="statepane" id="qw-legibility-end" style="display:none">
+          <div class="sect">③ End state</div>
+          <div class="card" style="cursor:default;border-color:#bfe4d8;background:#f3faf7"><div class="meta" style="font-size:12px;line-height:1.55">✓ Done vs needs-attention now reads instantly at the zoomed-out default, colorblind-safe.</div></div>
+          <button class="btn primary next" style="margin-top:8px" onclick="qwSetState('qw-legibility','qw-legibility-back')">Continue ›</button>
+        </div>
+        <div class="statepane" id="qw-legibility-back" style="display:none">
+          <div class="sect">④ Back in the app</div>
+          <div class="card" style="cursor:default"><div class="meta" style="font-size:12px;line-height:1.55">↩ Tap a node/pathway → its detail; Back → the Level map.</div></div>
+          <button class="btn outline next" style="margin-top:8px" onclick="qwSetState('qw-legibility','qw-legibility-get')">↺ Replay flow</button>
+        </div>
       </div>
     </section>
 
@@ -1036,8 +1126,12 @@
         <div class="t">Messages<small>Stay until you dismiss them</small></div></div>
       <div class="scroll">
         <div class="iacrumb">App-wide ▸ <b style="color:var(--primary)">Blocking message banner</b></div>
-        <div class="qwflow"><button onclick="qwFlow('qw-message','get',this)">① How you get here</button><button class="on" onclick="qwFlow('qw-message','fix',this)">② The fix</button><button onclick="qwFlow('qw-message','next',this)">③ What is next</button></div>
-        <div class="qwflowbox" id="qw-message-flow" style="display:none"></div>
+        
+        <div class="statepane" id="qw-message-get">
+          <div class="sect">① Where the user gets here from</div>
+          <div class="card next" style="cursor:pointer" onclick="qwSetState('qw-message','qw-message-engage')"><div class="meta" style="font-size:12px;line-height:1.55">Triggered in context when a blocking action fails (first case: saving an alignment).</div><div style="margin-top:7px;color:var(--primary);font-weight:600;font-size:12px">tap to engage the fix ›</div></div>
+        </div>
+        <div class="statepane" id="qw-message-engage">
         <div class="anno"><b>Fix:</b> keep important messages on screen with an X to dismiss, instead of a toast that auto-closes before you can read it. First hit was the alignment save error.</div>
         <div class="anno"><b>Today:</b> a ~2-second toast at the bottom that's gone before you've read what failed or what to do about it. <i>Tap the ✕ or Retry below to try it.</i></div>
         <div id="qw-msg-banner" style="background:#fde8ee;border:1px solid #f4b6c6;border-radius:12px;padding:12px 14px;display:flex;gap:11px;align-items:flex-start">
@@ -1048,6 +1142,18 @@
           <div class="next" style="font-size:16px;color:#b00020;cursor:pointer" onclick="qwDismiss()">✕</div>
         </div>
         <div id="qw-msg-clear" style="display:none;align-items:center;justify-content:center;gap:8px;color:var(--muted);padding:22px;font-size:13px;border:1px dashed var(--surfaceDim);border-radius:12px">✓ Dismissed — and it stayed put until you chose to close it.</div>
+      
+        </div>
+        <div class="statepane" id="qw-message-end" style="display:none">
+          <div class="sect">③ End state</div>
+          <div class="card" style="cursor:default;border-color:#bfe4d8;background:#f3faf7"><div class="meta" style="font-size:12px;line-height:1.55">✓ The error stays on screen until you dismiss it; Retry re-attempts and it clears on success.</div></div>
+          <button class="btn primary next" style="margin-top:8px" onclick="qwSetState('qw-message','qw-message-back')">Continue ›</button>
+        </div>
+        <div class="statepane" id="qw-message-back" style="display:none">
+          <div class="sect">④ Back in the app</div>
+          <div class="card" style="cursor:default"><div class="meta" style="font-size:12px;line-height:1.55">↩ Dismiss → back to what you were doing (the alignment tool); the action is retried on the next sync.</div></div>
+          <button class="btn outline next" style="margin-top:8px" onclick="qwSetState('qw-message','qw-message-get')">↺ Replay flow</button>
+        </div>
       </div>
     </section>
 
@@ -1058,13 +1164,29 @@
         <div class="t">Select a level<small>15th St / City Hall</small></div></div>
       <div class="scroll">
         <div class="iacrumb">Station ▸ <b style="color:var(--primary)">Level selector</b></div>
-        <div class="qwflow"><button onclick="qwFlow('qw-emptylevel','get',this)">① How you get here</button><button class="on" onclick="qwFlow('qw-emptylevel','fix',this)">② The fix</button><button onclick="qwFlow('qw-emptylevel','next',this)">③ What is next</button></div>
-        <div class="qwflowbox" id="qw-emptylevel-flow" style="display:none"></div>
+        
+        <div class="statepane" id="qw-emptylevel-get">
+          <div class="sect">① Where the user gets here from</div>
+          <div class="card next" style="cursor:pointer" onclick="qwSetState('qw-emptylevel','qw-emptylevel-engage')"><div class="meta" style="font-size:12px;line-height:1.55">From the Level selector, tap a level.</div><div style="margin-top:7px;color:var(--primary);font-weight:600;font-size:12px">tap to engage the fix ›</div></div>
+        </div>
+        <div class="statepane" id="qw-emptylevel-engage">
         <div class="anno"><b>Fix:</b> tapping a level with no modeled pathways gives clear feedback (inline message + a subtle shake), instead of doing nothing and feeling broken. <i>Tap "Upper Mezzanine" to try it.</i></div>
         <div class="card"><div class="row"><div style="flex:1"><div class="title2">L1 Mezzanine</div><div class="meta">12 pathways</div></div><span class="chev">›</span></div></div>
         <div class="card"><div class="row"><div style="flex:1"><div class="title2">Concourse</div><div class="meta">8 pathways</div></div><span class="chev">›</span></div></div>
         <div class="card next" id="qw-empty-row" style="cursor:pointer" onclick="qwTapEmpty(this)"><div class="row"><div style="flex:1"><div class="title2">Upper Mezzanine</div><div class="meta">Tap to open</div></div><span class="chev">›</span></div>
           <div id="qw-empty-feedback" style="display:none;margin-top:8px;border-top:1px solid #ffd2ab;padding-top:8px;color:#a65200;font-weight:600;font-size:12px">No pathways modeled on this level yet — nothing to open.</div></div>
+      
+        </div>
+        <div class="statepane" id="qw-emptylevel-end" style="display:none">
+          <div class="sect">③ End state</div>
+          <div class="card" style="cursor:default;border-color:#bfe4d8;background:#f3faf7"><div class="meta" style="font-size:12px;line-height:1.55">✓ The empty level shows an inline "no pathways yet" message and a shake — the tap clearly registered.</div></div>
+          <button class="btn primary next" style="margin-top:8px" onclick="qwSetState('qw-emptylevel','qw-emptylevel-back')">Continue ›</button>
+        </div>
+        <div class="statepane" id="qw-emptylevel-back" style="display:none">
+          <div class="sect">④ Back in the app</div>
+          <div class="card" style="cursor:default"><div class="meta" style="font-size:12px;line-height:1.55">↩ Back → the Level selector to pick another level.</div></div>
+          <button class="btn outline next" style="margin-top:8px" onclick="qwSetState('qw-emptylevel','qw-emptylevel-get')">↺ Replay flow</button>
+        </div>
       </div>
     </section>
 
@@ -1075,8 +1197,12 @@
         <div class="t">Station &amp; data version<small>First-run guidance</small></div></div>
       <div class="scroll">
         <div class="iacrumb"><b style="color:var(--primary)">Station selector</b> ▸ data version</div>
-        <div class="qwflow"><button onclick="qwFlow('qw-station','get',this)">① How you get here</button><button class="on" onclick="qwFlow('qw-station','fix',this)">② The fix</button><button onclick="qwFlow('qw-station','next',this)">③ What is next</button></div>
-        <div class="qwflowbox" id="qw-station-flow" style="display:none"></div>
+        
+        <div class="statepane" id="qw-station-get">
+          <div class="sect">① Where the user gets here from</div>
+          <div class="card next" style="cursor:pointer" onclick="qwSetState('qw-station','qw-station-engage')"><div class="meta" style="font-size:12px;line-height:1.55">First screen when you open a station or change the data version.</div><div style="margin-top:7px;color:var(--primary);font-weight:600;font-size:12px">tap to engage the fix ›</div></div>
+        </div>
+        <div class="statepane" id="qw-station-engage">
         <div class="anno"><b>Fixes:</b> guide the first GTFS-version pick, and rename the vague "update" action to a clear "re-download station data" with an explanation.</div>
         <div class="field"><label>STATION</label><div class="val">15th St / City Hall ▾</div></div>
         <div class="field"><label>SCHEDULE VERSION (GTFS)</label><div class="val">Spring 2026 · published Apr 2 ▾</div>
@@ -1084,6 +1210,18 @@
         <div class="sect">Sync</div>
         <button class="btn outline next" id="qw-resync" style="margin-bottom:6px" onclick="qwResync(this)">↻ Re-download station data</button>
         <div class="hint">Replaces your local copy with the latest from the server. Any unsynced field edits upload first, so nothing is lost.</div>
+      
+        </div>
+        <div class="statepane" id="qw-station-end" style="display:none">
+          <div class="sect">③ End state</div>
+          <div class="card" style="cursor:default;border-color:#bfe4d8;background:#f3faf7"><div class="meta" style="font-size:12px;line-height:1.55">✓ Version chosen and station data re-downloaded; any unsynced field edits upload first.</div></div>
+          <button class="btn primary next" style="margin-top:8px" onclick="qwSetState('qw-station','qw-station-back')">Continue ›</button>
+        </div>
+        <div class="statepane" id="qw-station-back" style="display:none">
+          <div class="sect">④ Back in the app</div>
+          <div class="card" style="cursor:default"><div class="meta" style="font-size:12px;line-height:1.55">↩ Continue → the station Level map.</div></div>
+          <button class="btn outline next" style="margin-top:8px" onclick="qwSetState('qw-station','qw-station-get')">↺ Replay flow</button>
+        </div>
       </div>
     </section>
 
@@ -1094,8 +1232,12 @@
         <div class="t">Diagram ⇄ map alignment<small>v0.8.x polish</small></div></div>
       <div class="scroll">
         <div class="iacrumb">Station ▸ Level map ▸ <b style="color:var(--primary)">Diagram ⇄ map alignment</b></div>
-        <div class="qwflow"><button onclick="qwFlow('qw-alignment','get',this)">① How you get here</button><button class="on" onclick="qwFlow('qw-alignment','fix',this)">② The fix</button><button onclick="qwFlow('qw-alignment','next',this)">③ What is next</button></div>
-        <div class="qwflowbox" id="qw-alignment-flow" style="display:none"></div>
+        
+        <div class="statepane" id="qw-alignment-get">
+          <div class="sect">① Where the user gets here from</div>
+          <div class="card next" style="cursor:pointer" onclick="qwSetState('qw-alignment','qw-alignment-engage')"><div class="meta" style="font-size:12px;line-height:1.55">From the Level map, open the diagram-to-map alignment tool for a level.</div><div style="margin-top:7px;color:var(--primary);font-weight:600;font-size:12px">tap to engage the fix ›</div></div>
+        </div>
+        <div class="statepane" id="qw-alignment-engage">
         <div class="anno"><b>Fixes (v0.8.x):</b> calmer zoom, opacity slider moved out of the bottom swipe zone, base-map rotation, a clearly-labeled pin control, and dropping the empty "None" layer. <i>The slider, layer toggle, and rotate are live below.</i></div>
         <div class="anno"><b>Pin affordance:</b> a labeled "Place alignment point" button replaces the stray 3-dots icon that landed semi-randomly and didn't look tappable. The "None" base layer was also removed — it only showed a blank canvas.</div>
         <div class="field"><label>BASE MAP OPACITY · <span id="qw-op-val">45%</span></label>
@@ -1114,6 +1256,18 @@
         <div class="seg"><button class="on" onclick="qwSeg(this)">Street map</button><button onclick="qwSeg(this)">Satellite</button></div>
         <button class="btn ghost next" style="margin:8px 0 6px" onclick="qwRotate()">⟲ Rotate base map</button>
         <button class="btn outline" onclick="event.preventDefault()">📍 Place alignment point</button>
+      
+        </div>
+        <div class="statepane" id="qw-alignment-end" style="display:none">
+          <div class="sect">③ End state</div>
+          <div class="card" style="cursor:default;border-color:#bfe4d8;background:#f3faf7"><div class="meta" style="font-size:12px;line-height:1.55">✓ Alignment points placed; the level is georeferenced and queued to sync to Studio.</div></div>
+          <button class="btn primary next" style="margin-top:8px" onclick="qwSetState('qw-alignment','qw-alignment-back')">Continue ›</button>
+        </div>
+        <div class="statepane" id="qw-alignment-back" style="display:none">
+          <div class="sect">④ Back in the app</div>
+          <div class="card" style="cursor:default"><div class="meta" style="font-size:12px;line-height:1.55">↩ Done → back to the Level map.</div></div>
+          <button class="btn outline next" style="margin-top:8px" onclick="qwSetState('qw-alignment','qw-alignment-get')">↺ Replay flow</button>
+        </div>
       </div>
     </section>
 
@@ -1124,14 +1278,30 @@
         <div class="t">Field hints + save confirmation<small>Small, but high-trust</small></div></div>
       <div class="scroll">
         <div class="iacrumb">Pathway form ▸ <b style="color:var(--primary)">field hints + save</b></div>
-        <div class="qwflow"><button onclick="qwFlow('qw-tooltips','get',this)">① How you get here</button><button class="on" onclick="qwFlow('qw-tooltips','fix',this)">② The fix</button><button onclick="qwFlow('qw-tooltips','next',this)">③ What is next</button></div>
-        <div class="qwflowbox" id="qw-tooltips-flow" style="display:none"></div>
+        
+        <div class="statepane" id="qw-tooltips-get">
+          <div class="sect">① Where the user gets here from</div>
+          <div class="card next" style="cursor:pointer" onclick="qwSetState('qw-tooltips','qw-tooltips-engage')"><div class="meta" style="font-size:12px;line-height:1.55">On the Pathway form, per field, as you fill it.</div><div style="margin-top:7px;color:var(--primary);font-weight:600;font-size:12px">tap to engage the fix ›</div></div>
+        </div>
+        <div class="statepane" id="qw-tooltips-engage">
         <div class="anno"><b>Fixes:</b> a per-field hint stating the measurement method, and a visible "saved" confirmation on fields that save silently today (signage especially), so people know their input stuck. <i>Tap the ⓘ to see the hint.</i></div>
         <div class="anno"><b>Related:</b> the same measurement-method hint appears on the in-app stopwatch, and the save confirmation appears on the signage field — both their own quick wins in this list.</div>
         <div class="field"><label>TRAVERSAL TIME (S)</label><div class="val">43 &nbsp;<span class="next" style="cursor:pointer;color:var(--primary);font-weight:700;display:inline-block" onclick="qwTip(this)">ⓘ</span></div>
           <div id="qw-tip-pop" style="display:none;margin-top:7px;background:#eef0ff;border:1px solid #d6d9ff;border-radius:8px;padding:8px 10px;font-size:11.5px;color:#2c2a6b">Measured door-open to door-open. Use the in-app stopwatch to capture it.</div></div>
         <div class="field" style="border-color:#bfe4d8;background:#f3faf7"><label>SIGNPOSTED AS</label><div class="val">L1 Eastbound &amp; Westbound | T Eastbound</div>
           <div class="hint" style="color:#00795c;font-weight:600">Saved ✓</div></div>
+      
+        </div>
+        <div class="statepane" id="qw-tooltips-end" style="display:none">
+          <div class="sect">③ End state</div>
+          <div class="card" style="cursor:default;border-color:#bfe4d8;background:#f3faf7"><div class="meta" style="font-size:12px;line-height:1.55">✓ Field filled with the measurement-method hint visible, and a "Saved ✓" confirms it persisted.</div></div>
+          <button class="btn primary next" style="margin-top:8px" onclick="qwSetState('qw-tooltips','qw-tooltips-back')">Continue ›</button>
+        </div>
+        <div class="statepane" id="qw-tooltips-back" style="display:none">
+          <div class="sect">④ Back in the app</div>
+          <div class="card" style="cursor:default"><div class="meta" style="font-size:12px;line-height:1.55">↩ Continue the form, or Back → the level.</div></div>
+          <button class="btn outline next" style="margin-top:8px" onclick="qwSetState('qw-tooltips','qw-tooltips-get')">↺ Replay flow</button>
+        </div>
       </div>
     </section>
 
@@ -1142,14 +1312,30 @@
         <div class="t">Back navigation fix<small>Behavior change · no new UI</small></div></div>
       <div class="scroll">
         <div class="iacrumb">Level map sheet → Pathway form ▸ <b style="color:var(--primary)">Back behavior</b></div>
-        <div class="qwflow"><button onclick="qwFlow('qw-back','get',this)">① How you get here</button><button class="on" onclick="qwFlow('qw-back','fix',this)">② The fix</button><button onclick="qwFlow('qw-back','next',this)">③ What is next</button></div>
-        <div class="qwflowbox" id="qw-back-flow" style="display:none"></div>
+        
+        <div class="statepane" id="qw-back-get">
+          <div class="sect">① Where the user gets here from</div>
+          <div class="card next" style="cursor:pointer" onclick="qwSetState('qw-back','qw-back-engage')"><div class="meta" style="font-size:12px;line-height:1.55">Level map sheet → tap an element → the Pathway form opens.</div><div style="margin-top:7px;color:var(--primary);font-weight:600;font-size:12px">tap to engage the fix ›</div></div>
+        </div>
+        <div class="statepane" id="qw-back-engage">
         <div class="anno"><b>Behavior fix, not a new screen.</b> Back from the Pathway form should return to the Level Map sheet you came from — in one step.</div>
         <div class="anno"><b>Problem:</b> after tapping an element on the Level Map to open the Pathway form, Back overshoots two screens and lands on the level list, losing your place. Likely a duplicate route push on the element→form jump.</div>
         <div class="anno"><b>Repro:</b> Open a level → Level Map sheet → tap an element → Pathway form → press Back → ❌ lands on the level list (expected: the Level Map sheet).</div>
         <div class="anno"><b>Where it happens:</b> the jump is from a Level Map element into the Pathway form; Back should land on the Level Map sheet, not the level list.</div>
         <div class="sect">Expected back path</div>
         <div class="card" style="cursor:default"><div class="meta" style="line-height:2">Level list<br>&nbsp;&nbsp;↳ Level Map sheet &nbsp;<span class="pill" style="background:#eef7f4;border-color:#bfe4d8;color:#00795c">‹ Back returns here</span><br>&nbsp;&nbsp;&nbsp;&nbsp;↳ Pathway form &nbsp;<span class="pill" style="background:#fde8ef;border-color:#f6bcd0;color:#b00045">you are here</span></div></div>
+      
+        </div>
+        <div class="statepane" id="qw-back-end" style="display:none">
+          <div class="sect">③ End state</div>
+          <div class="card" style="cursor:default;border-color:#bfe4d8;background:#f3faf7"><div class="meta" style="font-size:12px;line-height:1.55">✓ Back returns you to the Level Map sheet you came from, in one step — your place preserved.</div></div>
+          <button class="btn primary next" style="margin-top:8px" onclick="qwSetState('qw-back','qw-back-back')">Continue ›</button>
+        </div>
+        <div class="statepane" id="qw-back-back" style="display:none">
+          <div class="sect">④ Back in the app</div>
+          <div class="card" style="cursor:default"><div class="meta" style="font-size:12px;line-height:1.55">↩ You are back on the Level Map sheet — continue tapping elements into the Pathway form.</div></div>
+          <button class="btn outline next" style="margin-top:8px" onclick="qwSetState('qw-back','qw-back-get')">↺ Replay flow</button>
+        </div>
       </div>
     </section>
 
@@ -1161,8 +1347,12 @@
         <div class="chip" id="qw-sync-chip" style="background:#7BE0BE;color:#06231a">✓ Synced</div></div>
       <div class="scroll">
         <div class="iacrumb">App-wide ▸ <b style="color:var(--primary)">Sync status (app bar)</b></div>
-        <div class="qwflow"><button onclick="qwFlow('qw-sync','get',this)">① How you get here</button><button class="on" onclick="qwFlow('qw-sync','fix',this)">② The fix</button><button onclick="qwFlow('qw-sync','next',this)">③ What is next</button></div>
-        <div class="qwflowbox" id="qw-sync-flow" style="display:none"></div>
+        
+        <div class="statepane" id="qw-sync-get">
+          <div class="sect">① Where the user gets here from</div>
+          <div class="card next" style="cursor:pointer" onclick="qwSetState('qw-sync','qw-sync-engage')"><div class="meta" style="font-size:12px;line-height:1.55">Always visible in the app bar, on every screen.</div><div style="margin-top:7px;color:var(--primary);font-weight:600;font-size:12px">tap to engage the fix ›</div></div>
+        </div>
+        <div class="statepane" id="qw-sync-engage">
         <div class="anno"><b>Why it matters:</b> collectors work underground with no signal for most of a session. Edits save to the device immediately and upload when a connection returns — the chip in the app bar always says where your data stands. This is the P0 data-persistence finding made visible.</div>
         <div id="qw-sync-detail"><div class="meta">All field edits are saved to the server. Nothing pending.</div></div>
         <div class="sect">What each state means</div>
@@ -1174,6 +1364,18 @@
           <div class="hint" style="margin-top:6px">Maps to open issue #42 — optimistic concurrency on pathway updated_at.</div>
         </div>
         <div class="anno"><b>Use the state switcher below</b> to see the app-bar chip in each state.</div>
+      
+        </div>
+        <div class="statepane" id="qw-sync-end" style="display:none">
+          <div class="sect">③ End state</div>
+          <div class="card" style="cursor:default;border-color:#bfe4d8;background:#f3faf7"><div class="meta" style="font-size:12px;line-height:1.55">✓ The app-bar chip now reflects synced / N pending / offline / conflict accurately.</div></div>
+          <button class="btn primary next" style="margin-top:8px" onclick="qwSetState('qw-sync','qw-sync-back')">Continue ›</button>
+        </div>
+        <div class="statepane" id="qw-sync-back" style="display:none">
+          <div class="sect">④ Back in the app</div>
+          <div class="card" style="cursor:default"><div class="meta" style="font-size:12px;line-height:1.55">↩ Tap the chip → sync detail / retry; resolves to Synced once uploads finish.</div></div>
+          <button class="btn outline next" style="margin-top:8px" onclick="qwSetState('qw-sync','qw-sync-get')">↺ Replay flow</button>
+        </div>
       </div>
     </section>
 
@@ -1235,6 +1437,11 @@
           <div class="note" style="text-align:center;padding:26px 14px">No captures on this level yet.<br><span style="color:var(--muted)">Snap a sign or leave a note and it shows up here.</span></div>
           <div class="anno">First-run / fresh-level empty state — never a blank screen.</div>
         </div>
+      
+        <div class="statepane" id="cap-back" style="display:none">
+          <div class="sect">④ Back in the app</div>
+          <div class="card" style="cursor:default"><div class="meta" style="font-size:12px;line-height:1.55">↩ Tap any capture → opens its pathway / node / pin in context; back → the level.</div></div>
+        </div>
       </div>
     </section>
 
@@ -1245,8 +1452,13 @@
         <div class="t">Spanning pathway<small>Stair S2 · L1 Mezzanine ↔ Platform</small></div></div>
       <div class="scroll">
         <div class="iacrumb">Station ▸ Level map ▸ <b style="color:var(--primary)">Spanning pathway</b></div>
-        <div class="qwflow"><button onclick="qwFlow('qw-spanning','get',this)">① How you get here</button><button class="on" onclick="qwFlow('qw-spanning','fix',this)">② The fix</button><button onclick="qwFlow('qw-spanning','next',this)">③ What is next</button></div>
-        <div class="qwflowbox" id="qw-spanning-flow" style="display:none"></div>
+        
+        <div class="statepane" id="qw-spanning-get">
+          <div class="sect">① Where the user gets here from</div>
+          <div class="card next" style="cursor:pointer" onclick="qwSetState('qw-spanning','qw-spanning-engage')"><div class="meta" style="font-size:12px;line-height:1.55">From the Level map, open a pathway whose two ends sit on different levels.</div><div style="margin-top:7px;color:var(--primary);font-weight:600;font-size:12px">tap to engage the fix ›</div></div>
+        </div>
+        <div class="statepane" id="qw-spanning-engage">
+          <div class="seg"><button class="on" onclick="document.getElementById('span-mezz').style.display='';document.getElementById('span-plat').style.display='none';qwSeg(this)">Mezzanine end</button><button onclick="document.getElementById('span-plat').style.display='';document.getElementById('span-mezz').style.display='none';qwSeg(this)">Platform end</button></div>
         <div class="anno"><b>Spanning pathways cross two levels</b>, so they sit cleanly on neither single-level diagram. Toggle the level to place and verify each end. Maps to open issue #21 (map overlay: toggle levels for spanning pathways).</div>
         <div class="statepane" id="span-mezz">
           <div class="sect">L1 Mezzanine — top of the stair</div>
@@ -1271,6 +1483,18 @@
             <text x="110" y="128" font-size="10" fill="#a65200" text-anchor="middle">↑ continues to Mezzanine</text>
           </svg></div>
           <div class="cmt" style="border-left-color:#F97900">Same pathway, other end: <b>Stair S2 bottom</b> on the platform. The two ends stay linked as one pathway.</div>
+        </div>
+      
+        </div>
+        <div class="statepane" id="qw-spanning-end" style="display:none">
+          <div class="sect">③ End state</div>
+          <div class="card" style="cursor:default;border-color:#bfe4d8;background:#f3faf7"><div class="meta" style="font-size:12px;line-height:1.55">✓ Both ends placed and verified across the two levels, kept as one pathway record.</div></div>
+          <button class="btn primary next" style="margin-top:8px" onclick="qwSetState('qw-spanning','qw-spanning-back')">Continue ›</button>
+        </div>
+        <div class="statepane" id="qw-spanning-back" style="display:none">
+          <div class="sect">④ Back in the app</div>
+          <div class="card" style="cursor:default"><div class="meta" style="font-size:12px;line-height:1.55">↩ Done → back to the Level map.</div></div>
+          <button class="btn outline next" style="margin-top:8px" onclick="qwSetState('qw-spanning','qw-spanning-get')">↺ Replay flow</button>
         </div>
       </div>
     </section>
@@ -1446,7 +1670,7 @@
 
 <script id="dev-data">window.DEV_PROGRESS={
  "repo": "JarvusInnovations/pathways-field-companion",
- "generatedAt": "2026-06-19T14:29:38Z",
+ "generatedAt": "2026-06-19T17:15:05Z",
  "wins": [
   {
    "label": "Graph traversal / Connected view",
@@ -2148,27 +2372,14 @@
    'journey-plan':['Start node','End node','Build journey'],
    'journey-overview':['Route segment list','Progress / percent complete','Map toggle','Continue button'],
    'journey-map':['Diagram route','Legend'],
-   'pathway-form':['Signage field','Capture sign photo','Stopwatch','Measurements (locked distance)','Mark done'],
    'photo-capture':['Viewfinder / shutter','Tag to zone/node/pathway','Capture mode','Zone picker'],
    'photo-zone':['Zone gallery','Zones diagram','See at desk'],
-   'signage-edit':['Locked view','Multi-line edit','Common elements'],
-   'stopwatch':['Timer','Runs list','Average','Use value'],
    'desk':['Zone list','Photo cards','Correlate dropdown'],
    'v2-signage':['Signage field','Mic / dictate','Parsed value','AI typo flag'],
    'v2-photo':['Viewfinder','Attach to pathway/node/pin','Capture'],
    'v2-pin':['Pan / zoom map','Crosshair reticle','Snap to node','Drop pin','Photo or note'],
    'v2-note':['Existing comment','New comment','Voice','Attach photo'],
    'v2-captures':['Feed row','Photo/Note filter','Pathway captures','Node captures'],
-   'qw-tasklist':['Type filter','Row layout','Type tag colors','"between levels" rename'],
-   'qw-legibility':['Done encoding','Needs-attention encoding','Legend'],
-   'qw-message':['Persistent banner','Dismiss X','Retry action'],
-   'qw-emptylevel':['Empty-level feedback','Level row'],
-   'qw-station':['Schedule version pick','Re-sync label'],
-   'qw-spanning':['Mezzanine end','Platform end'],
-   'qw-sync':['Sync chip','State meanings'],
-   'qw-alignment':['Opacity slider placement','Rotation','Pin affordance','Layer options'],
-   'qw-tooltips':['Field hint','Save confirmation'],
-   'qw-back':['Repro steps','Expected behavior'],
    'v2-journeys':['Deferred banner','Decision-node framing','No-OTP note']
   };
   function esc(s){return (s||'').replace(/[&<>"]/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m];});}
@@ -2418,27 +2629,31 @@
    'pathway-form':{html:`<div style="border:1px solid #ddd;border-radius:6px;padding:6px;margin-bottom:5px">Distance (m): <b>2.44</b> <span style="color:#999">(editable)</span></div><div style="border:1px solid #ddd;border-radius:6px;padding:6px;margin-bottom:5px">Min width…</div><div style="border:1px solid #ddd;border-radius:6px;padding:6px">Signage…</div>`,today:`Signage sits mid-form and the desk-set distance is easy to edit by accident; capture order fights the physical walk.`,revised:`Signage first, distance locked at the bottom, and capture order follows the physical sequence.`},
    'stopwatch':{html:`<div style="text-align:center;font-size:26px">⏱️</div><div style="text-align:center;color:#999;font-size:10.5px">separate device → read 0:43 → type it into the field by hand</div>`,today:`Collectors pull out a separate stopwatch, then transcribe the number into the field by hand.`,revised:`Time the traversal in-app, record multiple runs, drop bad ones, and use the average.`}
   };
-  function renderCurrent(id){
-    var el=document.getElementById('qw-current'), rn=document.getElementById('qw-revised-note'), c=CURRENT[id];
-    if(c && document.body.classList.contains('qwview')){
-      document.body.classList.add('qwview3');
-      if(el) el.innerHTML='<div class="colcap today">Today · current app</div><div class="qwc-panel"><div class="qwc-screen">'+c.html+'</div><div class="qwc-note">'+c.today+'</div></div>';
-      if(rn) rn.innerHTML='<b>Proposed:</b> '+c.revised;
-    } else { document.body.classList.remove('qwview3'); }
+  function renderCurrentPanels(id){
+    var el=document.getElementById('qw-current'), rn=document.getElementById('qw-revised-note'), c=CURRENT[id]; if(!c) return;
+    if(el) el.innerHTML='<div class="colcap today">Today · current app</div><div class="qwc-panel"><div class="qwc-screen">'+c.html+'</div><div class="qwc-note">'+c.today+'</div></div>';
+    if(rn) rn.innerHTML='<b>Proposed:</b> '+c.revised;
   }
+  function renderCurrent(id){ /* qwview3 now driven per-state in qwSetState */ }
   var STATES={
-   'v2-pin':[{l:'How you get here',p:'pin-entry'},{l:'Empty diagram',p:'pin-s0'},{l:'1 pin placed',p:'pin-s1'},{l:'Many · clustered',p:'pin-s2'},{l:'Saved · photo + note',p:'pin-s3'},{l:'Cluster opened',p:'pin-s4'}],
+   'qw-tasklist':[{l:'① Get here',p:'qw-tasklist-get'},{l:'② Engage',p:'qw-tasklist-engage'},{l:'③ End state',p:'qw-tasklist-end'},{l:'④ Back in app',p:'qw-tasklist-back'}],
+   'qw-legibility':[{l:'① Get here',p:'qw-legibility-get'},{l:'② Engage',p:'qw-legibility-engage'},{l:'③ End state',p:'qw-legibility-end'},{l:'④ Back in app',p:'qw-legibility-back'}],
+   'qw-message':[{l:'① Get here',p:'qw-message-get'},{l:'② Engage',p:'qw-message-engage'},{l:'③ End state',p:'qw-message-end'},{l:'④ Back in app',p:'qw-message-back'}],
+   'qw-emptylevel':[{l:'① Get here',p:'qw-emptylevel-get'},{l:'② Engage',p:'qw-emptylevel-engage'},{l:'③ End state',p:'qw-emptylevel-end'},{l:'④ Back in app',p:'qw-emptylevel-back'}],
+   'qw-station':[{l:'① Get here',p:'qw-station-get'},{l:'② Engage',p:'qw-station-engage'},{l:'③ End state',p:'qw-station-end'},{l:'④ Back in app',p:'qw-station-back'}],
+   'qw-alignment':[{l:'① Get here',p:'qw-alignment-get'},{l:'② Engage',p:'qw-alignment-engage'},{l:'③ End state',p:'qw-alignment-end'},{l:'④ Back in app',p:'qw-alignment-back'}],
+   'qw-tooltips':[{l:'① Get here',p:'qw-tooltips-get'},{l:'② Engage',p:'qw-tooltips-engage'},{l:'③ End state',p:'qw-tooltips-end'},{l:'④ Back in app',p:'qw-tooltips-back'}],
+   'qw-back':[{l:'① Get here',p:'qw-back-get'},{l:'② Engage',p:'qw-back-engage'},{l:'③ End state',p:'qw-back-end'},{l:'④ Back in app',p:'qw-back-back'}],
+   'qw-sync':[{l:'① Get here',p:'qw-sync-get'},{l:'② Engage',p:'qw-sync-engage'},{l:'③ End state',p:'qw-sync-end'},{l:'④ Back in app',p:'qw-sync-back'}],
+   'qw-spanning':[{l:'① Get here',p:'qw-spanning-get'},{l:'② Engage',p:'qw-spanning-engage'},{l:'③ End state',p:'qw-spanning-end'},{l:'④ Back in app',p:'qw-spanning-back'}],
+   'signage-edit':[{l:'① Get here',p:'signage-edit-get'},{l:'② Engage',p:'signage-edit-engage'},{l:'③ End state',p:'signage-edit-end'},{l:'④ Back in app',p:'signage-edit-back'}],
+   'pathway-form':[{l:'① Get here',p:'pathway-form-get'},{l:'② Engage',p:'pathway-form-engage'},{l:'③ End state',p:'pathway-form-end'},{l:'④ Back in app',p:'pathway-form-back'}],
+   'stopwatch':[{l:'① Get here',p:'stopwatch-get'},{l:'② Engage',p:'stopwatch-engage'},{l:'③ End state',p:'stopwatch-end'},{l:'④ Back in app',p:'stopwatch-back'}],
+   'v2-pin':[{l:'How you get here',p:'pin-entry'},{l:'Empty diagram',p:'pin-s0'},{l:'1 pin placed',p:'pin-s1'},{l:'Many · clustered',p:'pin-s2'},{l:'Saved · photo + note',p:'pin-s3'},{l:'Cluster opened',p:'pin-s4'},{l:'④ Back in app',p:'pin-back'}],
    'v2-photo':[{l:'How you get here',p:'photo-entry'},{l:'Capture',p:'photo-s0'},{l:'Photo saved',p:'photo-s1'},{l:'Done → pathway',p:'photo-done'},{l:'Pending / failed',p:'photo-s2'}],
    'v2-note':[{l:'How you get here',p:'note-entry'},{l:'Compose',p:'note-s0'},{l:'Note saved',p:'note-s1'},{l:'Resolved at desk',p:'note-s2'}],
-   'v2-signage':[{l:'How you get here',p:'sig-entry'},{l:'Listening',p:'sig-s0'},{l:'Transcribed',p:'sig-s1'},{l:'AI cleanup',p:'sig-s2'}],
-   'v2-captures':[{l:'How you get here',p:'cap-entry'},{l:'All on level',p:'cap-all'},{l:'Photos only',p:'cap-photos'},{l:'Notes only',p:'cap-notes'},{l:'On a pathway',p:'cap-pathway'},{l:'On a node',p:'cap-node'},{l:'None yet',p:'cap-empty'}],
-   'qw-spanning':[{l:'Mezzanine end',p:'span-mezz'},{l:'Platform end',p:'span-plat'}],
-   'qw-sync':[{l:'Synced',run:"qwSync('#7BE0BE','✓ Synced','All field edits are saved to the server. Nothing pending.')"},{l:'3 pending',run:"qwSync('#FFD466','⟳ 3 pending','3 edits are saved on this device, waiting to upload when you reconnect.')"},{l:'Offline',run:"qwSync('#F4A6A6','⚠ Offline','No connection. Keep working — edits are saved on the device and sync automatically when signal returns.')"},{l:'Sync conflict',run:"qwSync('#F08A8A','\u26a0 1 conflict','One pathway changed on the server while you were offline \u2014 resolve before it syncs.');var cf=document.getElementById('qw-conflict');if(cf)cf.style.display='block';"},{l:'Reconnecting',run:"qwSync('#FFD466','\u27f3 syncing\u2026','Back online \u2014 uploading pending edits\u2026');setTimeout(function(){qwSync('#7BE0BE','\u2713 Synced','All caught up \u2014 pending edits uploaded.');},1100);"}],
-   'qw-tasklist':[{l:'All pathways',run:"qwFilter(document.querySelector('#qw-tasklist .seg button'),'all')"},{l:'Filter: fare gates',run:"var b=document.querySelectorAll('#qw-tasklist .seg button');qwFilter(b[4],'fare gate')"},{l:'Row expanded',run:"qwFilter(document.querySelector('#qw-tasklist .seg button'),'all');var p=document.getElementById('qwd1');if(p)p.style.display='block'"}],
-   'qw-message':[{l:'Error shown',run:"var b=document.getElementById('qw-msg-banner'),c=document.getElementById('qw-msg-clear');if(b)b.style.display='';if(c)c.style.display='none'"},{l:'Dismissed',run:"qwDismiss()"}],
-   'qw-emptylevel':[{l:'Before tap',run:"var f=document.getElementById('qw-empty-feedback');if(f)f.style.display='none'"},{l:'Tapped · feedback',run:"qwTapEmpty(document.getElementById('qw-empty-row'))"}],
-   'qw-tooltips':[{l:'Hint hidden',run:"var t=document.getElementById('qw-tip-pop');if(t)t.style.display='none'"},{l:'Hint shown',run:"var t=document.getElementById('qw-tip-pop');if(t)t.style.display='block'"}],
-   'qw-station':[{l:'Idle',run:"var b=document.getElementById('qw-resync');if(b){b.textContent='↻ Re-download station data';b.style.color='';b.style.borderColor=''}"},{l:'Re-downloaded',run:"var b=document.getElementById('qw-resync');if(b){b.textContent='✓ Up to date';b.style.color='var(--complete)';b.style.borderColor='var(--complete)'}"}],
+   'v2-signage':[{l:'How you get here',p:'sig-entry'},{l:'Listening',p:'sig-s0'},{l:'Transcribed',p:'sig-s1'},{l:'AI cleanup',p:'sig-s2'},{l:'④ Back in app',p:'sig-back'}],
+   'v2-captures':[{l:'How you get here',p:'cap-entry'},{l:'All on level',p:'cap-all'},{l:'Photos only',p:'cap-photos'},{l:'Notes only',p:'cap-notes'},{l:'On a pathway',p:'cap-pathway'},{l:'On a node',p:'cap-node'},{l:'None yet',p:'cap-empty'},{l:'④ Back in app',p:'cap-back'}],
    'qw-alignment':[{l:'Street map',run:"qwSeg(document.querySelectorAll('#qw-alignment .seg button')[0])"},{l:'Satellite',run:"qwSeg(document.querySelectorAll('#qw-alignment .seg button')[1])"},{l:'Rotated',run:"qwRotate()"}]
   };
   function renderStateBar(id){
@@ -2453,7 +2668,9 @@
     var st=STATES[id]; if(!st) return;
     if(typeof idx==='string'){var f=-1; for(var k=0;k<st.length;k++){if(st[k].p===idx){f=k;break;}} idx=f;}
     var e=st[idx]; if(!e) return;
-    if(e.p){ st.forEach(function(s,i){ if(s.p){var p=document.getElementById(s.p); if(p)p.style.display=(i===idx)?'':'none';} }); }
+    if(e.p){ st.forEach(function(s,i){ if(s.p){var p=document.getElementById(s.p); if(p)p.style.display=(i===idx)?'':'none';} });
+      if(e.p===id+'-engage' && CURRENT[id]){ document.body.classList.add('qwview3'); renderCurrentPanels(id); }
+      else { document.body.classList.remove('qwview3'); } }
     if(e.run){ try{ (new Function(e.run))(); }catch(err){} }
     var bar=document.getElementById('statebar');
     if(bar)Array.prototype.forEach.call(bar.querySelectorAll('button'),function(b,i){b.classList.toggle('on',i===idx);});
@@ -2471,7 +2688,7 @@
     b.classList.toggle('on',on); b.textContent='Discussion notes: '+(on?'on':'off');
   }
   (function(){var n=localStorage.getItem('flyway_name');if(n)document.getElementById('cf-name').value=n;})();
-  var BUILD_DATE='June 19, 2026 · 10:29 AM EDT'; // @BUILD_DATE@ (stamped by deploy.sh)
+  var BUILD_DATE='June 19, 2026 · 2:20 PM EDT'; // @BUILD_DATE@ (stamped by deploy.sh)
   var RELEASE='v0.3';            // @RELEASE@
   (function(){var d=document.getElementById('build-date'); if(d)d.textContent=BUILD_DATE;
     var r=document.getElementById('release'); if(r)r.textContent='Companion App wireframes · '+RELEASE;})();
